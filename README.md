@@ -40,3 +40,8 @@ Directory to download > /var/www
 ```
 **Do not put / at the end this one has not been taken into account for the moment**
 
+## Local path
+Find the files you downloaded in
+```
+profile/downloads/[remote address]
+```
