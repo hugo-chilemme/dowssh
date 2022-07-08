@@ -29,7 +29,7 @@ const start = async () => {
     console.log(`${chalk.yellow('Try to connecting...')}`)
     try {
         await sftp.connect(session.config);
-        console.log(`${session.config.address} \t${chalk.green('Connected')}`);
+        console.log(`${session.config.host} \t${chalk.green('Connected')}`);
         session.path_local = `profile\\downloads\\${session.config.host}`;
         await create.folder(session.path_local)
         session.path_local += "\\";
