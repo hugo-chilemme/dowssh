@@ -45,3 +45,7 @@ Find the files you downloaded in
 ```
 profile/downloads/[remote address]
 ```
+
+## Credits
+
+Use is permitted and unrestricted. The modification is however prohibited (unless to deploy a branch on this github)
