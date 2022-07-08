@@ -1,6 +1,6 @@
 const Create = require('./doc');
 const app = require('./app');
-const shell = require('shelljs')
+const exec = require('child_process').exec;
 
 const fs = require('fs-extra');
 const unzipper = require('unzipper');
@@ -21,16 +21,19 @@ const checkUpdate = async () => {
         if (err) throw err;
         version = data.toString();
     });
-    const result = await axios.get('https://api.github.com/repos/HugoCLI/dowssh/releases/latest', {})
+    const result = await axios.get('https://api.github.com/repos/HugoCLI/dowssh', {})
         .then(result => {
             if (result.status !== 200) return start(); // Not connected
-            let last_version = result.data.tag_name;
+            let last_version = result.data.node_id;
             if (version === last_version) return start();
             const response = prompt("Do you want to download the new version ? (Y/N) > ");
             if (response.toUpperCase() !== "Y") return start();
-
-            shell.cd(process.cwd());
-            shell.exec('git checkout tags/'+result.data.tag_name)
+            create.delete('bin\\core\\version.md')
+            exec("git pull", (error, stdout, stderr) => {
+                create.file('bin\\core\\version.md', result.data.node_id);
+                console.log('Success '+result.data.node_id);
+                start();
+            });
         })
         .catch(error => {
             console.log(error);
@@ -38,9 +41,6 @@ const checkUpdate = async () => {
 
 
 }
-
-
-
 
 
 const start = async () => {
