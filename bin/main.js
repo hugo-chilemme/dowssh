@@ -31,7 +31,7 @@ const checkUpdate = async () => {
             create.delete('bin\\core\\version.md')
             exec("git pull", (error, stdout, stderr) => {
                 create.file('bin\\core\\version.md', result.data.node_id);
-                console.log('Success '+result.data.node_id);
+                console.log('Success -> '+result.data.node_id);
                 start();
             });
         })
