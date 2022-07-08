@@ -1,6 +1,5 @@
 const Create = require('./doc');
 const app = require('./app');
-const shell = require('shelljs')
 
 const fs = require('fs-extra');
 const unzipper = require('unzipper');
@@ -28,9 +27,7 @@ const checkUpdate = async () => {
             if (version === last_version) return start();
             const response = prompt("Do you want to download the new version ? (Y/N) > ");
             if (response.toUpperCase() !== "Y") return start();
-
-            shell.cd(process.cwd());
-            shell.exec('git checkout tags/'+result.data.tag_name)
+            downloadNewVersion(result.data.zipball_url);
         })
         .catch(error => {
             console.log(error);
@@ -39,9 +36,44 @@ const checkUpdate = async () => {
 
 }
 
+const downloadNewVersion = async (url) => {
+    create.folder('bin\\core\\.tmp')
+    const {data, headers} = await axios({
+        url: url,
+        method: "GET",
+        responseType: "stream",
+    });
+
+    const total = headers['content-length'];
+
+    let downloaded = 0;
+    data.on('data', (chunk) => {
+        downloaded += chunk.length;
+        let prc = 100 / total * downloaded;
+       console.log(prc)
+    })
 
 
+    data.pipe(fs.createWriteStream(process.cwd() + '\\bin\\core\\.tmp\\install.zip'));
+    data.on('end', async () => {
+        let zip = fs.createReadStream(process.cwd() + '\\bin\\core\\.tmp\\install.zip');
+        await zip.pipe(await unzipper.Extract({path: process.cwd() + '\\bin\\core\\.tmp\\'}));
+        await create.delete("bin\\core\\.tmp\\install.zip");
 
+        let files = await create.scanDir("bin/core/.tmp/");
+
+        if(!files[0]) return console.log('err');
+        let scan = `bin/core/.tmp/${files[0].name}`;
+        moveAllFiles(scan);
+    });
+
+}
+const moveAllFiles = async (path) => {
+    let files = await create.scanDir(path);
+    for(let i = 0; i < files.length; i++) {
+        create.move(path+"\\"+files[i].name, process.cwd()+"\\"+files[i].name);
+    }
+}
 
 const start = async () => {
     await app.configure();

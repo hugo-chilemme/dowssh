@@ -17,13 +17,11 @@
   },
   "homepage": "https://github.com/HugoCLI/dowssh#readme",
   "dependencies": {
-    "axios": "^0.27.2",
     "chalk": "^4.1.2",
     "fs": "^0.0.1-security",
     "fs-extra": "^10.1.0",
     "prompt-sync": "^4.2.0",
     "request": "^2.88.2",
-    "shelljs": "^0.8.5",
     "ssh2-sftp-client": "^9.0.1",
     "unzipper": "^0.10.11"
   }
