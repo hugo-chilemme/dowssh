@@ -1,7 +1,7 @@
 const Create = require('./doc');
 const app = require('./app');
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const unzipper = require('unzipper');
 
 

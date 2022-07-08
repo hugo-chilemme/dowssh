@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const project_path = process.cwd();
 function formatBytes(a, b = 2, k = 1024) {
     with (Math) {
