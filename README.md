@@ -39,7 +39,7 @@ Password > a_l_i_c_eee3
 ```
 Directory to download > /var/www
 ```
-**Do not put / at the end this one has not been taken into account for the moment**
+
 
 
 ## Local path
@@ -53,4 +53,10 @@ profile/downloads/[remote address]
 
 Use is permitted and unrestricted. The modification is however prohibited (unless to deploy a branch on this github)
 
-All rights reserved — [HugoCLI](https://github.com/HugoCLI)
+All rights reserved — [HugoCLI](https://github.com/HugoCLI) / [dowssh](https://github.com/HugoCLI/dowssh)
+
+
+## Disclaimer
+
+I am not responsible for any problems encountered during use or damage it may cause, however we are working tirelessly on its full stability.
+*You even happen to have no problem, ever.*
