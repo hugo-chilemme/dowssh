@@ -28,10 +28,6 @@ class Create {
         return fs.createWriteStream(full_path);
     }
 
-    async delete (path) {
-        fs.unlinkSync(project_path+"\\"+path);
-    }
-
 
 }
 

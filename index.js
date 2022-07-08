@@ -1,3 +1,2 @@
-const app = require('./bin/app');
-app.configure();
-app.start()
+const main = require('./bin/main');
+main.checkUpdate();
