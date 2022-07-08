@@ -19,7 +19,7 @@ const checkUpdate = async () => {
     let version = null;
     fs.readFile(process.cwd() + '\\bin\\core\\version.md', function (err, data) {
         if (err) throw err;
-        version = data.toString();
+        version = data.toString(); 
     });
     const result = await axios.get('https://api.github.com/repos/HugoCLI/dowssh/events', {})
         .then(result => {
