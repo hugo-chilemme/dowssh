@@ -24,6 +24,10 @@ class Create {
         return fs.existsSync(project_path + "\\" + path);
     }
 
+    async stream(full_path) {
+        return fs.createWriteStream(full_path);
+    }
+
 
 }
 

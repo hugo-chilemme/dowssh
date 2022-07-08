@@ -1,5 +1,3 @@
 const app = require('./bin/app');
-
-
-app.start();
-
+app.configure();
+app.start()
