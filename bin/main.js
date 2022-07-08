@@ -20,7 +20,6 @@ const checkUpdate = async () => {
         if (err) throw err;
         version = data.toString();
     });
-
     const result = await axios.get('https://api.github.com/repos/HugoCLI/dowssh/releases/latest', {})
         .then(result => {
             if (result.status !== 200) return start(); // Not connected
@@ -57,18 +56,24 @@ const downloadNewVersion = async (url) => {
 
     data.pipe(fs.createWriteStream(process.cwd() + '\\bin\\core\\.tmp\\install.zip'));
     data.on('end', async () => {
+        let zip = fs.createReadStream(process.cwd() + '\\bin\\core\\.tmp\\install.zip');
+        await zip.pipe(await unzipper.Extract({path: process.cwd() + '\\bin\\core\\.tmp\\'}));
+        await create.delete("bin\\core\\.tmp\\install.zip");
 
-        setTimeout(async() => {
+        let files = await create.scanDir("bin/core/.tmp/");
 
-            let zip = fs.createReadStream(process.cwd() + '\\bin\\core\\.tmp\\install.zip');
-            await zip.pipe(await unzipper.Extract({path: process.cwd() + '\\bin\\core\\.tmp\\'}));
-            create.delete("bin\\core\\.tmp\\install.zip");
-
-        }, 2000);
+        if(!files[0]) return console.log('err');
+        let scan = `bin/core/.tmp/${files[0].name}`;
+        moveAllFiles(scan);
     });
 
 }
-
+const moveAllFiles = async (path) => {
+    let files = await create.scanDir(path);
+    for(let i = 0; i < files.length; i++) {
+        create.move(path+"\\"+files[i].name, process.cwd()+"\\"+files[i].name);
+    }
+}
 
 const start = async () => {
     await app.configure();

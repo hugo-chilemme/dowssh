@@ -32,6 +32,17 @@ class Create {
         fs.unlinkSync(project_path+"\\"+path);
     }
 
+    async scanDir(path) {
+        return await fs.readdirSync(path, { withFileTypes: true });
+    }
+
+    async move(old_path, new_path) {
+        fs.move(old_path, new_path, function (err) {
+            if (err) throw err
+            console.log('Successfully renamed - AKA moved!')
+        })
+    }
+
 
 }
 
