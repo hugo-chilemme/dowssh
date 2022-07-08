@@ -1,5 +1,5 @@
 # dowssh
-File upload system via SSH
+This project allows to download files from a given directory (recursively) the one useful the SFTP protocol in ssh
 
 ## In the future
 
