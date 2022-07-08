@@ -34,7 +34,7 @@ Username > alice
 Password > a_l_i_c_eee3
 ```
 
-5. Choisissez le chemin à télécharger
+5. Choose the path to download
 ```
 Directory to download > /var/www
 ```
