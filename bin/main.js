@@ -21,17 +21,18 @@ const checkUpdate = async () => {
         if (err) throw err;
         version = data.toString();
     });
-    const result = await axios.get('https://api.github.com/repos/HugoCLI/dowssh', {})
+    const result = await axios.get('https://api.github.com/repos/HugoCLI/dowssh/events', {})
         .then(result => {
             if (result.status !== 200) return start(); // Not connected
-            let last_version = result.data.node_id;
+            let data = result.data[0];
+            let last_version = data.id;
             if (version === last_version) return start();
             const response = prompt("Do you want to download the new version ? (Y/N) > ");
             if (response.toUpperCase() !== "Y") return start();
             create.delete('bin\\core\\version.md')
             exec("git pull", (error, stdout, stderr) => {
-                create.file('bin\\core\\version.md', result.data.node_id);
-                console.log('Success -> '+result.data.node_id);
+                create.file('bin\\core\\version.md', data.id);
+                console.log('Success -> '+data.id);
                 start();
             });
         })
