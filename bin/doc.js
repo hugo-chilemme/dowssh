@@ -15,10 +15,14 @@ class Create {
         return true;
     }
 
+    async folders(obj) {
+        for(let i = 0; i < obj.length; i++)
+            await this.folder(obj[i]);
+    }
+
     async file(path, data) {
         if (await this.exist(path)) return false;
         fs.writeFileSync(project_path + "\\" + path, data, {flag: 'a+'});
-
         return true;
     }
 
@@ -39,14 +43,10 @@ class Create {
     }
 
     async move(old_path, new_path) {
-
         fs.rename(process.cwd() + "\\" + old_path, process.cwd() + "\\" + new_path, function (err) {
             if (err) throw err
-            console.log('Successfully renamed - AKA moved!')
         })
-
     }
-
 
 }
 

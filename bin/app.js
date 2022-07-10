@@ -10,11 +10,8 @@ const prompt = require('prompt-sync')();
 let session = {config: {}};
 
 const configure = async () => {
-    await create.folder('profile');
-    await create.folder('profile\\cache');
+    await create.folders(['profile', 'profile\\cache', 'profile\\hosts', 'profile\\downloads'])
     await create.file('profile\\cache\\remote_directory.json', "{}");
-    await create.folder('profile\\hosts');
-    await create.folder('profile\\downloads');
     for (let i = 0; i < 5; i++) console.log("")
 }
 
