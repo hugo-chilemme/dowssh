@@ -27,9 +27,8 @@ const checkUpdate = async () => {
             if (version === last_version) return start();
             const response = prompt("Do you want to download the new version ? (Y/N) > ");
             if (response.toUpperCase() !== "Y") return start();
-            create.delete('bin\\core\\version.md')
             exec("git pull", (error, stdout, stderr) => {
-                create.file('bin\\core\\version.md', last_version);
+                create.edit('bin\\core\\version.md', last_version)
                 start();
             });
         })

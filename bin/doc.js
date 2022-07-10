@@ -15,6 +15,10 @@ class Create {
         return true;
     }
 
+    async edit(path, contains) {
+        await fs.writeFileSync(project_path + "\\" + path, contains);
+    }
+
     async folders(obj) {
         for(let i = 0; i < obj.length; i++)
             await this.folder(obj[i]);
