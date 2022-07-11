@@ -5,25 +5,27 @@ const create = new Create();
 const sftp = new Client();
 
 const chalk = require('chalk');
-const prompt = require('prompt-sync')();
 
 let session = {config: {}};
 
 const configure = async () => {
     await create.folders(['profile', 'profile\\cache', 'profile\\hosts', 'profile\\downloads'])
     await create.file('profile\\cache\\remote_directory.json', "{}");
-    for (let i = 0; i < 5; i++) console.log("")
 }
 
 
 const start = async () => {
+    console.log("\n"+chalk.cyan('Welcome to dowssh')+"\n");
 
-    session.config.host = prompt('Remote address > ');
-    session.config.port = prompt('SFTP access port (22 by default) > ');
-    session.config.username = prompt('Username > ');
-    session.config.password = prompt('Password > ');
+    // session.config.host = prompt('Remote address > ');
+    // if(!session.config.host) return process.exit(-1);
+    // session.config.port = prompt('SFTP access port (22 by default) > ');
+    // if(!session.config.port) session.config.port = 22;
+    // session.config.username = prompt('Username > ');
+    // if(!session.config.username) return process.exit(-1);
+    // session.config.password = prompt('Password > ');
 
-    console.log(`${chalk.yellow('Try to connecting...')}`)
+    console.log(chalk.yellow('Try to connecting...'));
     try {
         await sftp.connect(session.config);
         console.log(`${session.config.host} \t${chalk.green('Connected')}`);
@@ -97,32 +99,29 @@ const download = async () => {
 }
 
 const downloadFile = async (data) => {
-    const element = data.split('::');
+    const e = data.split('::');
     session.instance += 1;
-    session.cache.receiveSize += parseInt(element[1]);
+    session.cache.receiveSize += parseInt(e[1]);
 
 
-    const target = process.cwd() +"\\"+ session.path_local+ element[2].substring(session.path_remote.length+1, element[2].length).replaceAll('/', "\\");
-    let get_folder = (target).split('/');
-    get_folder.pop();
+    const target = process.cwd() +"\\"+ session.path_local+ e[2].substring(session.path_remote.length+1, e[2].length).replaceAll('/', "\\");
+    const target_folder = target.split("/").slice(0, -1).join("/");
 
-    if (element[0] === "d") {
+    if (e[0] === "d") {
         await create.folder(target, true)
     } else {
-        const name = get_folder[get_folder.length - 1];
-        await create.folder(get_folder)
-        if (await create.file(target, "", true))
-            await sftp.get(element[2], await create.stream(target));
-        stats(target);
+        await create.folder(target_folder);
+        await sftp.get(e[2], await create.stream(target));
     }
-    session.instance -= 1;
-    download();
+    nextFile(target);
 }
 
-const stats = (path_dym) => {
+const nextFile = (target) => {
     for (let i = 0; i < 3; i++) clearLastLine();
-    console.log(chalk.gray(path_dym));
+    console.log(chalk.gray(target))
     console.log("\n" + chalk.yellow((100 / session.size.total * session.size.downloaded).toFixed(2) + "% ") + 'Downloading ... \t ' + chalk.cyan(formatBytes(session.size.speed) + "/s") + " \t" + formatBytes(session.size.downloaded) + " sur " + formatBytes(session.size.total) + "\n");
+    session.instance -= 1;
+    download();
 }
 
 const clearLastLine = () => {

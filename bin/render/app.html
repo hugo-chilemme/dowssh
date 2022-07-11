@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dowssh</title>
+</head>
+<body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
+    .contains {
+        border-radius: 5px;
+        background:#0d0c22;
+        position: absolute;
+        font-family: 'Ubuntu', sans-serif;
+        bottom:0;
+        top:0;
+        left:0;
+        overflow: hidden;
+        right:0;
+    }
+    .loader {
+        position: fixed;
+        left:0;
+        right:0;
+        bottom: 0;
+        top:0;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loader-animation {
+        display:flex;
+        flex-direction: column;
+        height: 200px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loader-animation span {
+        position: absolute;
+        width: 75px;
+        height: 75px;
+        border-radius: 100px;
+        border:3px solid #ccc;
+        animation:loader 2s infinite;
+    }
+
+    .loader-animation span:nth-child(1) { animation-delay: -0.99s}
+    .loader-animation span:nth-child(2) { animation-delay: -0.66s}
+    .loader-animation span:nth-child(3) { animation-delay: -0.33s}
+
+    @keyframes loader {
+        0% {
+            transform:scale(0);
+            z-index: 3;
+            opacity: 1;
+        }
+        50% {
+            transform:scale(1);
+            z-index: 2;
+        }
+        75% {
+            transform:scale(2);
+
+        }
+        100% {
+            opacity: 0;
+            transform:scale(0);
+            z-index: 0;
+        }
+    }
+
+</style>
+<div class="contains">
+    <div class="loader">
+        <div class="loader-animation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

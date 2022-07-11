@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,8 @@
     "shelljs": "^0.8.5",
     "ssh2-sftp-client": "^9.0.1",
     "unzipper": "^0.10.11"
+  },
+  "devDependencies": {
+    "electron": "^19.0.8"
   }
 }
