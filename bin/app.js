@@ -101,22 +101,19 @@ const downloadFile = async (data) => {
     session.instance += 1;
     session.cache.receiveSize += parseInt(element[1]);
 
-    const path_dym = element[2].substring(session.path_remote.length + 1, element[2].length);
 
-    let get_folder = (session.path_local + path_dym).split('/');
+    const target = process.cwd() +"\\"+ session.path_local+ element[2].substring(session.path_remote.length+1, element[2].length).replaceAll('/', "\\");
+    let get_folder = (target).split('/');
     get_folder.pop();
-    get_folder = get_folder.join("\\");
 
     if (element[0] === "d") {
-        await create.folder(session.path_local + path_dym)
+        await create.folder(target, true)
     } else {
         const name = get_folder[get_folder.length - 1];
-        const stream_path = {absolute: `${process.cwd()}\\${get_folder}\\${name}`, relative: `${get_folder}\\${name}`};
         await create.folder(get_folder)
-
-        if (await create.file(stream_path.relative, ""))
-            await sftp.get(element[2], await create.stream(stream_path.absolute));
-        stats(path_dym);
+        if (await create.file(target, "", true))
+            await sftp.get(element[2], await create.stream(target));
+        stats(target);
     }
     session.instance -= 1;
     download();
@@ -153,6 +150,7 @@ const traiteSFTP = async (path, object) => {
         let type = "d";
         if (value.type !== "d") type = "f";
         session.statistics[type] += 1;
+
         session.repositories.push(type + "::" + value.size + "::" + path + "/" + value.name)
         if (type === "d") getSFTP(`${path}/${value.name}/`);
     }
