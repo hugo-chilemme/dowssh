@@ -37,24 +37,25 @@ const checkUpdate = async () => {
                 win.webContents.send('update', "search")
                 await axios.get('https://api.github.com/repos/HugoCLI/dowssh/events', {}).then(result => {
 
-                    if (result.status !== 200) return start(); // Not connected
+                    if (result.status !== 200) return start(win); // Not connected
                     const last_version = result.data[0].id;
-                    if (version === last_version) return start();
+                    if (version === last_version) return start(win);
                     win.webContents.send('update', "download")
                     exec("git pull", (error, stdout, stderr) => {
                         create.edit('bin\\core\\version.md', last_version)
-                        start();
+                        start(win);
                     });
                 })
         }catch (e) {
-            start();
+            start(win);
         }
     });
 }
 
 
 
-const start = async () => {
+const start = async (win) => {
+    win.webContents.send('update', "start")
     setTimeout(() => {
         window.application(async (win) => {
             // return app.start();

@@ -80,7 +80,14 @@ const addHost = (submit = false, data = null) => {
 
 const connect = (uuid) => {
     if(hosts[uuid]) {
+        doc.querySelector('.loader stop').style.display = "inline-flex";
         doc.querySelector('.loader').style.display = "flex";
         doc.querySelector('#loader-status').innerText = `Connexion à ${hosts[uuid].host}...`
     }
+}
+
+const connectCancel = () => {
+    doc.querySelector('#loader-status').innerText = `Tentative d'annulation...`;
+    doc.querySelector('.loader').style.display = "none";
+    doc.querySelector('.loader stop').style.display = "none";
 }

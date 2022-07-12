@@ -87,18 +87,21 @@
             <h1 id="announce">Démarrage</h1>
         </div>
         <script>
+            const doc = document;
             const {ipcRenderer} = require('electron')
+            const default_text = doc.querySelector('#announce').innerText;
 
             ipcRenderer.on('update', (event, messages) => {
-                let text = "Démarrage";
+                let text = default_text;
+                if(messages === "start") text = "Lancement";
                 if(messages === "search") text = "Recherche de mise à jour";
                 if(messages === "download") text = "Téléchargement";
-                document.querySelector('#announce').innerText = text
+                doc.querySelector('#announce').innerText = text
             });
 
             ipcRenderer.on('create', (event, messages) => {
                 console.log(messages)
-                document.querySelector('#announce').innerHTML = `Create <span>${messages}</span>`;
+                doc.querySelector('#announce').innerHTML = `Create <span>${messages}</span>`;
             });
         </script>
     </body>

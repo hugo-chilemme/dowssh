@@ -28,7 +28,7 @@ const start = async(callback) => {
 }
 
 const application = async(callback) => {
-        windows.start.close();
+
         windows.application = new BrowserWindow({
             width: 1200,
             height: 650,
@@ -42,16 +42,11 @@ const application = async(callback) => {
                 contextIsolation: false
             }
         })
-        windows.start.setAlwaysOnTop(true, "floating");
-        windows.start.setFullScreenable(false);
-        // Below statement completes the flow
-        windows.start.moveTop();
         windows.application.loadFile('./bin/render/app.html');
 
-
+        setTimeout(async() =>  windows.start.close(), 500)
         setTimeout(async () => {
             callback(windows.application)
-
         }, 2000);
 
 }

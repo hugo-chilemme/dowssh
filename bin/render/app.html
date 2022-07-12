@@ -362,6 +362,25 @@
         margin-top:25px;
     }
 
+    .loader stop {
+        position: absolute;
+        right:25px;
+        top:0px;
+        justify-content: center;
+        align-items: center;
+        padding:10px;
+        color:#505050;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size:30px;
+        display: none;
+        transition: 250ms;
+    }
+    .loader stop:hover {
+        background:#dedede;
+        transform:scale(1.05);
+    }
+
     .hosts .item p {
         margin:5px 0 0 0;
         color:#606060;
@@ -374,6 +393,7 @@
 
     </div>
     <div class="loader">
+        <stop onclick="connectCancel()"><i class='bx bx-x'></i></stop>
         <div class="loader-animation">
             <span></span>
             <span></span>
