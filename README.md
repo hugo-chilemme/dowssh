@@ -23,8 +23,12 @@ git clone https://github.com/HugoCLI/dowssh.git
 
 2. Then type
 ```
-cd dowssh/ && npm i
+cd dowssh
 ```
+```
+npm i
+```
+
 
 3. You are ready to launch
 ```
