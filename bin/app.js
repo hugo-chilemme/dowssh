@@ -8,10 +8,6 @@ const chalk = require('chalk');
 
 let session = {config: {}};
 
-const configure = async () => {
-    await create.folders(['profile', 'profile\\cache', 'profile\\hosts', 'profile\\downloads'])
-    await create.file('profile\\cache\\remote_directory.json', "{}");
-}
 
 
 const start = async () => {
@@ -158,4 +154,3 @@ const traiteSFTP = async (path, object) => {
 
 
 exports.start = start;
-exports.configure = configure;

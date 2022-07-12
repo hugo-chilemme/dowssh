@@ -25,31 +25,41 @@ const checkUpdate = async () => {
             version = data.toString();
         });
 
+        await create.folders(['profile', 'profile\\cache', 'profile\\hosts', 'profile\\downloads'], async (path) => {
+            win.webContents.send('create', path)
+        })
+        await create.file('profile\\cache\\remote_directory.json', "{}", false,async (path) => {
+            win.webContents.send('create', path)
+        });
+
+        await create.getHosts(true);
 
         try {
-            win.webContents.send('update', "search")
-            await axios.get('https://api.github.com/repos/HugoCLI/dowssh/events', {}).then(result => {
+                win.webContents.send('update', "search")
+                await axios.get('https://api.github.com/repos/HugoCLI/dowssh/events', {}).then(result => {
 
-                if (result.status !== 200) return start(); // Not connected
-                const last_version = result.data[0].id;
-                if (version === last_version) return start();
-                win.webContents.send('update', "download")
-                exec("git pull", (error, stdout, stderr) => {
-                    create.edit('bin\\core\\version.md', last_version)
-                    win.webContents.send('update', "start")
-                    start();
-                });
-            })
+                    if (result.status !== 200) return start(); // Not connected
+                    const last_version = result.data[0].id;
+                    if (version === last_version) return start();
+                    win.webContents.send('update', "download")
+                    exec("git pull", (error, stdout, stderr) => {
+                        create.edit('bin\\core\\version.md', last_version)
+                        start();
+                    });
+                })
         }catch (e) {
             start();
         }
     });
 }
 
+
+
 const start = async () => {
-    window.application(async (win) => {
-        await app.configure();
-        // return app.start();
-    });
+    setTimeout(() => {
+        window.application(async (win) => {
+            // return app.start();
+        });
+    }, 2000)
 }
 exports.checkUpdate = checkUpdate;

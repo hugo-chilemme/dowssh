@@ -2,14 +2,20 @@
 <html>
 <head>
     <title>Dowssh</title>
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
-
+    * {
+        box-sizing: border-box;
+        margin:0;
+        padding:0;
+        user-select: none;
+    }
     .contains {
-        border-radius: 5px;
-        background:#0d0c22;
+        border-radius: 7px;
+        background:#edf1f2;
         position: absolute;
         font-family: 'Ubuntu', sans-serif;
         bottom:0;
@@ -20,13 +26,44 @@
     }
     .loader {
         position: fixed;
-        left:0;
+        left:70px;
         right:0;
         bottom: 0;
-        top:0;
+        background:#edf1f2;
+        top:30px;
+        transition: 500ms;
         display:flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .loader h1 {
+        color:#ccc;
+        width: 100%;
+        font-weight: 300;
+        margin-top:50px;
+        text-transform: uppercase;
+        font-size:40px;
+        text-align: center;
+        position: absolute;
+        bottom:75px;
+        left:0;
+        right:0;
+    }
+
+    .loader h2 {
+        color:#858585;
+        width: 100%;
+        font-weight: 500;
+        margin-top:50px;
+        text-transform: uppercase;
+        font-size:15px;
+        text-align: center;
+        position: absolute;
+        bottom:50px;
+        left:0;
+        right:0;
     }
 
     .loader-animation {
@@ -43,7 +80,7 @@
         width: 75px;
         height: 75px;
         border-radius: 100px;
-        border:3px solid #ccc;
+        border:3px solid #141236;
         animation:loader 2s infinite;
     }
 
@@ -72,8 +109,260 @@
         }
     }
 
+    .main .menu {
+        height: 100vh;
+        width: 400px;
+        top:0;
+        padding:100px 70px 70px 70px;
+        bottom:0;
+        left:calc(-400px + 70px);
+        position: absolute;
+        background:#141236;
+        transition: 250ms;
+    }
+
+    .main.open-menu .menu {
+        left:0;
+
+    }
+
+    .main.open-menu .home {
+        margin-left:400px;
+    }
+
+    .home {
+        padding:75px 50px;
+        transition: 250ms;
+        margin-left:70px;
+    }
+
+    .main.open-menu .header {
+        margin-left:400px;
+    }
+
+
+    .header {
+        height: 30px;
+        overflow: hidden;
+        width: 100%;
+        transition: 250ms;
+        padding:0 5px 0 10px;
+        display: grid;
+        z-index: 999;
+        position: absolute;
+        margin-left:70px;
+        justify-content: center;
+        align-items: center;
+        grid-template-columns: 50% 50%;
+    }
+
+    .header div:nth-child(1) {
+        text-align: left;
+        font-size:12px;
+        color:#606060;
+        font-weight: 500;
+    }
+
+    .header div:nth-child(2) {
+        justify-content: flex-end;
+        cursor: pointer;
+        align-items: center;
+        margin-right: 0;
+        display:flex;
+    }
+    .header div:nth-child(2) i {
+        color:#404040;
+        font-size:16px;
+    }
+    .header div:nth-child(2) div {
+        height: 25px;
+        display:flex;
+        border-radius: 5px;
+        justify-content: center;
+        align-items: center;
+        padding:0 10px;
+    }
+
+    .header div:nth-child(2) div:hover {
+        background:#ccc;
+    }
+
+    .header h4 {
+        color:#ccc;
+        font-weight: 400;
+        font-size:12px;
+    }
+
+
+
+
+
+    .home h3 {
+        color:#0d0c22;
+        text-shadow: 5px 5px 20px #959595;
+    }
+
+    .home p {
+        font-size:14px;
+
+        color:#707070;
+        font-weight: 400;
+        margin-top:25px;
+    }
+
+    click {
+        color:#58a6ff;
+        cursor: pointer;
+    }
+
+    input {
+        padding:10px;
+        border:1px solid #0d0c22;
+        outline:none;
+        width: 100%;
+        margin-bottom: 25px;
+        color:#fff;
+        font-weight: 500;
+        margin-top:0;
+
+        border-radius: 5px;
+        background: transparent;
+    }
+    label {
+        display:inline-flex;
+        color:#ccc;
+        font-size:11px;
+        margin-left:15px;
+        padding:0 10px 0 5px;
+        margin-top:-6px;
+        position: absolute;
+        z-index: 1;
+        background:#141236;
+    }
+
+    .menu h2 {
+        color:#fff;
+        font-size:18px;
+        font-weight: 700;
+        margin-bottom: 50px;
+    }
+
+    .menu button {
+        background: #009BFF;
+        color: #fff;
+        font-weight: 500;
+        display: flex;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .menu .close {
+        position: absolute;
+        align-items: center;
+        padding:10px;
+        border-radius: 5px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        right: 70px;
+        color: #ccc;
+        top: 20px;
+        font-size: 25px;
+        cursor: pointer;
+    }
+
+    .menu .close:hover {
+        background:#0d0c22;
+    }
+
+    .notification {
+        position: absolute;
+        left:0;
+        right:0;
+        top:25px;
+        padding:10px;
+        color:#fff;
+        width: 300px;
+        margin:auto;
+        background:#303030;
+        border-radius: 5px;
+        font-size:15px;
+        visibility: hidden;
+        font-weight: 400;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transform:translateY(-50px);
+        transition: 250ms;
+    }
+    .notification.error { background: #C70039 }
+    .notification.show { visibility: inherit; opacity: 1; transform:translateY(0) }
+
+
+    .hosts-action {
+        display:grid;
+        margin-top:25px;
+        justify-content: center;
+        align-items: center;
+        grid-template-columns: 75px calc(100% - 75px);
+    }
+
+    .hosts-action span {
+        display:inline-flex;
+        padding:14px;
+        cursor: pointer;
+        border:1px solid rgba(0, 0, 0, 0.05);
+        font-size:25px;
+        border-radius: 10px;
+        transition: 250ms;
+    }
+
+    .hosts-action span:hover {
+        transform:scale(1.05)
+    }
+
+    .hosts-action span i {
+        color:#141236;
+    }
+
+
+
+    .hosts .item {
+        padding:10px 20px;
+        display:inline-flex;
+        width: 250px;
+        transition: 250ms;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-right: 25px;
+        flex-direction: column;
+        border:1px solid rgba(0, 0, 0, 0.05);
+    }
+    .hosts .item:hover {
+        transform:scale(1.05);
+    }
+
+    .hosts .item h5 {
+        font-size: 15px;
+        color:#0d0c22;
+        font-weight: 600;
+    }
+
+    .hosts .item p {
+        margin:5px 0 0 0;
+        color:#606060;
+        font-size:12px;
+        font-weight: 500;
+    }
 </style>
 <div class="contains">
+    <div class="notification">
+
+    </div>
     <div class="loader">
         <div class="loader-animation">
             <span></span>
@@ -81,7 +370,60 @@
             <span></span>
         </div>
     </div>
-</div>
+    <div class="main">
+        <div class="menu">
+            <div onclick="menu.close()" class="close">
+                <i class='bx bx-x' ></i>
+            </div>
+            <div class="addHost" id="addHost">
+                <h2>Nouveau serveur</h2>
+                <label>Address*</label>
+                <input data="host" type="text">
 
+                <label>Port</label>
+                <input data="port" type="number" value="22">
+
+                <label>Username</label>
+                <input data="username" type="text">
+
+                <label>Password</label>
+                <input data="password" type="password">
+
+                <button onclick="addHost('submit')">
+                    Ajouter
+                </button>
+            </div>
+        </div>
+        <div>
+            <div class="header">
+                <div>
+                    Dowssh
+                </div>
+                <div>
+                    <div>
+                        <i class='bx bx-minus' ></i>
+                    </div>
+                    <div>
+                        <i class='bx bx-x'></i>
+                    </div>
+                </div>
+            </div>
+            <div class="home">
+                <h3>Mes serveurs</h3>
+                <div class="hosts-action">
+                    <div>
+                        <span onclick="action('add-host')"><i class='bx bx-plus'></i></span>
+                    </div>
+                    <div class="hosts">
+                        <p>Vous n'avez pas de serveur enregistrée, commençons en <click onclick="action('add-host')">ajoutes-ens un</click></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="assets/build.js"></script>
 </body>
 </html>

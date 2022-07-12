@@ -95,6 +95,11 @@
                 if(messages === "download") text = "Téléchargement";
                 document.querySelector('#announce').innerText = text
             });
+
+            ipcRenderer.on('create', (event, messages) => {
+                console.log(messages)
+                document.querySelector('#announce').innerHTML = `Create <span>${messages}</span>`;
+            });
         </script>
     </body>
 </html>
