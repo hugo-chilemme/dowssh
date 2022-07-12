@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const project_path = process.cwd();
-let hosts = [];
+
 function formatBytes(a, b = 2, k = 1024) {
     with (Math) {
         let d = floor(log(a) / log(k));
@@ -65,22 +65,6 @@ class Create {
             if(err) return null;
             cb(JSON.parse(data));
         });
-    }
-
-    async getHosts(renew = false) {
-        if(!hosts || renew) {
-            await fs.readdir(project_path + "\\profile\\hosts", async (err, files) => {
-                if (!err) {
-                    for(let i = 0; i < files.length; i++) {
-                        await this.read( "\\profile\\hosts\\"+files[i], (data) => {
-                            hosts.push(Object.assign({}, data, {uuid: files[i].split('.json')[0]}));
-                        })
-                    }
-                }
-            })
-        } else {
-            return hosts;
-        }
     }
 
     scanDir(path) {

@@ -64,12 +64,12 @@ let paths = {
 ipcMain.on("profiler-get", async (event, type) => {
 
     if(type === "hosts") {
-        let datas = await create.getHosts();
+        let datas = await host.getAll();
         let hosts = {};
         // Delete Password For security reason */
        for(let i =0; i < datas.length; i++)
             hosts[datas[i].uuid] = {host: datas[i].host, uuid: datas[i].uuid, port: datas[i].port, username: datas[i].username};
-        await create.getHosts(true);
+        await host.getAll(true);
         return sendData('profiler-' + type, hosts)
     } else {
         if(create.exist(paths[type].path)) {

@@ -32,7 +32,6 @@ const checkUpdate = async () => {
             win.webContents.send('create', path)
         });
 
-        await create.getHosts(true);
 
         try {
                 win.webContents.send('update', "search")
