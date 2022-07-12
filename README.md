@@ -1,6 +1,10 @@
+The current version is not usable: see later versions in CLI
+
 # dowssh
 > This project allows to download files from a given directory (recursively) the one useful the SFTP protocol in ssh
 
+
+![Image](https://i.goopics.net/kp23g5.png)
 
 ## In the future
 
@@ -24,28 +28,7 @@ cd dowssh/ && npm i
 
 3. You are ready to launch
 ```
-node index.js
-```
-
-4. Enter your server information (here is an example)
-```
-Remote address > 84.201.1.50
-SFTP access port (22 by default) > 22
-Username > alice
-Password > a_l_i_c_eee3
-```
-
-5. Choose the path to download
-```
-Directory to download > /var/www
-```
-
-
-
-## Local path
-Find the files you downloaded in
-```
-profile/downloads/[remote address]
+npm start
 ```
 
 
