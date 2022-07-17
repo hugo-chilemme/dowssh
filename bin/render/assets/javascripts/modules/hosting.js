@@ -124,6 +124,10 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
             repositories.innerHTML += `<div class="item" file="${uuid}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div></div>`;
         }
     }
+    if(Object.entries(data.result).length === 0)  {
+        repositories.innerHTML += "<error>Ce dossier est vide</error>";
+    }
+
 
     doc.querySelector('.connections .sidebars p').innerText = `${data.path}`;
     elementClikable(data.conn_id, repos, files);

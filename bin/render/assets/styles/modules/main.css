@@ -52,6 +52,15 @@
     font-size:15px;
     margin-top:10px;
 }
+error {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: #808080;
+    font-size: 14px;
+    height: 200px;
+    align-items: center;
+}
 
 .connections .repositories {
     margin-top:25px;
