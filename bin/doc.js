@@ -13,12 +13,12 @@ class Create {
         if(!absolute) {
             if (await this.exist(path)) return false;
             fs.mkdirSync(project_path + "\\" + path, {recursive: true});
-            cb(true)
+            if(cb) cb(true)
             return true;
         } else {
             if (await this.exist(path, true)) return false;
             fs.mkdirSync(path, {recursive: true});
-            cb(true)
+            if(cb) cb(true)
             return true;
         }
     }

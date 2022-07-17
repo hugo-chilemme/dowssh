@@ -77,9 +77,17 @@ error {
 .connections .repositories .item.selected {
     background:rgba(46, 161, 219, 0.25) !important;
 }
+
+
+
 .connections .repositories .item i {
     color:#909090;
 }
+
+.bx-folder {
+    color: rgba(46, 161, 219, 0.25)
+}
+
 .connections .repositories .item.gray {
     color:#909090;
     letter-spacing: 2px;
