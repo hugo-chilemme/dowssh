@@ -3,20 +3,25 @@
     left:0;
     right:0;
     top:25px;
-    padding:10px;
+    padding: 15px 12px;
     color:#fff;
-    width: 300px;
+    width: 350px;
     margin:auto;
     background:#303030;
     border-radius: 5px;
     font-size:15px;
     visibility: hidden;
     font-weight: 400;
-    justify-content: center;
-    align-items: center;
     opacity: 0;
     transform:translateY(-50px);
     transition: 250ms;
+    display:flex;
+    z-index:999999;
+    justify-content: center;
+    align-items: center;
+
 }
+
+
 .notification.error { background: #C70039 }
 .notification.show { visibility: inherit; opacity: 1; transform:translateY(0) }
