@@ -12,7 +12,7 @@ class Create {
     async folder(path, absolute = false, cb) {
         if(!absolute) {
             if (await this.exist(path)) return false;
-            fs.mkdirSync(project_path + "\\" + path, {recursive: true});
+            fs.mkdirSync(project_path + "/" + path, {recursive: true});
             if(cb) cb(true)
             return true;
         } else {
@@ -24,7 +24,7 @@ class Create {
     }
 
     async edit(path, contains) {
-        await fs.writeFileSync(project_path + "\\" + path, contains);
+        await fs.writeFileSync(project_path + "/" + path, contains);
     }
 
     async folders(obj, cb) {
@@ -36,7 +36,7 @@ class Create {
     async file(path, data, absolute = false, cb = null) {
         if(!absolute) {
             if (await this.exist(path)) return false;
-            fs.writeFileSync(project_path + "\\" + path, data, {flag: 'a+'});
+            fs.writeFileSync(project_path + "/" + path, data, {flag: 'a+'});
             if(cb) cb(path)
             return true;
         } else {
@@ -48,7 +48,7 @@ class Create {
     }
 
     async exist(path, absolute = false) {
-        if(!absolute) return fs.existsSync(project_path + "\\" + path);
+        if(!absolute) return fs.existsSync(project_path + "/" + path);
         return fs.existsSync(path);
     }
 
@@ -57,32 +57,32 @@ class Create {
     }
 
     async delete(path) {
-        fs.unlinkSync(project_path + "\\" + path);
+        fs.unlinkSync(project_path + "/" + path);
     }
 
     async read(path, cb) {
-        await fs.readFile(project_path + "\\" + path, 'utf8', (err, data) => {
+        await fs.readFile(project_path + "/" + path, 'utf8', (err, data) => {
             if(err) return null;
             cb(JSON.parse(data));
         });
     }
 
     scanDir(path) {
-        fs.readdir(project_path + "\\" + path, (err, files) => {
+        fs.readdir(project_path + "/" + path, (err, files) => {
             if (!err) {
                 for(let i = 0; i < files.length; i++) {
-                    this.read( path+"\\"+files[i], (data) => {
+                    this.read( path+"/"+files[i], (data) => {
                         datas.push(data);
                     })
                 }
             }
         })
         return datas;
-        // return await fs.readdirSync(project_path + "\\" + path, {withFileTypes: true});
+        // return await fs.readdirSync(project_path + "/" + path, {withFileTypes: true});
     }
 
     async move(old_path, new_path) {
-        fs.rename(process.cwd() + "\\" + old_path, process.cwd() + "\\" + new_path, function (err) {
+        fs.rename(process.cwd() + "/" + old_path, process.cwd() + "/" + new_path, function (err) {
             if (err) throw err
         })
     }

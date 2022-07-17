@@ -44,11 +44,11 @@ class Host {
 
     async getAll(renew = false) {
         if(!hosts || renew) {
-            await fs.readdir(project_path + "\\profile\\hosts", async (err, files) => {
+            await fs.readdir(project_path + "/profile/hosts", async (err, files) => {
                 if (!err) {
                     for(let i = 0; i < files.length; i++) {
                         const uuid = files[i].split('.json')[0];
-                        await create.read( "\\profile\\hosts\\"+files[i], async (data) => {
+                        await create.read( "/profile/hosts/"+files[i], async (data) => {
                             hosts.push(Object.assign({}, data, {uuid: uuid}));
                         })
                     }

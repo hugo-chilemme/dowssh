@@ -12,9 +12,9 @@ const start = async () => {
     try {
         await sftp.connect(session.config);
         console.log(`${session.config.host} \t${chalk.green('Connected')}`);
-        session.path_local = `profile\\downloads\\${session.config.host}`;
+        session.path_local = `profile/downloads/${session.config.host}`;
         await create.folder(session.path_local)
-        session.path_local += "\\";
+        session.path_local += "/";
         // requestGet();
     } catch (e) {
         console.log(chalk.red('ERROR') + " Unable to connect to remote server")
@@ -77,7 +77,7 @@ const download = async () => {
         return;
     }
     for (let i = 0; i < 3; i++) clearLastLine();
-    console.log("\n" + chalk.yellow("100.00% ") + 'Finish \t ' + formatBytes(session.size.downloaded) + "\t" + process.cwd() + "\\" + session.path_local + "\n");
+    console.log("\n" + chalk.yellow("100.00% ") + 'Finish \t ' + formatBytes(session.size.downloaded) + "\t" + process.cwd() + "/" + session.path_local + "\n");
     process.exit(-1)
 }
 
@@ -87,7 +87,7 @@ const downloadFile = async (data) => {
     session.cache.receiveSize += parseInt(e[1]);
 
 
-    const target = process.cwd() +"\\"+ session.path_local+ e[2].substring(session.path_remote.length+1, e[2].length).replaceAll('/', "\\");
+    const target = process.cwd() +"/"+ session.path_local+ e[2].substring(session.path_remote.length+1, e[2].length).replaceAll('/', "/");
     const target_folder = target.split("/").slice(0, -1).join("/");
 
     if (e[0] === "d") {

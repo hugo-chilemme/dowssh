@@ -57,7 +57,7 @@ const application = async(callback) => {
 const sendData = (type, data) => windows.application.send(type, data);
 
 let paths = {
-    'hosts': {type: "folder", path: 'profile\\hosts'}
+    'hosts': {type: "folder", path: 'profile/hosts'}
 }
 ipcMain.on("profiler-get", async (event, type) => {
 

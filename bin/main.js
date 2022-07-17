@@ -19,15 +19,15 @@ const checkUpdate = async () => {
         if (await create.folder('bin/core')) await create.file('bin/core/version.md', "");
 
         let version = null;
-        fs.readFile(process.cwd() + '\\bin\\core\\version.md', function (err, data) {
+        fs.readFile(process.cwd() + '/bin/core/version.md', function (err, data) {
             if (err) throw err;
             version = data.toString();
         });
 
-        await create.folders(['profile', 'profile\\cache', 'profile\\hosts', 'profile\\downloads'], async (path) => {
+        await create.folders(['profile', 'profile/cache', 'profile/hosts', 'profile/downloads'], async (path) => {
             win.webContents.send('create', path)
         })
-        await create.file('profile\\cache\\remote_directory.json', "{}", false,async (path) => {
+        await create.file('profile/cache/remote_directory.json', "{}", false,async (path) => {
             win.webContents.send('create', path)
         });
 
@@ -41,7 +41,7 @@ const checkUpdate = async () => {
                     if (version === last_version) return start(win);
                     win.webContents.send('update', "download")
                     exec("git pull", (error, stdout, stderr) => {
-                        create.edit('bin\\core\\version.md', last_version)
+                        create.edit('bin/core/version.md', last_version)
                         start(win);
                     });
                 })
