@@ -22,6 +22,11 @@
 .main.open-menu .home {
     margin-left:400px;
 }
+.main.open-menu .header {
+    padding-left: 350px;
+}
+
+
 
 .home {
     padding:75px 50px;

@@ -73,6 +73,14 @@
     margin-left:25px;
     background:rgba(255, 255, 255, 0.2);
 }
+
+.win-close .pop .action span timer {
+    font-weight: 300;
+    display:inline-flex;
+    margin-left:10px;
+    padding-left:10px;
+    border-left:1px solid rgba(255, 255, 255, 0.05)
+}
 .win-close .pop .action span:hover {
     transform:scale(1.1);
 }

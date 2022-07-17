@@ -18,7 +18,7 @@ const chrono = async() => {
     if(chr.active) {
         if(chr.timeout > 0) {
             chr.timeout-=1;
-            doc.querySelector('#win-close-cancel').innerText = `Annuler (${chr.timeout}s)`;
+            doc.querySelector('#win-close-cancel').innerHTML = `Annuler <timer>${chr.timeout}s</timer>`;
             setTimeout(() => chrono(), 1000);
         } else {
             closeCancel()
