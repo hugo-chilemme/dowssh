@@ -44,34 +44,34 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
     }
 })
 let path_seek = null;
-const elementClikable = (conn_id, repos, files) => {
+const elementClickable = (conn_id, repos, files) => {
     let repositories = doc.querySelector('.connections #conn-' + conn_id + " .repositories");
     for (let i = 0; i < repos.length; i++) {
         const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[repo="${repos[i]}"]`);
         element.addEventListener('dblclick', function (e) {
-            let target = e.target.closest('.item').getAttribute('target');
-            path_seek = target;
             repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
-            sendData('profiler-sftp-list', {conn_id: conn_id, path: target});
+            sendData('profiler-sftp-list', {conn_id: conn_id, path: e.target.closest('.item').getAttribute('target')});
         })
     }
 
     for (let i = 0; i < files.length; i++) {
         const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files[i]}"]`);
-        element.addEventListener('dblclick', function (e) {
-            repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
-            doc.querySelector('.connections .sidebars p').innerText = `Downloading ${element.getAttribute('name')} ...`;
-        })
+        element.addEventListener('dblclick', () => downloadFile(conn_id, files[i]));
     }
 
     for(let i = 0; i < doc.querySelectorAll('.connections #conn-' + conn_id + " .repositories .item").length; i++) {
         const element = doc.querySelectorAll('.connections #conn-' + conn_id + " .repositories .item")[i];
         element.addEventListener('click', function (e) {
-            for (let index = 0; index < repos.length; index++)
-                document.querySelector(`.connections #conn-${conn_id} .repositories .item[repo="${repos[index]}"]`).classList.remove('selected');
+            document.querySelectorAll(`.connections #conn-${conn_id} .repositories .item`).forEach(item => item.classList.remove('selected'));
             element.classList.add('selected');
         })
     }
+}
+
+const downloadFile = (conn_id, files_uuid) => {
+    const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files_uuid}"]`);
+    doc.querySelector('.connections #conn-' + conn_id + " .repositories").innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
+    doc.querySelector('.connections .sidebars p').innerText = `Downloading ${element.getAttribute('name')} ...`;
 }
 
 ipcRenderer.on('profiler-sftp-list', async (event, data) => {
@@ -130,13 +130,17 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 
 
     doc.querySelector('.connections .sidebars p').innerText = `${data.path}`;
-    elementClikable(data.conn_id, repos, files);
+    elementClickable(data.conn_id, repos, files);
     path_seek = data.path;
 
 });
-
+doc.querySelector('.hosts').addEventListener("click", event => {
+    if(!event.target.closest('.icon')) return;
+    console.log('editor');
+});
 doc.querySelector('.hosts').addEventListener("dblclick", event => {
     const element = event.target.closest('.item');
+    if(event.target.closest('.icon')) return;
     if (!element) return;
     const uuid = element.getAttribute('host');
     doc.querySelector('.loader stop').style.display = "inline-flex";

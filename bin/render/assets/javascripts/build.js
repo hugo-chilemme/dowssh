@@ -26,12 +26,7 @@ const sendData = (type, value) => {
     ipcRenderer.send(type, value);
 }
 
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        sendData('profiler-get', 'hosts')
-    }, 0)
-}, false)
-
+window.addEventListener('load', () => sendData('profiler-get', 'hosts'), false)
 
 
 ipcRenderer.on('profiler-callback', async (event, data) => {

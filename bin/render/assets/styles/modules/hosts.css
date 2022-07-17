@@ -1,11 +1,9 @@
 .hosts-action {
-    display:grid;
-    margin-top:25px;
+    display: grid;
+    margin-top: 25px;
     justify-content: center;
-    align-items: center;
     grid-template-columns: 75px calc(100% - 75px);
 }
-
 .hosts-action span {
     display:inline-flex;
     padding:14px;
@@ -27,20 +25,36 @@
 
 
 .hosts-action .hosts .item {
-    padding:10px 20px;
-    display:inline-flex;
-    width: 250px;
+    padding: 10px 20px;
+    display: inline-grid;
+    grid-template-columns: calc(100% - 30px) 30px;
+    width: 225px;
     transition: 250ms;
     border-radius: 10px;
+    margin-bottom: 25px;
     cursor: pointer;
     margin-right: 25px;
+    overflow: hidden;
     flex-direction: column;
-    border:1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    align-items: center;
 }
+
+.hosts-action .hosts .item div:nth-child(2) {
+    display: flex;
+    justify-content: flex-end;
+    color:#757575;
+    transform:translateX(50px);
+    transition: 250ms;
+}
+
+
 .hosts-action .hosts .item:hover {
     transform:scale(1.05);
 }
-
+.hosts-action .hosts .item:hover div:nth-child(2) {
+    transform:translateX(0);
+}
 .hosts-action .hosts .item h5 {
     font-size: 15px;
     color:#0d0c22;

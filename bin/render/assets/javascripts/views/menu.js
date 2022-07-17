@@ -1,4 +1,4 @@
-console.log('views/hosts.js loaded');
+console.log('views/menu.js loaded');
 
 const menu = {
     open: () => doc.querySelector('.main').classList.add('open-menu'),

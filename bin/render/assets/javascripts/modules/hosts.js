@@ -11,7 +11,7 @@ ipcRenderer.on('profiler-hosts', async (event, data) => {
 })
 
 const addHostElement = (uuid, host, username, port) => {
-    elementHosts.innerHTML += `<div class="item" host="${uuid}"><h5>${host}</h5><p>${username} — SFTP ${port}</p></div>`;
+    elementHosts.innerHTML += `<div class="item" host="${uuid}"><div><h5>${host}</h5><p>${username} — SFTP ${port}</p></div><div class="icon"><i class='bx bxs-pencil' ></i></div></div>`;
     hosts[uuid] = {uuid: uuid, username: username, port: port, host: host};
 }
 doc.querySelector('[action="add-host"]').addEventListener('click', async (e) => {

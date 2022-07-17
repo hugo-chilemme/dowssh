@@ -1,3 +1,5 @@
+console.log('modules/formatBytes.js loaded');
+
 function formatBytes(a, b = 2, k = 1024) {
     with (Math) {
         let d = floor(log(a) / log(k));
