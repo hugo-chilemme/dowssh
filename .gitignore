@@ -1,4 +1,4 @@
 .idea/
 node_modules/
 profile/
-package_lock.json
+package-lock.json
