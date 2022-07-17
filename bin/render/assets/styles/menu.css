@@ -1,0 +1,38 @@
+.menu h2 {
+    color:#fff;
+    font-size:18px;
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+.menu button {
+    background: #009BFF;
+    color: #fff;
+    font-weight: 500;
+    display: flex;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+}
+
+.menu .close {
+    position: absolute;
+    align-items: center;
+    padding:10px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    right: 70px;
+    color: #ccc;
+    top: 20px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.menu .close:hover {
+    background:#0d0c22;
+}

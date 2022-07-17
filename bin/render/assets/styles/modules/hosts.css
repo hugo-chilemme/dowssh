@@ -1,0 +1,54 @@
+.hosts-action {
+    display:grid;
+    margin-top:25px;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 75px calc(100% - 75px);
+}
+
+.hosts-action span {
+    display:inline-flex;
+    padding:14px;
+    cursor: pointer;
+    border:1px solid rgba(0, 0, 0, 0.05);
+    font-size:25px;
+    border-radius: 10px;
+    transition: 250ms;
+}
+
+.hosts-action span:hover {
+    transform:scale(1.05)
+}
+
+.hosts-action span i {
+    color:#141236;
+}
+
+
+
+.hosts-action .hosts .item {
+    padding:10px 20px;
+    display:inline-flex;
+    width: 250px;
+    transition: 250ms;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 25px;
+    flex-direction: column;
+    border:1px solid rgba(0, 0, 0, 0.05);
+}
+.hosts-action .hosts .item:hover {
+    transform:scale(1.05);
+}
+
+.hosts-action .hosts .item h5 {
+    font-size: 15px;
+    color:#0d0c22;
+    font-weight: 600;
+}
+.hosts-action .hosts .item p {
+    margin:5px 0 0 0;
+    color:#606060;
+    font-size:12px;
+    font-weight: 500;
+}
