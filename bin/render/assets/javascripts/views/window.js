@@ -2,8 +2,8 @@
 let chr = { timeout: 10, active: false};
 doc.querySelector('[action="window-close"]').addEventListener('click', () => {
     if(Object.keys(connections).length > 0) {
-        if(Object.keys(connections).length === 1) doc.querySelector('#win-close-count').innerText = "1 session";
-        else doc.querySelector('#win-close-count').innerText = Object.keys(connections).length+" sessions";
+        if(Object.keys(connections).length === 1) doc.querySelector('#win-close-p').innerHTML = "<span>une session</span> est toujours en cours";
+        else doc.querySelector('#win-close-p').innerHTML = "<span>"+Object.keys(connections).length+" sessions</span> sont toujours en cours";
 
         doc.querySelector('.win-close').classList.remove('hide');
         chr.active = true;
