@@ -1,17 +1,4 @@
-const Create = require('./doc');
-const Client = require('ssh2-sftp-client');
-
-const create = new Create();
-const sftp = new Client();
-
-const chalk = require('chalk');
-
-let session = {config: {}};
-
-
-
 const start = async () => {
-    console.log("\n"+chalk.cyan('Welcome to dowssh')+"\n");
 
     // session.config.host = prompt('Remote address > ');
     // if(!session.config.host) return process.exit(-1);
@@ -28,7 +15,7 @@ const start = async () => {
         session.path_local = `profile\\downloads\\${session.config.host}`;
         await create.folder(session.path_local)
         session.path_local += "\\";
-        requestGet();
+        // requestGet();
     } catch (e) {
         console.log(chalk.red('ERROR') + " Unable to connect to remote server")
         process.exit(-1)
@@ -36,20 +23,20 @@ const start = async () => {
 
 }
 
-const requestGet = async () => {
-    let ac = prompt('Directory to download > ');
-    if (ac[ac.length - 1] === "/") ac = ac.substring(0, ac.length - 1);
-    session.path_remote = ac;
-    session.repositories = [];
-    session.size = {total: 0, downloaded: 0, speed: 0}
-    session.statistics = {d: 0, f: 0}
-    session.instance = 0;
-    session.cache = {seek: 0, receiveSize: 0};
-    for (let i = 0; i < 3; i++) console.log("")
-    getSFTP(ac);
-    liveDisplay();
-
-}
+// const requestGet = async () => {
+//     let ac = prompt('Directory to download > ');
+//     if (ac[ac.length - 1] === "/") ac = ac.substring(0, ac.length - 1);
+//     session.path_remote = ac;
+//     session.repositories = [];
+//     session.size = {total: 0, downloaded: 0, speed: 0}
+//     session.statistics = {d: 0, f: 0}
+//     session.instance = 0;
+//     session.cache = {seek: 0, receiveSize: 0};
+//     for (let i = 0; i < 3; i++) console.log("")
+//     getSFTP(ac);
+//     liveDisplay();
+//
+// }
 
 function formatBytes(a, b = 2, k = 1024) {
     with (Math) {
@@ -151,6 +138,3 @@ const traiteSFTP = async (path, object) => {
     }
 
 }
-
-
-exports.start = start;

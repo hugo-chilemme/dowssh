@@ -19,7 +19,7 @@ doc.querySelector('[action="add-host"]').addEventListener('click', async (e) => 
 });
 
 doc.querySelector('[action="add-host-submit"]').addEventListener('click', async (e) => {
-    return addHost();
+    return addHost(true);
 });
 const addHost = (submit = false, data = null) => {
     menu.open();

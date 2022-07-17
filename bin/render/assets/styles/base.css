@@ -22,25 +22,26 @@ click {
 }
 
 input {
-    padding:10px;
-    border:1px solid #0d0c22;
+    padding:15px 20px;
+    border:1px solid rgba(255, 255, 255, .05);
     outline:none;
     width: 100%;
     margin-bottom: 25px;
-    color:#fff;
-    font-weight: 500;
+    color:#eee;
+    font-weight: 600;
     margin-top:0;
-
+    font-family: 'Ubuntu', sans-serif;
     border-radius: 5px;
     background: transparent;
 }
 label {
     display:inline-flex;
-    color:#ccc;
+    color:#909090;
     font-size:11px;
     margin-left:15px;
     padding:0 10px 0 5px;
     margin-top:-6px;
+    font-weight: 500;
     position: absolute;
     z-index: 1;
     background:#141236;

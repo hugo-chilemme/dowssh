@@ -25,6 +25,23 @@ class Host {
         }, 1000)
     }
 
+    async get(uuid) {
+        let datas = await this.getAll();
+        let callback = {};
+        for(let i =0; i < datas.length; i++) {
+            if(datas[i].uuid === uuid) {
+                callback = {
+                    host: datas[i].host,
+                    uuid: datas[i].uuid,
+                    port: datas[i].port,
+                    username: datas[i].username
+                };
+                callback.password = await keytar.getPassword(uuid, 'default');
+            }
+        }
+        return callback;
+    }
+
     async getAll(renew = false) {
         if(!hosts || renew) {
             await fs.readdir(project_path + "\\profile\\hosts", async (err, files) => {

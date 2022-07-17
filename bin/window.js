@@ -1,10 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 let windows = {};
 const Create = require('./doc');
 const create = new Create();
 const Host = require('./Class/host');
 const path = require("path");
 const host = new Host();
+const md5 = require('md5');
+
+const Connection = require('./connection');
 
 /* Starter windows */
 const start = async(callback) => {
@@ -23,7 +26,7 @@ const start = async(callback) => {
             }
         })
         windows.start.loadFile('./bin/render/start.html');
-        setTimeout(async () => callback(windows.start), 2000);
+        setTimeout(async () => callback(windows.start), 500);
     });
 }
 
@@ -47,7 +50,7 @@ const application = async(callback) => {
         setTimeout(async() =>  windows.start.close(), 500)
         setTimeout(async () => {
             callback(windows.application)
-        }, 2000);
+        }, 500);
 
 }
 
@@ -81,6 +84,17 @@ ipcMain.on("profiler-add", async (event, data) => {
     if(type === "host") return host.add(value, (obj) => sendData('profiler-callback', obj));
 })
 
+
+let connections = {};
+ipcMain.on('profiler-connect', async (event, uuid) => {
+    const conn_id = md5(new Date().getTime() + uuid);
+    sendData('profiler-connect-status', { status: 0, uuid: uuid, conn_id: conn_id })
+    connections[conn_id] = new Connection(windows.application, conn_id, uuid);
+})
+
+ipcMain.on('profiler-sftp-list', async (event, data) => {
+    if(connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
+})
 
 
 

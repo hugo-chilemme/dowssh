@@ -6,6 +6,7 @@
     bottom:0;
     left:calc(-400px + 70px);
     position: absolute;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
     background:#141236;
     transition: 250ms;
 }
@@ -13,6 +14,9 @@
 .main.open-menu .menu {
     left:0;
 
+}
+.main.open-menu .connections {
+    margin-left:400px;
 }
 
 .main.open-menu .home {
@@ -23,6 +27,76 @@
     padding:75px 50px;
     transition: 250ms;
     margin-left:70px;
+}
+
+.connections {
+    padding:50px 0;
+    transition: 250ms;
+    margin-left:70px;
+}
+
+.connections .sidebars {
+    display:flex;
+    flex-direction: column;
+    padding:0 50px;
+}
+
+.connections .sidebars h3 {
+    color:#0d0c22;
+    font-weight: 700;
+    font-size:18px;
+}
+.connections .sidebars p {
+    color:#808080;
+    font-weight: 400;
+    font-size:15px;
+    margin-top:10px;
+}
+
+.connections .repositories {
+    margin-top:25px;
+    overflow-y: auto;
+    height:calc(100vh - 123px);
+}
+.connections .repositories .head, .connections .repositories .item {
+    display:grid;
+    padding:10px 50px;
+    font-size:14px;
+    font-weight: 400;
+    grid-template-columns: 50px 250px 250px 200px;
+}
+.connections .repositories .item.selected {
+    background:rgba(46, 161, 219, 0.25) !important;
+}
+.connections .repositories .item i {
+    color:#909090;
+}
+.connections .repositories .item.gray {
+    color:#909090;
+    letter-spacing: 2px;
+}
+.connections .repositories .head {
+    font-weight: 700;
+}
+
+.connections .repositories .item:hover {
+    cursor: pointer;
+    background:#E8E8E8;
+}
+.connections .connection {
+    padding:0 25px;
+
+}
+.connections .loading {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    height: calc(100vh - 200px);
+
+}
+.hide {
+    display:none !important;
 }
 
 

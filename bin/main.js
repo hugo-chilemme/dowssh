@@ -1,5 +1,4 @@
 const Create = require('./doc');
-const app = require('./app');
 const window = require('./window');
 
 const exec = require('child_process').exec;
