@@ -24,6 +24,16 @@
     <div class="notification">
 
     </div>
+    <div class="win-close hide">
+        <div class="pop">
+            <h2>Voulez-vous vraiment quitté ?</h2>
+            <p>Vous serez déconnecté et les transferts seront interompus<br><span>2 sessions</span> sont toujours en cours</p>
+            <div class="action">
+                <span id="win-close-cancel">Annuler (10s)</span>
+                <span id="win-close-confirm" class="confirm">Confirmer</span>
+            </div>
+        </div>
+    </div>
     <div class="loader">
         <stop action="connect-cancel"><i class='bx bx-x'></i></stop>
         <div class="loader-animation">
@@ -63,10 +73,10 @@
                     Dowssh
                 </div>
                 <div>
-                    <div onclick="">
+                    <div action="window-reduce">
                         <i class='bx bx-minus' ></i>
                     </div>
-                    <div>
+                    <div action="window-close">
                         <i class='bx bx-x'></i>
                     </div>
                 </div>
@@ -91,6 +101,7 @@
 </div>
 <script type="text/javascript" src="assets/javascripts/build.js"></script>
 <script type="text/javascript" src="assets/javascripts/views/menu.js"></script>
+<script type="text/javascript" src="assets/javascripts/views/window.js"></script>
 
 <script type="text/javascript" src="assets/javascripts/modules/formatBytes.js"></script>
 <script type="text/javascript" src="assets/javascripts/modules/md5.js"></script>

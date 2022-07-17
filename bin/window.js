@@ -96,6 +96,15 @@ ipcMain.on('profiler-sftp-list', async (event, data) => {
     if(connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
 })
 
+ipcMain.on('window', async (event, data) => {
+    if(data === "reduce")
+        windows.application.isMinimized() ? windows.application.restore() : windows.application.minimize()
+    if(data === "close") {
+        windows.application.close()
+        setTimeout(() => process.exit(-1), 2000);
+    }
+
+})
 
 
 

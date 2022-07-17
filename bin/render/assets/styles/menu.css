@@ -17,6 +17,68 @@
     width: 100%;
     justify-content: center;
 }
+.win-close {
+    background: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.win-close p {
+    color:#aaa;
+    line-height: 1.5em;
+    font-size:14px;
+}
+
+.win-close p span {
+    color:#fff;
+}
+
+.win-close .pop {
+    background:#0d0c22;
+    width: 650px;
+    padding:35px 50Px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.win-close .pop h2 {
+    color:#fff;
+    font-weight: 400;
+    font-size:25px;
+    margin-bottom: 15px;
+}
+.win-close .pop .action {
+    display: flex;
+    margin-top:40px;
+    font-size:15px;
+    justify-content: flex-end;
+}
+
+.win-close .pop .action span {
+    padding:10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    color:#fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+    font-weight: 500;
+    transition: 250ms;
+    margin-left:25px;
+    background:rgba(255, 255, 255, 0.2);
+}
+.win-close .pop .action span:hover {
+    transform:scale(1.1);
+}
+.win-close .pop .action span.confirm {
+    background:#EC4848
+}
 
 .menu .close {
     position: absolute;
@@ -34,5 +96,5 @@
 }
 
 .menu .close:hover {
-    background:#ccc;
+    background:rgba(255, 255, 255, 0.2);
 }
