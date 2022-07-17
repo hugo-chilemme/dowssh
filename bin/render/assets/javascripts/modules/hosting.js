@@ -57,10 +57,10 @@ const elementClikable = (conn_id, repos, files) => {
     }
 
     for (let i = 0; i < files.length; i++) {
-        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${repos[i]}"]`);
+        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files[i]}"]`);
         element.addEventListener('dblclick', function (e) {
-            repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
-
+            repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
+            doc.querySelector('.connections .sidebars p').innerText = `Downloading ${element.getAttribute('name')} ...`;
         })
     }
 
@@ -121,7 +121,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
             let allOct = value.name.split('.')
             const ext = allOct[allOct.length-1];
             if(icones[ext]) icone = icones[ext];
-            repositories.innerHTML += `<div class="item" file="${uuid}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div></div>`;
+            repositories.innerHTML += `<div class="item" file="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div></div>`;
         }
     }
     if(Object.entries(data.result).length === 0)  {
@@ -141,6 +141,7 @@ doc.querySelector('.hosts').addEventListener("dblclick", event => {
     const uuid = element.getAttribute('host');
     doc.querySelector('.loader stop').style.display = "inline-flex";
     doc.querySelector('.loader').style.display = "flex";
+    menu.close();
     doc.querySelector('#loader-status').innerText = `Envoi de la demande`;
     sendData('profiler-connect', uuid);
 })
