@@ -16,23 +16,12 @@ const prompt = require('prompt-sync')();
 const create = new Create();
 const checkUpdate = async () => {
     window.start(async (win) => {
-
-        if (await create.folder('bin/core')) await create.file('bin/core/version.md', "");
-
-        let version = null;
-        fs.readFile(process.cwd() + '/bin/core/version.md', function (err, data) {
-            if (err) throw err;
-            version = data.toString();
-        });
-
-        await create.folders(['profile', 'profile/cache', 'profile/hosts', 'profile/downloads'])
-        await create.file('profile/cache/remote_directory.json', "{}", false);
-
+        await create.folders(['profile', 'profile/cache', 'bin/core', 'profile/hosts', 'profile/downloads'])
         win.webContents.send('update', "search")
         exec("git status --porcelain", (error, stdout, stderr) => {
             if (stdout.trim() === "") return start(win);
+            win.webContents.send('update', "install")
             exec("git pull", (error, stdout, stderr) => {
-                win.webContents.send('update', "install")
                 app.relaunch();
                 app.exit();
             });
@@ -43,10 +32,6 @@ const checkUpdate = async () => {
 
 const start = async (win) => {
     win.webContents.send('update', "start")
-    setTimeout(() => {
-        window.application(async (win) => {
-            // return app.start();
-        });
-    }, 2000)
+    setTimeout(() => window.application(), 2000)
 }
 exports.checkUpdate = checkUpdate;
