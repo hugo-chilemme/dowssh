@@ -16,7 +16,6 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (data.status === 0) {
         doc.querySelector('.main .menu').style.left = "-460px";
         const div_conn = doc.createElement('div');
-        console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         div_conn.classList.add('conn-id');
         doc.querySelector('.connections').setAttribute('active', data.conn_id);
@@ -26,9 +25,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         target.addEventListener('click', () => {
             notification.success("Chemin d'accès copié");
             let copy = target.innerText;
-            navigator.clipboard.writeText(copy).then(function() {
-            }, function(err) {
-            });
+            navigator.clipboard.writeText(copy);
         })
         div_conn.appendChild(target);
 
@@ -145,7 +142,7 @@ const downloadFile = (conn_id, files_uuid) => {
     const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files_uuid}"]`);
     doc.querySelector('.connections #conn-' + conn_id + " .repositories").innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
 }
-
+const extRegex = /(?:\.([^.]+))?$/;
 ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 
     let repositories = doc.querySelector('.connections #conn-' + data.conn_id + " .repositories");
@@ -155,6 +152,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     doc.querySelector('#log-'+data.conn_id).innerText = data.path;
     repositories.innerHTML += `<div class="head"><div></div><div>Name</div><div>Date Modified</div><div>Size</div><div>Permissions</div></div>`;
     if (data.path !== "/") {
+        const uuid = genUuid();
         let path_split = data.path.split('/');
         let new_path = "/";
 
@@ -164,7 +162,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
             if (new_path === "") new_path = "/";
         }
 
-        let uuid = genUuid();
+
         let item = doc.createElement('div');
         item.classList.add('item');
 
@@ -182,20 +180,14 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     let path = data.path;
     if(data.path === "/") path = "";
     for (const [key, value] of Object.entries(data.result)) {
-
+        const uuid = genUuid();
+        let icone = `bx-file-blank`;
         if(value.type === "d") {
-            let uuid = genUuid();
-            repositories.innerHTML += `<div class="item" target="${path}/${value.name}" uuid="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
-            repos.push(uuid);
+            repositories.innerHTML += `<div type="folder" class="item" target="${path}/${value.name}" uuid="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
         } else {
-            let uuid = genUuid();
-            files.push(uuid);
-
-            let icone = `bx-file-blank`;
-            let allOct = value.name.split('.')
-            const ext = allOct[allOct.length-1];
+            const ext = extRegex.exec(value.name)[1];
             if(icones[ext]) icone = icones[ext];
-            repositories.innerHTML += `<div class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
+            repositories.innerHTML += `<div type="file" class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
         }
     }
     if(Object.entries(data.result).length === 0)  {
@@ -209,7 +201,6 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 });
 doc.querySelector('.hosts').addEventListener("click", event => {
     if(!event.target.closest('.icon')) return;
-    console.log('editor');
 });
 doc.querySelector('.hosts').addEventListener("dblclick", event => {
     const element = event.target.closest('.item');
