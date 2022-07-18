@@ -65,7 +65,12 @@ const renewTabs = () => {
             menu.displayConnection(uuid);
        })
         document.querySelector('#onglets .item#tab-'+uuid + " .closed").addEventListener('click', () => {
-
+            doc.querySelector('#tab-'+uuid).remove();
+            doc.querySelector('#conn-'+uuid).remove();
+            doc.querySelector('.main').classList.remove('open-menu');
+            doc.querySelector('.main .menu').style.left = "-450px";
+            doc.querySelector('.home').classList.remove('hide');
+            doc.querySelector('.connections').classList.add('hide');
         })
     });
 }
