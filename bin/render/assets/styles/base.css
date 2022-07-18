@@ -59,6 +59,12 @@ input, textarea {
     margin-top:-7px;
     background: transparent;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {-moz-appearance: textfield;}
 textarea {
     height:100px;
 }
