@@ -92,19 +92,21 @@ const renewTabs = () => {
         })
     });
 }
-const elementClickable = (conn_id, repos, files) => {
+const elementClickable = (conn_id) => {
     let repositories = doc.querySelector('.connections #conn-' + conn_id + " .repositories");
-    for (let i = 0; i < repos.length; i++) {
-        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[uuid="${repos[i]}"]`);
-        element.addEventListener('dblclick', function (e) {
+    const folders = doc.querySelector('.connections #conn-' + conn_id + ' .repositories .item[type="folder"]');
+    const files = doc.querySelector('.connections #conn-' + conn_id + ' .repositories .item[type="file"]');
+
+
+    for (let i = 0; i < folders.length; i++) {
+        folders[i].addEventListener('dblclick', function (e) {
             repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
             sendData('profiler-sftp-list', {conn_id: conn_id, path: e.target.closest('.item').getAttribute('target')});
         })
     }
 
     for (let i = 0; i < files.length; i++) {
-        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[uuid="${files[i]}"]`);
-        element.addEventListener('dblclick', () => downloadFile(conn_id, files[i]));
+        files[i].addEventListener('dblclick', () => downloadFile(conn_id, files[i]));
     }
 
     for(let i = 0; i < doc.querySelectorAll('.connections #conn-' + conn_id + " .repositories .item").length; i++) {
@@ -182,19 +184,16 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     for (const [key, value] of Object.entries(data.result)) {
         const uuid = genUuid();
         const ext = extRegex.exec(value.name)[1]; // Maybe null
-        if(value.type === "d") {
+        if(value.type === "d")
             repositories.innerHTML += `<div type="folder" class="item" target="${path}/${value.name}" uuid="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
-        } else {
+        else
             repositories.innerHTML += `<div type="file" class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${ icones[ext] ? icones[ext] : 'bx-file-blank'}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
-        }
+
     }
-    if(Object.entries(data.result).length === 0)  {
+    if(Object.entries(data.result).length === 0)
         repositories.innerHTML += "<error>Ce dossier est vide</error>";
-    }
 
-
-    elementClickable(data.conn_id, repos, files);
-    path_seek = data.path;
+    elementClickable(data.conn_id);
 
 });
 doc.querySelector('.hosts').addEventListener("click", event => {
