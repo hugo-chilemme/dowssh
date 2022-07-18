@@ -281,7 +281,7 @@ error {
 .connections .repositories {
     margin-top: 5px;
     overflow-y: auto;
-    height: calc(100vh - 40px);
+    height: calc(100vh - 55px);
 }
 .connections .repositories .head, .connections .repositories .item {
     display:grid;
