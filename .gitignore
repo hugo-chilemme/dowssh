@@ -2,3 +2,4 @@
 node_modules/
 profile/
 package-lock.json
+pnpm-lock.yml
