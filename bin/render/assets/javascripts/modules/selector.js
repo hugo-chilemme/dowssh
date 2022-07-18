@@ -1,5 +1,5 @@
 console.log('modules/selector.js loaded');
-
+let pressed = null;
 let div = document.getElementById('selector'), x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 function reCalc() { //This will restyle the div
     var x3 = Math.min(x1,x2); //Smaller X
@@ -10,6 +10,8 @@ function reCalc() { //This will restyle the div
     div.style.top = y3 + 'px';
     div.style.width = x4 - x3 + 'px';
     div.style.height = y4 - y3 + 'px';
+    if(!pressed) return;
+    if(new Date().getTime() - pressed < 200) return;
     let uuid = doc.querySelector('.connections').getAttribute('active');
     doc.querySelectorAll('.connections #conn-'+uuid+" .item").forEach((e) => {
         if(!e.hasAttribute('not-folder')) {
@@ -21,7 +23,7 @@ function reCalc() { //This will restyle the div
     });
     // document.querySelector('.item[uuid="c9892e33ddb4013aa903459584223ac4"]').offsetTop;
 }
-let pressed = null;
+
 onmousedown = function(e) {
     if(!e.target.closest('.connections')) return;
     pressed = new Date().getTime();
@@ -41,4 +43,18 @@ onmousemove = function(e) {
 onmouseup = function(e) {
     div.hidden = 1; //Hide the div
     pressed = null
+};
+
+
+let ctrlA = false;
+document.onkeydown = (e) => {
+    if(e.keyCode === 65 && e.ctrlKey) {
+        let uuid = doc.querySelector('.connections').getAttribute('active');
+        if(uuid === "default") return;
+        doc.querySelectorAll('.connections #conn-'+uuid+" .item").forEach((e) => {
+            if(!e.hasAttribute('not-folder')) {
+                e.classList.add('selected');
+            }
+        });
+    }
 };
