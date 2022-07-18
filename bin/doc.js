@@ -27,9 +27,9 @@ class Create {
         await fs.writeFileSync(project_path + "/" + path, contains);
     }
 
-    async folders(obj, cb) {
+    async folders(obj) {
         for(let i = 0; i < obj.length; i++) {
-            await this.folder(obj[i], false, () => cb(obj[i]));
+            await this.folder(obj[i], false);
         }
     }
 
