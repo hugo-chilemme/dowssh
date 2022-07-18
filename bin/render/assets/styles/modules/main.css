@@ -281,7 +281,7 @@ error {
     padding:10px 50px;
     font-size:14px;
     font-weight: 400;
-    grid-template-columns: 50px 250px 250px 200px;
+    grid-template-columns: 50px 250px 250px 200px 200px 200px;
 }
 .connections .repositories .item.selected {
     background:rgba(46, 161, 219, 0.25) !important;

@@ -37,6 +37,7 @@ class Connection {
             if (value.name.substring(0, 1) === "." && this.options.show_hidden_files) sending.push(value);
             else if (value.name.substring(0, 1) !== ".") sending.push(value);
         }
+        console.log(sending)
         sending.sort((a, b) => {
             if (a.type.charCodeAt(0) === b.type.charCodeAt(0)) {
                 return a.name - b.name;

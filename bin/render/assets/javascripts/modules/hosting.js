@@ -19,6 +19,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         div_conn.classList.add('conn-id');
+
         const repositories = doc.createElement('div');
         repositories.classList.add('repositories');
         repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
@@ -89,6 +90,13 @@ const elementClickable = (conn_id, repos, files) => {
             document.querySelectorAll(`.connections #conn-${conn_id} .repositories .item`).forEach(item => item.classList.remove('selected'));
             element.classList.add('selected');
         })
+        element.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+
+            document.querySelectorAll(`.connections #conn-${conn_id} .repositories .item`).forEach(item => item.classList.remove('selected'));
+            element.classList.add('selected');
+            return false;
+        })
     }
 }
 
@@ -103,7 +111,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     repositories.innerHTML = "";
     let repos = [];
     let files = [];
-    repositories.innerHTML += `<div class="head"><div></div><div>Name</div><div>Date Modified</div><div>Size</div></div>`;
+    repositories.innerHTML += `<div class="head"><div></div><div>Name</div><div>Date Modified</div><div>Size</div><div>Permissions</div></div>`;
     if (path_seek !== "/") {
         let path_split = data.path.split('/');
         let new_path = "/";
@@ -133,7 +141,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 
         if(value.type === "d") {
             let uuid = genUuid();
-            repositories.innerHTML += `<div class="item" target="${path}/${value.name}" repo="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div></div>`;
+            repositories.innerHTML += `<div class="item" target="${path}/${value.name}" repo="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
             repos.push(uuid);
         } else {
             let uuid = genUuid();
@@ -143,7 +151,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
             let allOct = value.name.split('.')
             const ext = allOct[allOct.length-1];
             if(icones[ext]) icone = icones[ext];
-            repositories.innerHTML += `<div class="item" file="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div></div>`;
+            repositories.innerHTML += `<div class="item" file="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
         }
     }
     if(Object.entries(data.result).length === 0)  {
