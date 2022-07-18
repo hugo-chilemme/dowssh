@@ -19,7 +19,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         div_conn.classList.add('conn-id');
-
+        doc.querySelector('.connections').setAttribute('active', data.conn_id);
         const target = doc.createElement('div');
         target.classList.add('target_listening');
         target.setAttribute('id', 'log-'+data.conn_id);
@@ -146,7 +146,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     let files = [];
     doc.querySelector('#log-'+data.conn_id).innerText = data.path;
     repositories.innerHTML += `<div class="head"><div></div><div>Name</div><div>Date Modified</div><div>Size</div><div>Permissions</div></div>`;
-    if (path_seek !== "/") {
+    if (data.path !== "/") {
         let path_split = data.path.split('/');
         let new_path = "/";
 

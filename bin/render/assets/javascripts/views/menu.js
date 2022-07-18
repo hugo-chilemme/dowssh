@@ -15,11 +15,13 @@ const menu = {
         doc.querySelector('.home').classList.add('hide');
         doc.querySelector('.main .menu').style.left = "-460px";
         doc.querySelector('.connections').classList.remove('hide');
+        doc.querySelector('.connections').setAttribute('active', uuid);
         doc.querySelector('.connections #conn-'+uuid).classList.remove('hide');
     },
     home: () => {
         doc.querySelector('.main').classList.remove('open-menu');
         doc.querySelector('.main .menu').style.left = "-450px";
+        doc.querySelector('.connections').setAttribute('active', "default");
         doc.querySelector('.home').classList.remove('hide');
         doc.querySelector('.connections').classList.add('hide');
     }

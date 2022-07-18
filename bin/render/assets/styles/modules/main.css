@@ -41,7 +41,12 @@
 .main .menu .inputs-list.open .field-dropdown {
     display:flex;
 }
-
+#selector {
+    border: 2px solid  rgba(0, 155, 255, 0.5);
+    background: rgba(0, 155, 255, 0.1);
+    border-radius: 7px;
+    position: absolute;
+}
 .main .menu .inputs-list .head {
     display: grid;
     padding: 15px 20px;
