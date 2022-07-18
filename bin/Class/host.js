@@ -15,9 +15,9 @@ class Host {
     add(value, cb) {
         if(!value.host.trim()) return cb({type: "addHost", error: true, message: "Invalid Address"});
         const uuid = md5(value.host+new Date().getTime());
-        if(value.password.trim())
+        if(value.password)
             keytar.setPassword(uuid, "default", value.password);
-        if(value.passphrase.trim())
+        if(value.passphrase)
             keytar.setPassword(uuid+"-passphrase", "default", value.passphrase);
         delete value.password;
         delete value.passphrase;

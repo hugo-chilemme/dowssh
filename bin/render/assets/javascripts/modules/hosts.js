@@ -15,7 +15,7 @@ const addHostElement = (uuid, host, username, port, name) => {
     if(name && name.length > 0)
         elementHosts.innerHTML += `<div class="item" host="${uuid}"><div><h5>${name}</h5><p>${host}:${port} — ${username}</p></div><div class="icon"><i class='bx bxs-pencil' ></i></div></div>`;
     else
-        elementHosts.innerHTML += `<div class="item" host="${uuid}"><div><h5>${host}</h5><p>${username} — SFTP ${port}</p></div><div class="icon"><i class='bx bxs-pencil' ></i></div></div>`;
+        elementHosts.innerHTML += `<div class="item" host="${uuid}"><div><h5>${host}</h5><p>${host}:${port} — ${username}</p></div><div class="icon"><i class='bx bxs-pencil' ></i></div></div>`;
 
     hosts[uuid] = {uuid: uuid, username: username, port: port, host: host};
 }
@@ -61,7 +61,7 @@ const addHost = (submit = false, data = null) => {
             notification.success("Ajouté avec succès");
             /* Callback : profiler-hosts */
             menu.close();
-            addHostElement(data.uuid, data.host, data.username, data.port, value.name);
+            addHostElement(data.uuid, data.host, data.username, data.port, data.name);
             doc.querySelectorAll('.addHost input').forEach(e => e.value.length = 0);
         } else {
             let forms = {};
