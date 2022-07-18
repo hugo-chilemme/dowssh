@@ -3,6 +3,8 @@ const create = new Create();
 const md5 = require('md5');
 const keytar = require('keytar')
 const fs = require("fs-extra");
+const { Client } = require('ssh2');
+
 const project_path = process.cwd();
 const checkAddress = (str) =>
 {
@@ -19,6 +21,7 @@ class Host {
         if(!checkAddress(value.host.trim())) return cb({type: "addHost", error: true, message: "Hôte invalide"});
         if(value.port < 0 || value.port > 65353) return cb({type: "addHost", error: true, message: "Port invalide"});
         const uuid = md5(value.host+new Date().getTime());
+
         if(value.password)
             keytar.setPassword(uuid, "default", value.password);
         if(value.passphrase)

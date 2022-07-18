@@ -39,7 +39,12 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         elementConnections.appendChild(div_conn);
         let name = hosts[data.uuid].host;
         if(hosts[data.uuid].name) name = hosts[data.uuid].name;
-        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item"><div><i class='bx bx-broadcast' ></i></div><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div><div><div class="closed"><i class='bx bx-x'></i></div></div></div>`
+        let count = 0;
+        for (const [key, value] of Object.entries(connections))
+            if(value.uuid === data.uuid) count+=1;
+        if(count > 1) name += ` (${count})`;
+
+        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item active"><div><i class='bx bx-broadcast' ></i></div><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div><div><div class="closed"><i class='bx bx-x'></i></div></div></div>`
         renewTabs();
 
     }
@@ -84,6 +89,8 @@ const renewTabs = () => {
             doc.querySelector('.main .menu').style.left = "-450px";
             doc.querySelector('.home').classList.remove('hide');
             doc.querySelector('.connections').classList.add('hide');
+            notification.success(`déconnecté`);
+            delete connections[uuid];
             sendData('profiler-disconnect', uuid);
         })
     });

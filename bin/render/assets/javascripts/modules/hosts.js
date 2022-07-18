@@ -68,7 +68,9 @@ const addHost = (submit = false, data = null) => {
         } else {
             let forms = {};
             doc.querySelectorAll('.addHost [type]').forEach(e => forms[e.getAttribute('data')] = e.value);
-            console.log(forms);
+            doc.querySelectorAll('.addHost [type]').forEach(e => e.value = "");
+            doc.querySelector('#addedinputs').innerHTML = "";
+            doc.querySelectorAll('.field-dropdown .item').forEach((e) => e.classList.remove('hide'));
             ipcRenderer.send('profiler-add', {type: 'host', data: forms});
         }
     }

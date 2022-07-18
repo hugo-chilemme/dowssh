@@ -176,7 +176,7 @@ label.addInput {
     height: 50px;
     align-items: center;
 }
-.connections-menu .onglet-add {
+.connections-menu .onglet-add, .connections-menu .onglet-other {
     display: inline-grid;
     padding: 0 15px;
     cursor: pointer;
@@ -188,13 +188,13 @@ label.addInput {
     transition: 250ms;
 }
 
-.connections-menu .onglet-add:hover {
+.connections-menu .onglet-add:hover, .connections-menu .onglet-other:hover {
     transform:scale(1.1);
 }
 
 .connections-menu .item {
     display: inline-grid;
-    width: 235px;
+    width: 205px;
     padding: 0 15px;
     cursor: pointer;
     height: calc(100% - 10px);
@@ -205,6 +205,10 @@ label.addInput {
     grid-template-columns: 25px calc(100% - 40px) 15px;
     align-items: center;
     transition: 250ms;
+}
+
+#onglets .item.active h4 {
+    font-weight: 700;
 }
 
 .connections-menu .item h4 {
