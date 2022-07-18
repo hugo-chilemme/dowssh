@@ -51,6 +51,9 @@
             </div>
             <div class="addHost" id="addHost">
                 <h2>Nouveau serveur</h2>
+                <label>Name (Optional)</label>
+                <input data="name" type="text">
+
                 <label>Address*</label>
                 <input data="host" type="text">
 
@@ -60,8 +63,34 @@
                 <label>Username</label>
                 <input data="username" type="text">
 
-                <label>Password</label>
-                <input data="password" type="password">
+                <div id="addedinputs">
+
+                </div>
+
+                <div class="inputs-list">
+                    <div class="head" action="menu-add-field">
+                        <div>
+                            <i class='bx bx-plus'></i>
+                        </div>
+                        <div>
+                            Add a field (password, passphrase...)
+                        </div>
+                    </div>
+                    <div class="field-dropdown">
+                        <div class="item" field="password">
+                            Password
+                        </div>
+                        <div class="item" field="passphrase">
+                            Passphrase
+                        </div>
+                    </div>
+                </div>
+
+<!--                <label>Password (Optional)</label>-->
+<!--                <input data="password" type="password">-->
+
+<!--                <label>Passphrase (Optional)</label>-->
+<!--                <input data="passphrase" type="password">-->
 
                 <button action="add-host-submit">
                     Ajouter

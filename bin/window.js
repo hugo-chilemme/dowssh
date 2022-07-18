@@ -66,7 +66,7 @@ ipcMain.on("profiler-get", async (event, type) => {
         let hosts = {};
         // Delete Password For security reason */
        for(let i =0; i < datas.length; i++)
-            hosts[datas[i].uuid] = {host: datas[i].host, uuid: datas[i].uuid, port: datas[i].port, username: datas[i].username};
+            hosts[datas[i].uuid] = {host: datas[i].host, uuid: datas[i].uuid, port: datas[i].port, username: datas[i].username, name: datas[i].name};
         await host.getAll(true);
         return sendData('profiler-' + type, hosts)
     } else {
@@ -99,10 +99,9 @@ ipcMain.on('profiler-sftp-list', async (event, data) => {
 ipcMain.on('window', async (event, data) => {
     if(data === "reduce")
         windows.application.isMinimized() ? windows.application.restore() : windows.application.minimize()
-    if(data === "close") {
+    if(data === "close")
         windows.application.close()
-        setTimeout(() => process.exit(-1), 2000);
-    }
+
 
 })
 

@@ -11,6 +11,7 @@
     font-weight: 500;
     display: flex;
     border: none;
+    margin-top:25px;
     padding: 15px 20px;
     border-radius: 5px;
     text-align: center;
@@ -95,21 +96,3 @@
     background:#EC4848
 }
 
-.menu .close {
-    position: absolute;
-    align-items: center;
-    padding:10px;
-    border-radius: 5px;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    right: 70px;
-    color: #707070;
-    top: 20px;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-.menu .close:hover {
-    background:rgba(255, 255, 255, 0.2);
-}

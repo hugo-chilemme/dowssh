@@ -7,12 +7,13 @@
 .contains {
     border-radius: 7px;
     background:#edf1f2;
-    position: absolute;
+    position: fixed;
     font-family: 'Ubuntu', sans-serif;
     bottom:0;
     top:0;
     left:0;
-    overflow: hidden;
+    z-index: 9999;
+    overflow: hidden !important;
     right:0;
 }
 
@@ -20,6 +21,26 @@ click {
     color:#58a6ff;
     cursor: pointer;
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #141236;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2A2671;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 
 input {
     padding:15px 20px;
@@ -29,9 +50,9 @@ input {
     margin-bottom: 25px;
     color:#eee;
     font-weight: 600;
-    margin-top:0;
     font-family: 'Ubuntu', sans-serif;
     border-radius: 5px;
+    margin-top:-7px;
     background: transparent;
 }
 label {
@@ -39,10 +60,10 @@ label {
     color:#909090;
     font-size:11px;
     margin-left:15px;
+    z-index: 99999;
+    position: relative;
     padding:0 10px 0 5px;
-    margin-top:-6px;
     font-weight: 500;
-    position: absolute;
-    z-index: 1;
     background:#141236;
 }
+

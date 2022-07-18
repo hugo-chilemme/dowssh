@@ -42,6 +42,11 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         doc.querySelector('.connections .sidebars p').innerText = `Listing ${repos}...`;
         doc.querySelector('.loader').style.display = "none";
     }
+    if (data.status === 3) {
+        const uuid = connections[data.conn_id].uuid;
+        notification.error('Impossible de se connecter à '+hosts[uuid].host);
+        doc.querySelector('.loader').style.display = "none";
+    }
 })
 let path_seek = null;
 const elementClickable = (conn_id, repos, files) => {

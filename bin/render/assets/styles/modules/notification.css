@@ -1,5 +1,5 @@
 .notification {
-    position: absolute;
+    position: fixed;
     left:0;
     right:0;
     top:25px;
@@ -16,7 +16,7 @@
     transform:translateY(-50px);
     transition: 250ms;
     display:flex;
-    z-index:999999;
+    z-index:9999999999;
     justify-content: center;
     align-items: center;
 

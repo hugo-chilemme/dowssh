@@ -27,7 +27,7 @@
 .hosts-action .hosts .item {
     padding: 10px 20px;
     display: inline-grid;
-    grid-template-columns: calc(100% - 30px) 30px;
+    grid-template-columns: calc(100% - 0px) 0px;
     width: 225px;
     transition: 250ms;
     border-radius: 10px;

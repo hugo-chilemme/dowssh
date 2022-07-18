@@ -53,7 +53,7 @@ class Connection {
     async connect() {
         try {
             const config = await host.get(this.connection.uuid);
-            await this.sftp.connect({host: config.host, password: config.password, port: config.port, username: config.username});
+            await this.sftp.connect({host: config.host, password: config.password, port: config.port, username: config.username, passphrase: config.passphrase});
             await this.sendClient('profiler-connect-status', {status: 1})
         } catch (e) {
             console.log(e)

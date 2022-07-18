@@ -6,11 +6,11 @@
     transition: 250ms;
     padding:0 5px 0 10px;
     display: grid;
-    margin-left:70px;
+    margin-left:50px;
     justify-content: center;
     align-items: center;
     grid-template-columns: 50% 50%;
-    position: fixed;
+    position: absolute;
     right:0;
     left:0;
     top:0;

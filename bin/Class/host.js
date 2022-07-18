@@ -17,9 +17,12 @@ class Host {
         const uuid = md5(value.host+new Date().getTime());
         if(value.password.trim())
             keytar.setPassword(uuid, "default", value.password);
+        if(value.passphrase.trim())
+            keytar.setPassword(uuid+"-passphrase", "default", value.passphrase);
         delete value.password;
+        delete value.passphrase;
         create.file('profile/hosts/'+uuid+".json", JSON.stringify(value));
-        cb({type: "addHost", uuid: uuid, host: value.host, port: value.port, username: value.username });
+        cb({type: "addHost", uuid: uuid, host: value.host, port: value.port, username: value.username, name: value.name });
         setTimeout(() => {
             this.getAll(true);
         }, 1000)
@@ -36,7 +39,10 @@ class Host {
                     port: datas[i].port,
                     username: datas[i].username
                 };
+                console.log(datas[i])
+                if(datas[i].name) callback.name = datas[i].name;
                 callback.password = await keytar.getPassword(uuid, 'default');
+                callback.passphrase = await keytar.getPassword(uuid+"-passphrase", 'default');
             }
         }
         return callback;
