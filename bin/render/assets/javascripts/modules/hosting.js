@@ -20,6 +20,18 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         div_conn.classList.add('conn-id');
 
+        const target = doc.createElement('div');
+        target.classList.add('target_listening');
+        target.setAttribute('id', 'log-'+data.conn_id);
+        target.addEventListener('click', () => {
+            notification.success("Chemin d'accès copié");
+            let copy = target.innerText;
+            navigator.clipboard.writeText(copy).then(function() {
+            }, function(err) {
+            });
+        })
+        div_conn.appendChild(target);
+
         const repositories = doc.createElement('div');
         repositories.classList.add('repositories');
         repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
@@ -29,6 +41,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         if(hosts[data.uuid].name) name = hosts[data.uuid].name;
         document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item"><div><i class='bx bx-broadcast' ></i></div><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div><div><div class="closed"><i class='bx bx-x'></i></div></div></div>`
         renewTabs();
+
     }
     if (data.status === 1) {
 
@@ -131,6 +144,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     repositories.innerHTML = "";
     let repos = [];
     let files = [];
+    doc.querySelector('#log-'+data.conn_id).innerText = data.path;
     repositories.innerHTML += `<div class="head"><div></div><div>Name</div><div>Date Modified</div><div>Size</div><div>Permissions</div></div>`;
     if (path_seek !== "/") {
         let path_split = data.path.split('/');
