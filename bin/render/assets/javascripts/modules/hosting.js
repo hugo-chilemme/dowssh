@@ -68,10 +68,14 @@ let path_seek = null;
 const renewTabs = () => {
     document.querySelectorAll('#onglets .item').forEach((e) => {
        let element = e;
-       element.addEventListener('click', () => {
-            const uuid = element.getAttribute('uuid');
+        const uuid = element.getAttribute('uuid');
+       element.addEventListener('click', (e) => {
+           if(e.target.closest('.closed')) return;
             menu.displayConnection(uuid);
        })
+        document.querySelector('#onglets .item#tab-'+uuid + " .closed").addEventListener('click', () => {
+            
+        })
     });
 }
 const elementClickable = (conn_id, repos, files) => {
