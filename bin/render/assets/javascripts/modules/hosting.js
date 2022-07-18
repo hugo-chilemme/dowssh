@@ -94,8 +94,8 @@ const renewTabs = () => {
 }
 const elementClickable = (conn_id) => {
     let repositories = doc.querySelector('.connections #conn-' + conn_id + " .repositories");
-    const folders = doc.querySelector('.connections #conn-' + conn_id + ' .repositories .item[type="folder"]');
-    const files = doc.querySelector('.connections #conn-' + conn_id + ' .repositories .item[type="file"]');
+    const folders = doc.querySelectorAll('.connections #conn-' + conn_id + ' .repositories .item[type="folder"]');
+    const files = doc.querySelectorAll('.connections #conn-' + conn_id + ' .repositories .item[type="file"]');
 
 
     for (let i = 0; i < folders.length; i++) {
