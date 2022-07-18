@@ -6,7 +6,7 @@ const Host = require('./Class/host');
 const path = require("path");
 const host = new Host();
 const md5 = require('md5');
-
+let connections = {};
 const Connection = require('./connection');
 
 /* Starter windows */
@@ -79,13 +79,13 @@ ipcMain.on("profiler-get", async (event, type) => {
         }
     }
 })
+
 ipcMain.on("profiler-add", async (event, data) => {
-    const type = data.type;
-    const value = data.data;
-    if(!type || !value) return sendData('profiler-callback', {type: "addHost", error: true, message: "Invalid Form"});
-    if(type === "host") return host.add(value, (obj) => sendData('profiler-callback', obj));
+    if(!data.type || !data.data) return sendData('profiler-callback', {type: "addHost", error: true, message: "Invalid Form"});
+    if(data.type === "host") return host.add(data.data, (obj) => sendData('profiler-callback', obj));
 })
-let connections = {};
+
+
 setInterval(() => {
     if(Object.keys(connections).length > 0)
         for (const [key, value] of Object.entries(connections))
@@ -101,7 +101,7 @@ ipcMain.on('profiler-connect', async (event, uuid) => {
 ipcMain.on('profiler-disconnect', async (event, conn_id) => {
     if(!connections[conn_id]) return;
     delete connections[conn_id];
-    console.log(conn_id + " => closed")
+
 })
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {

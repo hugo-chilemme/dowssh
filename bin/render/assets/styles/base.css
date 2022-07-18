@@ -65,9 +65,7 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 input[type=number] {-moz-appearance: textfield;}
-textarea {
-    height:100px;
-}
+textarea {height:100px;}
 label {
     display:inline-flex;
     color:#909090;
