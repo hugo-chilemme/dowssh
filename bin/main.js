@@ -25,16 +25,14 @@ const checkUpdate = async () => {
             version = data.toString();
         });
 
-        await create.folders(['profile', 'profile/cache', 'profile/hosts', 'profile/downloads'], async (path) => {
-            win.webContents.send('create', path)
-        })
-        await create.file('profile/cache/remote_directory.json', "{}", false, async (path) => {
-            win.webContents.send('create', path)
-        });
+        await create.folders(['profile', 'profile/cache', 'profile/hosts', 'profile/downloads'])
+        await create.file('profile/cache/remote_directory.json', "{}", false);
 
         win.webContents.send('update', "search")
         exec("git status", (error, stdout, stderr) => {
             if (!stdout.includes('git add')) return start(win);
+            console.log(stdout)
+            console.log(stdout.includes('git add'))
             exec("git pull", (error, stdout, stderr) => {
                 win.webContents.send('update', "install")
                 app.relaunch();
