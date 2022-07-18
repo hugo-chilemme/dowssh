@@ -36,7 +36,7 @@ const checkUpdate = async () => {
         try {
             win.webContents.send('update', "search")
             exec("git status", (error, stdout, stderr) => {
-                if (stdout.includes('Your branch is up to date')) return start(win);
+                if (stdout.includes('Your branch is up')) return start(win);
                 exec("git pull", (error, stdout, stderr) => {
                     win.webContents.send('update', "install")
                     setTimeout(() => {
@@ -45,6 +45,7 @@ const checkUpdate = async () => {
                     }, 2500)
                 });
             });
+
 
         } catch (e) {
             start(win);

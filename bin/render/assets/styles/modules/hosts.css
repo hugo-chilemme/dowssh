@@ -28,7 +28,7 @@
     padding: 10px 20px;
     display: inline-grid;
     grid-template-columns: calc(100% - 0px) 0px;
-    width: 225px;
+    width: 245px;
     transition: 250ms;
     border-radius: 10px;
     margin-bottom: 25px;
