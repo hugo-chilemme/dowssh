@@ -94,35 +94,25 @@ const renewTabs = () => {
 }
 const elementClickable = (conn_id) => {
     let repositories = doc.querySelector('.connections #conn-' + conn_id + " .repositories");
-    const folders = doc.querySelectorAll('.connections #conn-' + conn_id + ' .repositories .item[type="folder"]');
-    const files = doc.querySelectorAll('.connections #conn-' + conn_id + ' .repositories .item[type="file"]');
+    const items = doc.querySelectorAll('.connections #conn-' + conn_id + ' .repositories .item');
+    for (let i = 0; i < items.length; i++) {
+        const element = items[i];
+        element.addEventListener('dblclick', function (e) {
+            if (element.getAttribute('type') === "folder")
+                return sendData('profiler-sftp-list', {conn_id: conn_id, path: e.target.closest('.item').getAttribute('target') });
+            downloadFile(conn_id);
+        });
+        element.addEventListener('click', (e) => selected(e, element, false))
+        element.addEventListener('contextmenu', (e) => selected(e, element, true))
 
-
-    for (let i = 0; i < folders.length; i++) {
-        folders[i].addEventListener('dblclick', function (e) {
-            repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
-            sendData('profiler-sftp-list', {conn_id: conn_id, path: e.target.closest('.item').getAttribute('target')});
-        })
-    }
-
-    for (let i = 0; i < files.length; i++) {
-        files[i].addEventListener('dblclick', () => downloadFile(conn_id, files[i]));
-    }
-
-    for(let i = 0; i < doc.querySelectorAll('.connections #conn-' + conn_id + " .repositories .item").length; i++) {
-        const element = doc.querySelectorAll('.connections #conn-' + conn_id + " .repositories .item")[i];
-        element.addEventListener('click', function (e) {
-            document.querySelectorAll(`.connections #conn-${conn_id} .repositories .item`).forEach(item => item.classList.remove('selected'));
+        const selected = (e, element, clicked = false) => {
+            items.forEach(item => item.classList.remove('selected'));
             element.classList.add('selected');
-        })
-        element.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-            document.querySelectorAll(`.connections #conn-${conn_id} .repositories .item`).forEach(item => item.classList.remove('selected'));
-            element.classList.add('selected');
-            displayAction(e, element.getAttribute('uuid'));
-            return false;
-        })
+            if(clicked) displayAction(e, element.getAttribute('uuid'));
+        }
     }
+
+
 }
 doc.querySelector('.contains').addEventListener('click', (e) => {
     if(doc.querySelector('.rightclick').classList.contains('hide')) return;
@@ -140,8 +130,7 @@ const displayAction = (e, uuid) => {
     doc.querySelector('.rightclick').style.top = (e.pageY+10) +"px";
 }
 
-const downloadFile = (conn_id, files_uuid) => {
-    const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files_uuid}"]`);
+const downloadFile = (conn_id) => {
     doc.querySelector('.connections #conn-' + conn_id + " .repositories").innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
 }
 const extRegex = /(?:\.([^.]+))?$/;
@@ -167,7 +156,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 
         let item = doc.createElement('div');
         item.classList.add('item');
-        item.setAttribute('type', 'backpath');
+        item.setAttribute('type', 'folder');
         item.setAttribute('target', new_path)
         item.setAttribute('not-folder', true)
         item.setAttribute('uuid', uuid)
