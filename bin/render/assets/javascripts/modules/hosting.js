@@ -181,13 +181,11 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     if(data.path === "/") path = "";
     for (const [key, value] of Object.entries(data.result)) {
         const uuid = genUuid();
-        let icone = `bx-file-blank`;
+        const ext = extRegex.exec(value.name)[1]; // Maybe null
         if(value.type === "d") {
             repositories.innerHTML += `<div type="folder" class="item" target="${path}/${value.name}" uuid="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
         } else {
-            const ext = extRegex.exec(value.name)[1];
-            if(icones[ext]) icone = icones[ext];
-            repositories.innerHTML += `<div type="file" class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
+            repositories.innerHTML += `<div type="file" class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${ icones[ext] ? icones[ext] : 'bx-file-blank'}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
         }
     }
     if(Object.entries(data.result).length === 0)  {
