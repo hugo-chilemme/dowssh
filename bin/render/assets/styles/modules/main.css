@@ -23,10 +23,11 @@
 .main .menu delete {
     position: absolute;
     right: 60px;
+    display: inline-flex;
     border-radius: 5px;
     cursor: pointer;
-    padding: 8px;
-    color: #E85151;
+    padding: 9px;
+    color: #959595;
 }
 
 .main .menu delete:hover {
