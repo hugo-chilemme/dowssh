@@ -36,27 +36,24 @@ doc.querySelector('[action="menu-add-field"]').addEventListener('click', async (
     if(!doc.querySelector('.inputs-list').classList.contains('open')) return doc.querySelector('.inputs-list').classList.add('open');
     return doc.querySelector('.inputs-list').classList.remove('open')
 });
-
+let cache = {};
 doc.querySelector('.field-dropdown').addEventListener('click', async (e) => {
     const element = e.target.closest('.item');
     const id = element.getAttribute('field');
     const type = element.getAttribute('stype');
     element.classList.add('hide');
     if(type !== "textarea")
-        doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><input target-id="${id}" data="${id}" type="${type}"><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
+        doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><input target-id="${id}" data="${id}" type="${type}"><delete onclick="delForm('${id}')" target-id="${id}"><i class='bx bx-minus'></i></delete>`;
     else
-        doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><textarea target-id="${id}" data="${id}" type="${type}"></textarea><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
+        doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><textarea target-id="${id}" data="${id}" type="${type}"></textarea><delete onclick="delForm('${id}')" target-id="${id}"><i class='bx bx-minus'></i></delete>`;
 
     doc.querySelector('.inputs-list').classList.remove('open');
-    const del = doc.querySelector('delete[target-id="'+id+'"]');
-    del.addEventListener('click', async (e) => {
-        let getId = del.getAttribute('target-id');
-        document.querySelector('.field-dropdown [field="'+getId+'"]').classList.remove('hide');
-        document.querySelectorAll('[target-id="'+getId+'"]').forEach((e) => e.remove());
-    });
 });
 
-
+const delForm = (id) => {
+    document.querySelector('.field-dropdown [field="'+id+'"]').classList.remove('hide');
+    document.querySelectorAll('[target-id="'+id+'"]').forEach((e) => e.remove());
+}
 
 const addHost = (submit = false, data = null) => {
     menu.open();

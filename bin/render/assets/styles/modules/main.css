@@ -47,7 +47,7 @@
     padding: 15px 20px;
     font-size: 13px;
     border-radius: 7px;
-    
+
     grid-template-columns: 30px calc(100% - 30px);
     cursor: pointer;
     color: #858585;
