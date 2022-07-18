@@ -167,12 +167,12 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 
         let item = doc.createElement('div');
         item.classList.add('item');
-
+        item.setAttribute('type', 'backpath');
         item.setAttribute('target', new_path)
         item.setAttribute('not-folder', true)
         item.setAttribute('uuid', uuid)
 
-        repos.push(uuid);
+
 
         item.innerHTML = `<div></div><div>..</div><div></div>`;
         item.classList.add('gray');
