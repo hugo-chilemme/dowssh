@@ -52,16 +52,11 @@ const application = async () => {
 
 const sendData = (type, data) => windows.application.send(type, data);
 
-let paths = {
-    'hosts': {type: "folder", path: 'profile/hosts'}
-}
 ipcMain.on("profiler-get", async (event, type) => {
-
-    if (type === "hosts") {
-        const hosts = await host.getAll();
-        await host.getAll(true);
-        return sendData('profiler-' + type, hosts)
-    }
+    if (type !== "hosts") return;
+    const hosts = await host.getAll();
+    await host.getAll(true);
+    return sendData('profiler-' + type, hosts)
 })
 
 ipcMain.on("profiler-add", async (event, data) => {

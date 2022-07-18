@@ -22,9 +22,8 @@ class Connection {
     }
 
     async sendClient(type, data) {
-        let dt = data;
-        dt.conn_id = this.connection.connection_id;
-        this.window.send(type, dt);
+        console.log({...data, ...{conn_id: this.connection.connection_id}});
+        this.window.send(type, {...data, ...{conn_id: this.connection.connection_id}});
     }
 
     async action(type, data) {
