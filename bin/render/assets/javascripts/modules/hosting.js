@@ -14,7 +14,7 @@ let connections = {};
 ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (!connections[data.conn_id]) connections[data.conn_id] = data;
     if (data.status === 0) {
-
+        doc.querySelector('.main .menu').style.left = "-460px";
         const div_conn = doc.createElement('div');
         console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
