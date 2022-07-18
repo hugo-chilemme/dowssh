@@ -237,10 +237,10 @@ label.addInput {
 
 
 .connections-menu .item:hover h4 {
-    transform:translateY(0px);
+    transform:translateY(-1px);
 }
 .connections-menu .item:hover p {
-    transform:scale(1.0) translateY(0);
+    transform:scale(1.0) translateY(1px);
     opacity: 1;
 }
 

@@ -74,7 +74,7 @@ const renewTabs = () => {
             menu.displayConnection(uuid);
        })
         document.querySelector('#onglets .item#tab-'+uuid + " .closed").addEventListener('click', () => {
-            
+
         })
     });
 }

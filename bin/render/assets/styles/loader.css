@@ -1,10 +1,10 @@
 .loader {
     position: fixed;
-    left:70px;
+    left:0px;
     right:0;
     bottom: 0;
     background:#edf1f2;
-    top:30px;
+    top:50px;
     transition: 500ms;
     display:flex;
     user-select: none;
