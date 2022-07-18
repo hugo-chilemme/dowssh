@@ -14,9 +14,11 @@ let connections = {};
 ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (!connections[data.conn_id]) connections[data.conn_id] = data;
     if (data.status === 0) {
+
         const div_conn = doc.createElement('div');
         console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
+        div_conn.classList.add('conn-id');
         const sidebars = doc.createElement('div');
         sidebars.classList.add('sidebars');
         const sidebars_h3 = doc.createElement('h3');
@@ -31,9 +33,12 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
         div_conn.appendChild(repositories);
         elementConnections.appendChild(div_conn);
+        let name = hosts[data.uuid].host;
+        if(hosts[data.uuid].name) name = hosts[data.uuid].name;
+        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item"><div><i class='bx bx-broadcast' ></i></div><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div><div><div class="closed"><i class='bx bx-x'></i></div></div></div>`
+        renewTabs();
     }
     if (data.status === 1) {
-        menu.switchConnection();
 
         const uuid = connections[data.conn_id].uuid;
         elementConnections.classList.remove('hide');
@@ -48,13 +53,27 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (data.status === 3) {
         elementHome.classList.remove('hide');
         const uuid = connections[data.conn_id].uuid;
-        console.log(data);
-        document.querySelector('#conn-'+data.conn_id).classList.add('hide');
+        doc.querySelector('#tab-'+data.conn_id).remove();
+        document.querySelector('#conn-'+data.conn_id).remove();
+        doc.querySelectorAll('.connections .conn-id').forEach((e) => e.classList.add('hide'));
+        doc.querySelector('.home').classList.remove('hide');
+
+        doc.querySelector('.connections').classList.add('hide');
         notification.error(hosts[uuid].host + " : "+data.error);
         doc.querySelector('.loader').style.display = "none";
     }
 })
 let path_seek = null;
+
+const renewTabs = () => {
+    document.querySelectorAll('#onglets .item').forEach((e) => {
+       let element = e;
+       element.addEventListener('click', () => {
+            const uuid = element.getAttribute('uuid');
+            menu.displayConnection(uuid);
+       })
+    });
+}
 const elementClickable = (conn_id, repos, files) => {
     let repositories = doc.querySelector('.connections #conn-' + conn_id + " .repositories");
     for (let i = 0; i < repos.length; i++) {
@@ -102,18 +121,17 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
             if (new_path === "") new_path = "/";
         }
 
+        let uuid = genUuid();
         let item = doc.createElement('div');
         item.classList.add('item');
 
         item.setAttribute('target', new_path)
-        let uuid = genUuid();
         item.setAttribute('repo', uuid)
         repos.push(uuid);
 
         item.innerHTML = `<div></div><div>..</div><div></div>`;
         item.classList.add('gray');
         repositories.appendChild(item);
-        console.log(repositories)
     }
 
     let path = data.path;

@@ -17,7 +17,7 @@ const addHostElement = (uuid, host, username, port, name) => {
     else
         elementHosts.innerHTML += `<div class="item" host="${uuid}"><div><h5>${host}</h5><p>${host}:${port} — ${username}</p></div><div class="icon"><i class='bx bxs-pencil' ></i></div></div>`;
 
-    hosts[uuid] = {uuid: uuid, username: username, port: port, host: host};
+    hosts[uuid] = {uuid: uuid, username: username, port: port, host: host, name: name};
 }
 doc.querySelector('[action="add-host"]').addEventListener('click', async (e) => {
    return addHost();

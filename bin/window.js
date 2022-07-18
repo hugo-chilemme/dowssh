@@ -33,7 +33,7 @@ const start = async(callback) => {
 const application = async(callback) => {
 
         windows.application = new BrowserWindow({
-            width: 1200,
+            width: 1300,
             height: 650,
             center: true,
             resizable: false,

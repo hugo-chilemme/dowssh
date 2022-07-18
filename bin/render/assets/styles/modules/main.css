@@ -1,11 +1,11 @@
 .main .menu {
-    height: calc(100vh - 20px);
+    height: calc(100vh - 40px);
     width: 450px;
-    top: 0;
+    top: 20px;
     margin: 10px;
     padding: 40px 50px 50px 50px;
     bottom: 0;
-    left: calc(-450px + 20px);
+    left: calc(-460px);
     position: fixed;
     overflow-x:hidden;
     overflow-y:auto;
@@ -138,7 +138,7 @@ label.addInput {
 }
 
 .main.open-conn .menu {
-    left:-475px;
+    right:-475px;
 }
 .main.open-conn .conn {
     bottom:0px;
@@ -146,15 +146,101 @@ label.addInput {
 
 
 .home {
-    padding:75px 50px;
+    padding:25px 50px;
     transition: 250ms;
     margin-left:10px;
 }
 
 .connections {
-    padding:75px 0;
+    padding:25px 0;
     transition: 250ms;
     margin-bottom: 25px;
+}
+.connections-menu {
+    display: flex;
+    height: 50px;
+
+    margin-top: 0;
+    align-items: center;
+}
+
+#onglets {
+    display: inline-flex;
+    height: 50px;
+    align-items: center;
+}
+.connections-menu .onglet-add {
+    display: inline-grid;
+    padding: 0 15px;
+    cursor: pointer;
+    margin-left:10px;
+    height: calc(100% - 10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 7px;
+    align-items: center;
+    transition: 250ms;
+}
+
+.connections-menu .onglet-add:hover {
+    transform:scale(1.1);
+}
+
+.connections-menu .item {
+    display: inline-grid;
+    width: 235px;
+    padding: 0 15px;
+    cursor: pointer;
+    height: calc(100% - 10px);
+    margin-left:10px;
+
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 7px;
+    grid-template-columns: 25px calc(100% - 40px) 15px;
+    align-items: center;
+    transition: 250ms;
+}
+
+.connections-menu .item h4 {
+    font-weight: 500;
+    transform:translateY(5.5px);
+    font-size: 13px;
+    transition: 250ms;
+}
+
+.connections-menu .item .closed {
+    display:inline-flex;
+    transform:scale(1.1);
+    opacity: 0;
+    padding:5px;
+    transition: 250ms;
+    border-radius: 5px;
+}
+.connections-menu .item:hover .closed{
+    transform:scale(1);
+    opacity: 1;
+}
+.connections-menu .item .closed:hover {
+    background:#dadada
+}
+
+
+
+.connections-menu .item p {
+    font-size:12px;
+    font-weight: 500;
+    color:#959595;
+    opacity: 0;
+    transform:translateY(5.5px) scale(0);
+    transition: 250ms;
+}
+
+
+.connections-menu .item:hover h4 {
+    transform:translateY(0px);
+}
+.connections-menu .item:hover p {
+    transform:scale(1.0) translateY(0);
+    opacity: 1;
 }
 
 .sidebars {
