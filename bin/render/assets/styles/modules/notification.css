@@ -1,27 +1,26 @@
 .notification {
     position: fixed;
-    left:0;
-    right:0;
-    top:25px;
+    right:25px;
+    bottom:25px;
     padding: 15px 12px;
     color:#fff;
     width: 350px;
-    margin:auto;
     background:#303030;
     border-radius: 5px;
     font-size:15px;
     visibility: hidden;
     font-weight: 400;
     opacity: 0;
-    transform:translateY(-50px);
+    transform:translateX(-50px);
     transition: 250ms;
     display:flex;
     z-index:9999999999;
     justify-content: center;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     align-items: center;
 
 }
 
 
-.notification.error { background: #C70039 }
-.notification.show { visibility: inherit; opacity: 1; transform:translateY(0) }
+.notification.error { background: #f25e61 }
+.notification.show { visibility: inherit; opacity: 1; transform:translateX(0) }
