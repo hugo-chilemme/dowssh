@@ -19,15 +19,6 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         div_conn.classList.add('conn-id');
-        const sidebars = doc.createElement('div');
-        sidebars.classList.add('sidebars');
-        const sidebars_h3 = doc.createElement('h3');
-        sidebars_h3.innerText = `${hosts[data.uuid].host}:${hosts[data.uuid].port}`;
-        const sidebars_p = doc.createElement('p');
-        sidebars_p.innerText = "Connecting...";
-        sidebars.appendChild(sidebars_h3);
-        sidebars.appendChild(sidebars_p);
-        div_conn.appendChild(sidebars);
         const repositories = doc.createElement('div');
         repositories.classList.add('repositories');
         repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
@@ -47,7 +38,6 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         let repos = '/root';
         if (hosts[uuid].username !== "root") repos = "/home/" + hosts[uuid].username;
         sendData('profiler-sftp-list', {conn_id: data.conn_id, path: repos});
-        doc.querySelector('.connections .sidebars p').innerText = `Listing ${repos}...`;
         doc.querySelector('.loader').style.display = "none";
     }
     if (data.status === 3) {
@@ -105,7 +95,6 @@ const elementClickable = (conn_id, repos, files) => {
 const downloadFile = (conn_id, files_uuid) => {
     const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files_uuid}"]`);
     doc.querySelector('.connections #conn-' + conn_id + " .repositories").innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
-    doc.querySelector('.connections .sidebars p').innerText = `Downloading ${element.getAttribute('name')} ...`;
 }
 
 ipcRenderer.on('profiler-sftp-list', async (event, data) => {
@@ -162,7 +151,6 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     }
 
 
-    doc.querySelector('.connections .sidebars p').innerText = `${data.path}`;
     elementClickable(data.conn_id, repos, files);
     path_seek = data.path;
 
