@@ -4,8 +4,8 @@ The current version is not usable: see later versions in CLI
 > This project allows to download files from a given directory (recursively) the one useful the SFTP protocol in ssh
 
 
-![Image](https://i.goopics.net/2qo85o.png)
-![Image](https://i.goopics.net/yrblzn.png)
+![Image](https://i.goopics.net/72g7kj.png)
+![Image](https://i.goopics.net/igzsaw.png)
 
 ## In the future
 

@@ -272,9 +272,9 @@ error {
 }
 
 .connections .repositories {
-    margin-top:25px;
+    margin-top: 5px;
     overflow-y: auto;
-    height:calc(100vh - 123px);
+    height: calc(100vh - 40px);
 }
 .connections .repositories .head, .connections .repositories .item {
     display:grid;

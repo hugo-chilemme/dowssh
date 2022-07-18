@@ -72,7 +72,7 @@ const renewTabs = () => {
 const elementClickable = (conn_id, repos, files) => {
     let repositories = doc.querySelector('.connections #conn-' + conn_id + " .repositories");
     for (let i = 0; i < repos.length; i++) {
-        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[repo="${repos[i]}"]`);
+        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[uuid="${repos[i]}"]`);
         element.addEventListener('dblclick', function (e) {
             repositories.innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
             sendData('profiler-sftp-list', {conn_id: conn_id, path: e.target.closest('.item').getAttribute('target')});
@@ -80,7 +80,7 @@ const elementClickable = (conn_id, repos, files) => {
     }
 
     for (let i = 0; i < files.length; i++) {
-        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[file="${files[i]}"]`);
+        const element = document.querySelector(`.connections #conn-${conn_id} .repositories .item[uuid="${files[i]}"]`);
         element.addEventListener('dblclick', () => downloadFile(conn_id, files[i]));
     }
 
@@ -92,12 +92,27 @@ const elementClickable = (conn_id, repos, files) => {
         })
         element.addEventListener('contextmenu', function (e) {
             e.preventDefault();
-
             document.querySelectorAll(`.connections #conn-${conn_id} .repositories .item`).forEach(item => item.classList.remove('selected'));
             element.classList.add('selected');
+            displayAction(e, element.getAttribute('uuid'));
             return false;
         })
     }
+}
+doc.querySelector('.contains').addEventListener('click', (e) => {
+    if(doc.querySelector('.rightclick').classList.contains('hide')) return;
+    if(!e.target.closest('.rightclick')) doc.querySelector('.rightclick').classList.add('hide')
+})
+
+window.addEventListener('scroll',(event) => {
+    if(doc.querySelector('.rightclick').classList.contains('hide')) return;
+     doc.querySelector('.rightclick').classList.add('hide')
+});
+const displayAction = (e, uuid) => {
+    if(doc.querySelector(`.item[uuid="${uuid}"]`).hasAttribute('not-folder')) return;
+    doc.querySelector('.rightclick').style.left = (e.pageX-50) +"px";
+    doc.querySelector('.rightclick').classList.remove('hide');
+    doc.querySelector('.rightclick').style.top = (e.pageY+10) +"px";
 }
 
 const downloadFile = (conn_id, files_uuid) => {
@@ -127,7 +142,9 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
         item.classList.add('item');
 
         item.setAttribute('target', new_path)
-        item.setAttribute('repo', uuid)
+        item.setAttribute('not-folder', true)
+        item.setAttribute('uuid', uuid)
+
         repos.push(uuid);
 
         item.innerHTML = `<div></div><div>..</div><div></div>`;
@@ -141,7 +158,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 
         if(value.type === "d") {
             let uuid = genUuid();
-            repositories.innerHTML += `<div class="item" target="${path}/${value.name}" repo="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
+            repositories.innerHTML += `<div class="item" target="${path}/${value.name}" uuid="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
             repos.push(uuid);
         } else {
             let uuid = genUuid();
@@ -151,7 +168,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
             let allOct = value.name.split('.')
             const ext = allOct[allOct.length-1];
             if(icones[ext]) icone = icones[ext];
-            repositories.innerHTML += `<div class="item" file="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
+            repositories.innerHTML += `<div class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${icone}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
         }
     }
     if(Object.entries(data.result).length === 0)  {
