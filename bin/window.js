@@ -19,6 +19,7 @@ const start = async(callback) => {
             resizable: false,
             transparent: true,
             frame: false,
+            icon: './bin/render/Dowssh.ico',
             webPreferences: {
                 webviewTag: true,
                 nodeIntegration: true,
@@ -39,6 +40,7 @@ const application = async(callback) => {
             resizable: false,
             transparent: true,
             frame: false,
+            icon: './bin/render/Dowssh.ico',
             webPreferences: {
                 webviewTag: true,
                 nodeIntegration: true,
@@ -50,7 +52,7 @@ const application = async(callback) => {
         setTimeout(async() =>  windows.start.close(), 500)
         setTimeout(async () => {
             callback(windows.application)
-        }, 500);
+        }, 1500);
 
 }
 
