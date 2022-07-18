@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 
 const Create = require('./doc');
 const window = require('./window');
@@ -29,34 +29,28 @@ const checkUpdate = async () => {
         await create.folders(['profile', 'profile/cache', 'profile/hosts', 'profile/downloads'], async (path) => {
             win.webContents.send('create', path)
         })
-        await create.file('profile/cache/remote_directory.json', "{}", false,async (path) => {
+        await create.file('profile/cache/remote_directory.json', "{}", false, async (path) => {
             win.webContents.send('create', path)
         });
 
-
         try {
-                win.webContents.send('update', "search")
-                await axios.get('https://api.github.com/repos/HugoCLI/dowssh/events', {}).then(result => {
+            win.webContents.send('update', "search")
+            exec("git status", (error, stdout, stderr) => {
+                if (stdout.includes('Your branch is up to date')) return start(win);
+                exec("git pull", (error, stdout, stderr) => {
+                    win.webContents.send('update', "install")
+                    setTimeout(() => {
+                        app.relaunch()
+                        app.exit()
+                    }, 2500)
+                });
+            });
 
-                    if (result.status !== 200) return start(win); // Not connected
-                    const last_version = result.data[0].id;
-                    if (version === last_version) return start(win);
-                    win.webContents.send('update', "download")
-                    exec("git pull", (error, stdout, stderr) => {
-                        create.edit('bin/core/version.md', last_version)
-                        win.webContents.send('update', "install")
-                        setTimeout(() => {
-                            app.relaunch()
-                            app.exit()
-                        }, 2500)
-                    });
-                })
-        }catch (e) {
+        } catch (e) {
             start(win);
         }
     });
 }
-
 
 
 const start = async (win) => {
