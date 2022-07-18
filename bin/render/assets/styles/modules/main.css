@@ -47,6 +47,7 @@
     padding: 15px 20px;
     font-size: 13px;
     border-radius: 7px;
+    
     grid-template-columns: 30px calc(100% - 30px);
     cursor: pointer;
     color: #858585;
@@ -294,7 +295,11 @@ error {
     background:rgba(46, 161, 219, 0.25) !important;
 }
 
-
+.main .menu .split {
+    display:grid;
+    grid-template-columns: calc(100% - 110px) 100px;
+    column-gap: 10px;
+}
 
 .connections .repositories .item i {
     color:#909090;

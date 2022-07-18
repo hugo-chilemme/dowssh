@@ -72,11 +72,16 @@
                 <label>Nom (Optionnel)</label>
                 <input data="name" type="text">
 
-                <label>Adresse IP*</label>
-                <input data="host" type="text">
-
-                <label>Port*</label>
-                <input data="port" type="number" value="22">
+                <div class="split">
+                    <div>
+                        <label>Adresse IP*</label>
+                        <input data="host" type="text">
+                    </div>
+                    <div>
+                        <label>Port*</label>
+                        <input data="port" type="number" value="22">
+                    </div>
+                </div>
 
                 <label>Nom d'utilisateur</label>
                 <input data="username" type="text">
@@ -99,7 +104,7 @@
                             Mot de passe
                         </div>
                         <div class="item" field="passphrase" stype="text">
-                            Phrase secrete
+                            Phrase secrète
                         </div>
                         <div class="item" field="privatekey" stype="textarea">
                             Clé privée

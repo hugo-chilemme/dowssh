@@ -62,10 +62,7 @@ class Connection {
                 let openssh = key.toString('openssh');
                 keytar.setPassword(this.connection.uuid+"-privatekey", "default", openssh);
                 config.privatekey = openssh;
-                console.log('Putty ==> OPENSSH Successfully');
             }
-
-
 
             await this.sftp.connect({
                 host: config.host,
@@ -74,6 +71,7 @@ class Connection {
                 username: config.username,
                 passphrase: config.passphrase,
                 privateKey: config.privatekey,
+
                 debug: (e) => {
                     console.log('>> '+e)
                     if(e.includes('publickey auth failed')) {
@@ -93,6 +91,7 @@ class Connection {
             await this.sendClient('profiler-connect-status', {status: 1})
             returned = true
         } catch (e) {
+            console.log(e)
             if(!returned)
             await this.sendClient('profiler-connect-status', {status: 3, error: "Aucune réponse de l'hôte"})
             this.destroyed = true
