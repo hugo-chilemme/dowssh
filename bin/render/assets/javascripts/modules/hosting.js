@@ -84,6 +84,7 @@ const renewTabs = () => {
             doc.querySelector('.main .menu').style.left = "-450px";
             doc.querySelector('.home').classList.remove('hide');
             doc.querySelector('.connections').classList.add('hide');
+            sendData('profiler-disconnect', uuid);
         })
     });
 }

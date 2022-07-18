@@ -96,10 +96,17 @@ ipcMain.on('profiler-connect', async (event, uuid) => {
     sendData('profiler-connect-status', { status: 0, uuid: uuid, conn_id: conn_id })
     connections[conn_id] = new Connection(windows.application, conn_id, uuid);
 })
+ipcMain.on('profiler-disconnect', async (event, conn_id) => {
+    if(!connections[conn_id]) return;
+    delete connections[conn_id];
+    console.log(conn_id + " => closed")
+})
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
     if(connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
 })
+
+
 
 ipcMain.on('window', async (event, data) => {
     if(data === "reduce")
