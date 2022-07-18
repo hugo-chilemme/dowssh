@@ -14,7 +14,6 @@ const axios = require('axios');
 const prompt = require('prompt-sync')();
 
 const create = new Create();
-console.log("")
 const checkUpdate = async () => {
     window.start(async (win) => {
 
@@ -33,23 +32,15 @@ const checkUpdate = async () => {
             win.webContents.send('create', path)
         });
 
-        try {
-            win.webContents.send('update', "search")
-            exec("git status", (error, stdout, stderr) => {
-                if (!stdout.includes('git add')) return start(win);
-                exec("git pull", (error, stdout, stderr) => {
-                    win.webContents.send('update', "install")
-                    setTimeout(() => {
-                        app.relaunch()
-                        app.exit()
-                    }, 2500)
-                });
+        win.webContents.send('update', "search")
+        exec("git status", (error, stdout, stderr) => {
+            if (stdout.includes('git add')) return start(win);
+            exec("git pull", (error, stdout, stderr) => {
+                win.webContents.send('update', "install")
+                app.relaunch();
+                app.exit();
             });
-
-
-        } catch (e) {
-            start(win);
-        }
+        });
     });
 }
 
