@@ -40,8 +40,9 @@ doc.querySelector('[action="menu-add-field"]').addEventListener('click', async (
 doc.querySelector('.field-dropdown').addEventListener('click', async (e) => {
     const element = e.target.closest('.item');
     const id = element.getAttribute('field');
+    const type = element.getAttribute('type');
     element.classList.add('hide');
-    doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><input target-id="${id}" data="${id}" type="text"><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
+    doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><input target-id="${id}" data="${id}" type="${type}"><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
     doc.querySelector('.inputs-list').classList.remove('open');
     const del = doc.querySelector('delete[target-id="'+id+'"]');
     del.addEventListener('click', async (e) => {
