@@ -1,11 +1,11 @@
 .main .menu {
-    height: calc(100vh - 40px);
+    height: calc(100vh - 60px);
     width: 450px;
-    top: 20px;
+    top: 40px;
     margin: 10px;
     padding: 40px 50px 50px 50px;
     bottom: 0;
-    left: calc(-460px);
+    left: calc(-450px);
     position: fixed;
     overflow-x:hidden;
     overflow-y:auto;

@@ -29,19 +29,19 @@ click {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #141236;
+    background: transparent;
     border-radius: 0 7px 7px 0;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #141236;
+    background: transparent;
     border-radius: 0 7px 7px 0;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: transparent;
 }
 
 
