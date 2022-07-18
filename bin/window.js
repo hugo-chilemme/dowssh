@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 let windows = {};
 const Create = require('./doc');
 const create = new Create();
@@ -10,7 +10,7 @@ let connections = {};
 const Connection = require('./connection');
 
 /* Starter windows */
-const start = async(callback) => {
+const start = async (callback) => {
     app.whenReady().then(() => {
         windows.start = new BrowserWindow({
             width: 450,
@@ -31,29 +31,23 @@ const start = async(callback) => {
     });
 }
 
-const application = async(callback) => {
-
-        windows.application = new BrowserWindow({
-            width: 1300,
-            height: 650,
-            center: true,
-            resizable: false,
-            transparent: true,
-            frame: false,
-            icon: './bin/render/Dowssh.ico',
-            webPreferences: {
-                webviewTag: true,
-                nodeIntegration: true,
-                contextIsolation: false
-            }
-        })
-        windows.application.loadFile('./bin/render/app.html');
-
-        setTimeout(async() =>  windows.start.close(), 500)
-        setTimeout(async () => {
-            callback(windows.application)
-        }, 1500);
-
+const application = async () => {
+    windows.application = new BrowserWindow({
+        width: 1300,
+        height: 650,
+        center: true,
+        resizable: false,
+        transparent: true,
+        frame: false,
+        icon: './bin/render/Dowssh.ico',
+        webPreferences: {
+            webviewTag: true,
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    })
+    windows.application.loadFile('./bin/render/app.html');
+    windows.start.close()
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
@@ -63,62 +57,54 @@ let paths = {
 }
 ipcMain.on("profiler-get", async (event, type) => {
 
-    if(type === "hosts") {
-        let datas = await host.getAll();
-        let hosts = {};
-        // Delete Password For security reason */
-       for(let i =0; i < datas.length; i++)
-            hosts[datas[i].uuid] = {host: datas[i].host, uuid: datas[i].uuid, port: datas[i].port, username: datas[i].username, name: datas[i].name};
+    if (type === "hosts") {
+        const hosts = await host.getAll();
         await host.getAll(true);
         return sendData('profiler-' + type, hosts)
-    } else {
-        if(create.exist(paths[type].path)) {
-            await create.read(paths[type].path, (data) => {
-                sendData('profiler-' + type, data)
-            });
-        }
     }
 })
 
 ipcMain.on("profiler-add", async (event, data) => {
-    if(!data.type || !data.data) return sendData('profiler-callback', {type: "addHost", error: true, message: "Invalid Form"});
-    if(data.type === "host") return host.add(data.data, (obj) => sendData('profiler-callback', obj));
+    if (!data.type || !data.data) return sendData('profiler-callback', {
+        type: "addHost",
+        error: true,
+        message: "Invalid Form"
+    });
+    if (data.type === "host") return host.add(data.data, (obj) => sendData('profiler-callback', obj));
 })
 
 
 setInterval(() => {
-    if(Object.keys(connections).length > 0)
+    if (Object.keys(connections).length > 0)
         for (const [key, value] of Object.entries(connections))
-            if(value.destroyed) delete connections[key];
+            if (value.destroyed) delete connections[key];
 
 }, 1000)
 
 ipcMain.on('profiler-connect', async (event, uuid) => {
     const conn_id = md5(new Date().getTime() + uuid);
-    sendData('profiler-connect-status', { status: 0, uuid: uuid, conn_id: conn_id })
+    sendData('profiler-connect-status', {status: 0, uuid: uuid, conn_id: conn_id})
     connections[conn_id] = new Connection(windows.application, conn_id, uuid);
 })
 ipcMain.on('profiler-disconnect', async (event, conn_id) => {
-    if(!connections[conn_id]) return;
+    if (!connections[conn_id]) return;
     delete connections[conn_id];
 
 })
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
-    if(connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
+    if (connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
 })
 
 
-
 ipcMain.on('window', async (event, data) => {
-    if(data === "reduce")
+    if (data === "reduce")
         windows.application.isMinimized() ? windows.application.restore() : windows.application.minimize()
-    if(data === "close")
+    if (data === "close")
         windows.application.close()
 
 
 })
-
 
 
 exports.application = application;

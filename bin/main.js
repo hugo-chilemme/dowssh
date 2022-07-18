@@ -32,6 +32,6 @@ const checkUpdate = async () => {
 
 const start = async (win) => {
     win.webContents.send('update', "start")
-    setTimeout(() => window.application(), 2000)
+    window.application();
 }
 exports.checkUpdate = checkUpdate;
