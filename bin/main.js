@@ -34,7 +34,7 @@ const checkUpdate = async () => {
 
         win.webContents.send('update', "search")
         exec("git status", (error, stdout, stderr) => {
-            if (stdout.includes('git add')) return start(win);
+            if (!stdout.includes('git add')) return start(win);
             exec("git pull", (error, stdout, stderr) => {
                 win.webContents.send('update', "install")
                 app.relaunch();
