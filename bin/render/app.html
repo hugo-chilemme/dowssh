@@ -75,7 +75,7 @@
                 <label>Adresse IP*</label>
                 <input data="host" type="text">
 
-                <label>Port</label>
+                <label>Port*</label>
                 <input data="port" type="number" value="22">
 
                 <label>Nom d'utilisateur</label>
@@ -95,13 +95,17 @@
                         </div>
                     </div>
                     <div class="field-dropdown">
-                        <div class="item" field="password" type="password">
+                        <div class="item" field="password" stype="password">
                             Mot de passe
                         </div>
-                        <div class="item" field="passphrase" type="text">
+                        <div class="item" field="passphrase" stype="text">
                             Phrase secrete
                         </div>
+                        <div class="item" field="privatekey" stype="textarea">
+                            Clé privée
+                        </div>
                     </div>
+
                 </div>
 
                 <!--                <label>Password (Optional)</label>-->

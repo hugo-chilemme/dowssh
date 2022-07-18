@@ -40,9 +40,13 @@ doc.querySelector('[action="menu-add-field"]').addEventListener('click', async (
 doc.querySelector('.field-dropdown').addEventListener('click', async (e) => {
     const element = e.target.closest('.item');
     const id = element.getAttribute('field');
-    const type = element.getAttribute('type');
+    const type = element.getAttribute('stype');
     element.classList.add('hide');
-    doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><input target-id="${id}" data="${id}" type="${type}"><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
+    if(type !== "textarea")
+        doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><input target-id="${id}" data="${id}" type="${type}"><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
+    else
+        doc.querySelector('#addedinputs').innerHTML += `<label target-id="${id}">${element.innerText}</label><textarea target-id="${id}" data="${id}" type="${type}"></textarea><delete target-id="${id}"><i class='bx bx-minus'></i></delete>`;
+
     doc.querySelector('.inputs-list').classList.remove('open');
     const del = doc.querySelector('delete[target-id="'+id+'"]');
     del.addEventListener('click', async (e) => {
@@ -66,7 +70,8 @@ const addHost = (submit = false, data = null) => {
             doc.querySelectorAll('.addHost input').forEach(e => e.value.length = 0);
         } else {
             let forms = {};
-            doc.querySelectorAll('.addHost input').forEach(e => forms[e.getAttribute('data')] = e.value);
+            doc.querySelectorAll('.addHost [type]').forEach(e => forms[e.getAttribute('data')] = e.value);
+            console.log(forms);
             ipcRenderer.send('profiler-add', {type: 'host', data: forms});
         }
     }

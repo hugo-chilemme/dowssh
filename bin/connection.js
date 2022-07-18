@@ -1,5 +1,6 @@
 const Create = require('./doc');
-
+const sshpk = require('sshpk');
+const keytar = require('keytar');
 const Client = require('ssh2-sftp-client');
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 
@@ -56,15 +57,30 @@ class Connection {
         try {
 
             const config = await host.get(this.connection.uuid);
-            console.log(config);
+            if(config.privatekey && config.privatekey.includes('PuTTY')) {
+                let key = sshpk.parsePrivateKey(config.privatekey, 'putty');
+                let openssh = key.toString('openssh');
+                keytar.setPassword(this.connection.uuid+"-privatekey", "default", openssh);
+                config.privatekey = openssh;
+                console.log('Putty ==> OPENSSH Successfully');
+            }
+
+
+
             await this.sftp.connect({
                 host: config.host,
                 password: config.password,
                 port: config.port,
                 username: config.username,
                 passphrase: config.passphrase,
+                privateKey: config.privatekey,
                 debug: (e) => {
                     console.log('>> '+e)
+                    if(e.includes('publickey auth failed')) {
+                        this.sendClient('profiler-connect-status', {status: 3, error: "L'hôte à refusé la publickey "})
+                        returned = true;
+                        this.destroyed = true
+                    }
                     if(e.includes('ERR_BAD_AUTH')) {
                         this.sendClient('profiler-connect-status', {status: 3, error: "L'authentification a échoué"})
                         returned = true;

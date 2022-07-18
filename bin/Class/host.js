@@ -19,7 +19,10 @@ class Host {
             keytar.setPassword(uuid, "default", value.password);
         if(value.passphrase)
             keytar.setPassword(uuid+"-passphrase", "default", value.passphrase);
+        if(value.privatekey)
+            keytar.setPassword(uuid+"-privatekey", "default", value.privatekey);
         delete value.password;
+        delete value.privatekey;
         delete value.passphrase;
         create.file('profile/hosts/'+uuid+".json", JSON.stringify(value));
         cb({type: "addHost", uuid: uuid, host: value.host, port: value.port, username: value.username, name: value.name });
@@ -43,6 +46,7 @@ class Host {
                 if(datas[i].name) callback.name = datas[i].name;
                 callback.password = await keytar.getPassword(uuid, 'default');
                 callback.passphrase = await keytar.getPassword(uuid+"-passphrase", 'default');
+                callback.privatekey = await keytar.getPassword(uuid+"-privatekey", 'default');
             }
         }
         return callback;

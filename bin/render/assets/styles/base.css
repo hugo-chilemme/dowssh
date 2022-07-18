@@ -45,7 +45,7 @@ click {
 }
 
 
-input {
+input, textarea {
     padding:15px 20px;
     border:1px solid rgba(255, 255, 255, .05);
     outline:none;
@@ -53,10 +53,14 @@ input {
     margin-bottom: 25px;
     color:#eee;
     font-weight: 600;
+    resize: none;
     font-family: 'Ubuntu', sans-serif;
     border-radius: 5px;
     margin-top:-7px;
     background: transparent;
+}
+textarea {
+    height:100px;
 }
 label {
     display:inline-flex;

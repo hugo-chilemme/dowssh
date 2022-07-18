@@ -28,6 +28,7 @@
     "prompt-sync": "^4.2.0",
     "shelljs": "^0.8.5",
     "ssh2-sftp-client": "^9.0.1",
+    "sshpk": "^1.17.0",
     "unzipper": "^0.10.11"
   },
   "devDependencies": {
