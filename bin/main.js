@@ -1,3 +1,5 @@
+const { app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+
 const Create = require('./doc');
 const window = require('./window');
 
@@ -42,7 +44,11 @@ const checkUpdate = async () => {
                     win.webContents.send('update', "download")
                     exec("git pull", (error, stdout, stderr) => {
                         create.edit('bin/core/version.md', last_version)
-                        start(win);
+                        win.webContents.send('update', "install")
+                        setTimeout(() => {
+                            app.relaunch()
+                            app.exit()
+                        }, 2500)
                     });
                 })
         }catch (e) {

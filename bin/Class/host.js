@@ -13,7 +13,7 @@ class Host {
     }
 
     add(value, cb) {
-        if(!value.host.trim()) return cb({type: "addHost", error: true, message: "Invalid Address"});
+        if(!value.host.trim()) return cb({type: "addHost", error: true, message: "Adresse IP invalide"});
         const uuid = md5(value.host+new Date().getTime());
         if(value.password)
             keytar.setPassword(uuid, "default", value.password);

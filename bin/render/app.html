@@ -47,7 +47,7 @@
     <div class="main">
         <div class="menu">
             <div action="menu-close" class="close">
-                <i class='bx bx-x' ></i>
+                <i class='bx bx-x'></i>
             </div>
             <div class="addHost" id="addHost">
                 <h2>Nouveau serveur</h2>
@@ -86,15 +86,27 @@
                     </div>
                 </div>
 
-<!--                <label>Password (Optional)</label>-->
-<!--                <input data="password" type="password">-->
+                <!--                <label>Password (Optional)</label>-->
+                <!--                <input data="password" type="password">-->
 
-<!--                <label>Passphrase (Optional)</label>-->
-<!--                <input data="passphrase" type="password">-->
+                <!--                <label>Passphrase (Optional)</label>-->
+                <!--                <input data="passphrase" type="password">-->
 
                 <button action="add-host-submit">
                     Ajouter
                 </button>
+            </div>
+        </div>
+        <div class="conn">
+            <div>
+                <div class="item" action="switchConnection-home">
+                    <i class='bx bx-home-alt' ></i>
+                </div>
+            </div>
+            <div class="right">
+                <div class="item">
+                    <i class='bx bx-transfer' ></i>
+                </div>
             </div>
         </div>
         <div>
@@ -104,7 +116,7 @@
                 </div>
                 <div>
                     <div action="window-reduce">
-                        <i class='bx bx-minus' ></i>
+                        <i class='bx bx-minus'></i>
                     </div>
                     <div action="window-close">
                         <i class='bx bx-x'></i>
@@ -118,7 +130,9 @@
                         <span action="add-host"><i class='bx bx-plus'></i></span>
                     </div>
                     <div class="hosts">
-                        <p>Vous n'avez pas de serveur enregistrée, commençons en <click onclick="action('add-host')">ajoutes-ens un</click></p>
+                        <p>Vous n'avez pas de serveur enregistrée, commençons en
+                            <click onclick="action('add-host')">ajoutes-ens un</click>
+                        </p>
                     </div>
                 </div>
             </div>

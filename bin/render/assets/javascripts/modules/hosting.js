@@ -15,6 +15,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (!connections[data.conn_id]) connections[data.conn_id] = data;
     if (data.status === 0) {
         const div_conn = doc.createElement('div');
+        console.log(data)
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         const sidebars = doc.createElement('div');
         sidebars.classList.add('sidebars');
@@ -32,6 +33,8 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         elementConnections.appendChild(div_conn);
     }
     if (data.status === 1) {
+        menu.switchConnection();
+
         const uuid = connections[data.conn_id].uuid;
         elementConnections.classList.remove('hide');
         elementHome.classList.add('hide');
@@ -43,8 +46,11 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         doc.querySelector('.loader').style.display = "none";
     }
     if (data.status === 3) {
+        elementHome.classList.remove('hide');
         const uuid = connections[data.conn_id].uuid;
-        notification.error('Impossible de se connecter à '+hosts[uuid].host);
+        console.log(data);
+        document.querySelector('#conn-'+data.conn_id).classList.add('hide');
+        notification.error(hosts[uuid].host + " : "+data.error);
         doc.querySelector('.loader').style.display = "none";
     }
 })

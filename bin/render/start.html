@@ -94,6 +94,7 @@
             ipcRenderer.on('update', (event, messages) => {
                 let text = default_text;
                 if(messages === "start") text = "Lancement";
+                if(messages === "install") text = "Installation";
                 if(messages === "search") text = "Recherche de mise à jour";
                 if(messages === "download") text = "Téléchargement";
                 doc.querySelector('#announce').innerText = text

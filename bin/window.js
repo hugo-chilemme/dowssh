@@ -83,9 +83,14 @@ ipcMain.on("profiler-add", async (event, data) => {
     if(!type || !value) return sendData('profiler-callback', {type: "addHost", error: true, message: "Invalid Form"});
     if(type === "host") return host.add(value, (obj) => sendData('profiler-callback', obj));
 })
-
-
 let connections = {};
+setInterval(() => {
+    if(Object.keys(connections).length > 0)
+        for (const [key, value] of Object.entries(connections))
+            if(value.destroyed) delete connections[key];
+
+}, 1000)
+
 ipcMain.on('profiler-connect', async (event, uuid) => {
     const conn_id = md5(new Date().getTime() + uuid);
     sendData('profiler-connect-status', { status: 0, uuid: uuid, conn_id: conn_id })
