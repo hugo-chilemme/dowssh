@@ -8,6 +8,7 @@
     left: calc(-450px);
     position: fixed;
     overflow-x: hidden;
+
     overflow-y: auto;
     z-index: 999999;
     border-radius: 7px;
@@ -166,7 +167,9 @@ label.addInput {
 .connections-menu {
     display: flex;
     height: 65px;
-
+    margin-right:100px;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
     margin-bottom: 25px;
     align-items: center;
 }
@@ -185,6 +188,7 @@ label.addInput {
     margin-left:10px;
     height: 100%;
     border-radius: 7px;
+    -webkit-app-region: no-drag;
     align-items: center;
     transition: 250ms;
 }
@@ -199,7 +203,7 @@ label.addInput {
     display: inline-flex;
     padding: 0 25px 0 15px;
     cursor: pointer;
-
+    -webkit-app-region: no-drag;
     width: auto;
     height: calc(100% - 30px);
     margin:10px 0 10px 10px;

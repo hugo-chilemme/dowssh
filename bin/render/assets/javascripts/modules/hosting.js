@@ -183,7 +183,7 @@ doc.querySelector('.hosts').addEventListener("click", event => {
 doc.querySelector('[action="onglet-disconnect"]').addEventListener("click", event => {
     let uuid = doc.querySelector('.connections').getAttribute('active');
     if(uuid === "default") return;
-    closeOnglet(uuid, "Succès de déconnexion");
+    closeOnglet(uuid, "Déconnecté avec succès");
 });
 
 
