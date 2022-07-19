@@ -187,7 +187,6 @@ doc.querySelector('.hosts').addEventListener("dblclick", event => {
     if (event.target.closest('.icon')) return;
     if (!element) return;
     const uuid = element.getAttribute('host');
-    doc.querySelector('.loader stop').style.display = "inline-flex";
     doc.querySelector('.loader').style.display = "flex";
     menu.close();
     sendData('profiler-connect', uuid);
