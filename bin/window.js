@@ -30,7 +30,7 @@ const start = async (callback) => {
             }
         })
         windows.start.loadFile('./bin/render/start.html');
-        setTimeout(async () => callback(windows.start), 500);
+        setTimeout(async () => callback(windows.start), 1500);
     });
 }
 
@@ -50,7 +50,7 @@ const application = async () => {
         }
     })
     windows.application.loadFile('./bin/render/app.html');
-    windows.start.close()
+    setTimeout(() => windows.start.close(), 1000)
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
