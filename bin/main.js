@@ -15,24 +15,24 @@ const prompt = require('prompt-sync')();
 
 const create = new Create();
 const checkUpdate = async () => {
-    await window.start(async (win) => {
-        await create.folders(['profile', 'profile/cache', 'bin/core', 'profile/hosts', 'profile/downloads'])
-        win.webContents.send('update', "search")
-        exec("git status --porcelain", (error, stdout, stderr) => {
-            if (stdout.trim() === "") return start(win);
-            win.webContents.send('update', "install")
-            exec("git pull", (error, stdout, stderr) => {
-                app.relaunch();
-                app.exit();
+    app.whenReady().then(async () => {
+        await window.start(async (win) => {
+
+            await create.folders(['profile', 'profile/cache', 'bin/core', 'profile/hosts', 'profile/downloads']);
+            win.webContents.send('update', "search");
+            exec("git status --porcelain", (error, stdout, stderr) => {
+                if (stdout.trim() === "") return window.application();
+                win.webContents.send('update', "install");
+                exec("git pull", (error, stdout, stderr) => {
+                    app.relaunch();
+                    app.exit();
+                });
+                return;
             });
+            window.application();
         });
-        start(win);
     });
 }
 
 
-const start = async (win) => {
-    win.webContents.send('update', "start")
-    await window.application();
-}
 exports.checkUpdate = checkUpdate;
