@@ -60,11 +60,8 @@ class Create {
         fs.unlinkSync(project_path + "/" + path);
     }
 
-    async read(path, cb) {
-        await fs.readFile(project_path + "/" + path, 'utf8', (err, data) => {
-            if(err) return null;
-            cb(JSON.parse(data));
-        });
+    read(path) {
+        return JSON.parse(fs.readFileSync(project_path + "/" + path, {encoding:'utf8', flag:'r'}));
     }
 
     scanDir(path) {

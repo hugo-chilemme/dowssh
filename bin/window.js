@@ -1,13 +1,16 @@
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
-let windows = {};
+
 const Create = require('./doc');
 const create = new Create();
+const Connection = require('./connection');
 const Host = require('./Class/host');
-const path = require("path");
 const host = new Host();
 const md5 = require('md5');
+
 let connections = {};
-const Connection = require('./connection');
+let windows = {};
+
+
 
 /* Starter windows */
 const start = async (callback) => {
@@ -54,17 +57,10 @@ const sendData = (type, data) => windows.application.send(type, data);
 
 ipcMain.on("profiler-get", async (event, type) => {
     if (type !== "hosts") return;
-    await host.refreshHosts();
-    const hosts = await host.getAll();
-    return sendData('profiler-' + type, hosts)
+    await host.list((hosts) => sendData('profiler-' + type, hosts))
 })
 
 ipcMain.on("profiler-add", async (event, data) => {
-    if (!data.type || !data.data) return sendData('profiler-callback', {
-        type: "addHost",
-        error: true,
-        message: "Invalid Form"
-    });
     if (data.type === "host") return host.add(data.data, (obj) => sendData('profiler-callback', obj));
 })
 
@@ -72,7 +68,7 @@ ipcMain.on("profiler-add", async (event, data) => {
 setInterval(() => {
     if (Object.keys(connections).length > 0)
         for (const [key, value] of Object.entries(connections))
-            if (value.destroyed) delete connections[key];
+            if (value.connection.destroyed) delete connections[key];
 
 }, 1000)
 

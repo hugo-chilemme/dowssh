@@ -14,10 +14,8 @@ class Connection {
 
     constructor(window, connection, uuid) {
         this.window = window;
-        this.sftp = new Client();
-        this.destroyed = false;
         this.options = {show_hidden_files: false, sort: 'ascending'};
-        this.connection = {uuid: uuid, connection_id: connection};
+        this.connection = {uuid: uuid, connection_id: connection, destroyed:false, sftp: new Client() };
         this.connect();
     }
 
@@ -31,7 +29,7 @@ class Connection {
 
     async sftpList(path) {
         let sending = [];
-        for (const [key, value] of Object.entries(await this.sftp.list(path))) {
+        for (const [key, value] of Object.entries(await this.connection.sftp.list(path))) {
             if (value.name.substring(0, 1) === "." && this.options.show_hidden_files) sending.push(value);
             else if (value.name.substring(0, 1) !== ".") sending.push(value);
         }
@@ -46,17 +44,15 @@ class Connection {
 
 
     async connect() {
-        let returned = false;
         try {
             const config = await host.get(this.connection.uuid);
             if(config.privatekey && config.privatekey.includes('PuTTY')) {
-                let key = sshpk.parsePrivateKey(config.privatekey, 'putty');
-                let openssh = key.toString('openssh');
+                let openssh = sshpk.parsePrivateKey(config.privatekey, 'putty').toString('openssh');
                 keytar.setPassword(this.connection.uuid+"-privatekey", "default", openssh);
                 config.privatekey = openssh;
             }
 
-            await this.sftp.connect({
+            await this.connection.sftp.connect({
                 host: config.host,
                 password: config.password,
                 port: config.port,
@@ -67,23 +63,20 @@ class Connection {
                 debug: (e) => {
                     if(e.includes('publickey auth failed')) {
                         this.sendClient('profiler-connect-status', {status: 3, error: "L'hôte à refusé la publickey "})
-                        returned = true;
-                        this.destroyed = true
+                        this.connection.destroyed = true
                     }
                     if(e.includes('ERR_BAD_AUTH')) {
                         this.sendClient('profiler-connect-status', {status: 3, error: "L'authentification a échoué"})
-                        returned = true;
-                        this.destroyed = true
+                        this.connection.destroyed = true
                     }
 
                 }
             });
             await this.sendClient('profiler-connect-status', {status: 1})
-            returned = true
         } catch (e) {
-            if(!returned)
+            if(!this.connection.destroyed)
                 await this.sendClient('profiler-connect-status', {status: 3, error: "Aucune réponse de l'hôte"})
-            this.destroyed = true
+            this.connection.destroyed = true
         }
     }
 

@@ -26,6 +26,7 @@ const checkUpdate = async () => {
                 app.exit();
             });
         });
+        start(win);
     });
 }
 
