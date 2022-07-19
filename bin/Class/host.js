@@ -61,6 +61,7 @@ class Host {
 
     async getAll(renew = false) {
         if(!hosts || renew) {
+            hosts = [];
             await fs.readdir(project_path + "/profile/hosts", async (err, files) => {
                 if (!err) {
                     for(let i = 0; i < files.length; i++) {

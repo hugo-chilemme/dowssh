@@ -55,7 +55,6 @@ const sendData = (type, data) => windows.application.send(type, data);
 ipcMain.on("profiler-get", async (event, type) => {
     if (type !== "hosts") return;
     const hosts = await host.getAll();
-    console.log(hosts);
     await host.getAll(true);
     return sendData('profiler-' + type, hosts)
 })
