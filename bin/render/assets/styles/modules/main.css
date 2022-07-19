@@ -193,7 +193,7 @@ label.addInput {
     display:none;
 }
 .connections-menu .onglet-add:hover, .connections-menu .onglet-other:hover {
-    transform:scale(1.4);
+    transform:scale(1.5);
 }
 
 .connections-menu .item {
