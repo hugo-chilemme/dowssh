@@ -118,7 +118,7 @@ const displayAction = (e, uuid) => {
 }
 
 const downloadFile = (conn_id) => {
-    doc.querySelector('.connections #conn-' + conn_id + " .repositories").innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div><p>Downloading ${element.getAttribute('name')} ...</p></div>`;
+    doc.querySelector('.connections #conn-' + conn_id + " .repositories").innerHTML = `<div class="loading"><div class="loader-animation"><span></span><span></span><span></span></div></div>`;
 }
 const extRegex = /(?:\.([^.]+))?$/;
 ipcRenderer.on('profiler-sftp-list', async (event, data) => {
