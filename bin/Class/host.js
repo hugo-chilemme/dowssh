@@ -1,7 +1,7 @@
 const Create = require('../doc');
 const create = new Create();
 const md5 = require('md5');
-
+const fs = require('fs-extra')
 const keytar = require('keytar')
 const {Client} = require('ssh2');
 
