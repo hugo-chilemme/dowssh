@@ -10,7 +10,6 @@
     -webkit-user-select: none;
     -webkit-app-region: drag;
     justify-content: flex-end;
-    cursor: pointer;
     align-items: center;
     display: flex;
 }
@@ -25,7 +24,6 @@
 .header  div {
     display: inline-grid;
     padding: 0 15px;
-    cursor: pointer;
     -webkit-app-region: no-drag;
     height: 100%;
     border-radius: 7px;

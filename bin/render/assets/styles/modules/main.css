@@ -184,7 +184,6 @@ label.addInput {
 .connections-menu .onglet-add, .connections-menu .onglet-other {
     display: inline-grid;
     padding: 0 35px;
-    cursor: pointer;
     margin-left:10px;
     height: 100%;
     border-radius: 7px;
@@ -202,7 +201,6 @@ label.addInput {
 .connections-menu .item {
     display: inline-flex;
     padding: 0 25px 0 15px;
-    cursor: pointer;
     -webkit-app-region: no-drag;
     width: auto;
     height: calc(100% - 30px);
@@ -283,7 +281,13 @@ label.addInput {
     transition: 250ms;
 }
 
+.connections-menu .item:not(.active):hover h4 {
+    transform:translateY(-1px);
+}
 
+.connections-menu .item:not(.active):hover p {
+    opacity: 1;
+}
  .connections-menu .item.active h4 {
     transform:translateY(-1px);
 }
