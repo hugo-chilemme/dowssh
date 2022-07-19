@@ -5,14 +5,11 @@ const elementConnections = doc.querySelector('.connections');
 const elementRepositories = doc.querySelector('.connections .repositories');
 const elementHome = doc.querySelector('.home');
 
-doc.querySelector('.hosts').addEventListener("click", event => {
-    const element = event.target.closest('.item');
-    if (!element) return;
-})
-
 let connections = {};
 ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (!connections[data.conn_id]) connections[data.conn_id] = data;
+
+    const uuid = connections[data.conn_id].uuid;
     if (data.status === 0) {
         doc.querySelector('.main .menu').style.left = "-460px";
         const div_conn = doc.createElement('div');
@@ -21,11 +18,10 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         doc.querySelector('.connections').setAttribute('active', data.conn_id);
         const target = doc.createElement('div');
         target.classList.add('target_listening');
-        target.setAttribute('id', 'log-'+data.conn_id);
+        target.setAttribute('id', 'log-' + data.conn_id);
         target.addEventListener('click', () => {
             notification.success("Chemin d'accès copié");
-            let copy = target.innerText;
-            navigator.clipboard.writeText(copy);
+            navigator.clipboard.writeText(target.innerText);
         })
         div_conn.appendChild(target);
 
@@ -35,61 +31,50 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         div_conn.appendChild(repositories);
         elementConnections.appendChild(div_conn);
         let name = hosts[data.uuid].host;
-        if(hosts[data.uuid].name) name = hosts[data.uuid].name;
+        if (hosts[data.uuid].name) name = hosts[data.uuid].name;
+
+
         let count = 0;
         for (const [key, value] of Object.entries(connections))
-            if(value.uuid === data.uuid) count+=1;
-        if(count > 1) name += ` (${count})`;
+            if (value.uuid === data.uuid) count += 1;
+        count > 1 ? name += ` (${count})` : null;
+
 
         document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item active"><div><i class='bx bx-broadcast' ></i></div><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div><div><div class="closed"><i class='bx bx-x'></i></div></div></div>`
         renewTabs();
 
     }
     if (data.status === 1) {
-
-        const uuid = connections[data.conn_id].uuid;
         elementConnections.classList.remove('hide');
         elementHome.classList.add('hide');
+        let repos = hosts[uuid].username !== "root" ? "/home/" + hosts[uuid].username : '/root';
 
-        let repos = '/root';
-        if (hosts[uuid].username !== "root") repos = "/home/" + hosts[uuid].username;
         sendData('profiler-sftp-list', {conn_id: data.conn_id, path: repos});
         doc.querySelector('.loader').style.display = "none";
     }
-    if (data.status === 3) {
-        elementHome.classList.remove('hide');
-        const uuid = connections[data.conn_id].uuid;
-        doc.querySelector('#tab-'+data.conn_id).remove();
-        document.querySelector('#conn-'+data.conn_id).remove();
-        doc.querySelectorAll('.connections .conn-id').forEach((e) => e.classList.add('hide'));
-        doc.querySelector('.home').classList.remove('hide');
+    if (data.status === 3)
+        closeOnglet(uuid, null, hosts[uuid].host + " : " + data.error);
 
-        doc.querySelector('.connections').classList.add('hide');
-        notification.error(hosts[uuid].host + " : "+data.error);
-        doc.querySelector('.loader').style.display = "none";
-    }
 })
-let path_seek = null;
+const closeOnglet = (uuid, success = null, error = null) => {
+    const isActive = doc.querySelector('.connections').getAttribute('active') === uuid ? true : false;
+    doc.querySelector('#tab-' + uuid).remove();
+    doc.querySelector('#conn-' + uuid).remove();
+    doc.querySelector('.loader').style.display = "none";
+    if(success) notification.success(success);
+    if(error) notification.error(error);
+    delete connections[uuid];
+    sendData('profiler-disconnect', uuid);
+    if(isActive) menu.home();
+}
 
 const renewTabs = () => {
-    document.querySelectorAll('#onglets .item').forEach((e) => {
-       let element = e;
-        const uuid = element.getAttribute('uuid');
-       element.addEventListener('click', (e) => {
-           if(e.target.closest('.closed')) return;
-            menu.displayConnection(uuid);
-       })
-        document.querySelector('#onglets .item#tab-'+uuid + " .closed").addEventListener('click', () => {
-            doc.querySelector('#tab-'+uuid).remove();
-            doc.querySelector('#conn-'+uuid).remove();
-            doc.querySelector('.main').classList.remove('open-menu');
-            doc.querySelector('.main .menu').style.left = "-450px";
-            doc.querySelector('.home').classList.remove('hide');
-            doc.querySelector('.connections').classList.add('hide');
-            notification.success(`déconnecté`);
-            delete connections[uuid];
-            sendData('profiler-disconnect', uuid);
+    doc.querySelectorAll('#onglets .item').forEach((e) => {
+        const uuid = e.getAttribute('uuid');
+        e.addEventListener('click', (e) => {
+            if (!e.target.closest('.closed')) return menu.displayConnection(uuid);
         })
+        doc.querySelector('#onglets .item#tab-' + uuid + " .closed").addEventListener('click', () => closeOnglet(uuid, 'Déconnexion'))
     });
 }
 const elementClickable = (conn_id) => {
@@ -99,35 +84,36 @@ const elementClickable = (conn_id) => {
         const element = items[i];
         element.addEventListener('dblclick', function (e) {
             if (element.getAttribute('type') === "folder")
-                return sendData('profiler-sftp-list', {conn_id: conn_id, path: e.target.closest('.item').getAttribute('target') });
+                return sendData('profiler-sftp-list', {
+                    conn_id: conn_id,
+                    path: e.target.closest('.item').getAttribute('target')
+                });
             downloadFile(conn_id);
         });
         element.addEventListener('click', (e) => selected(e, element, false))
         element.addEventListener('contextmenu', (e) => selected(e, element, true))
-
-        const selected = (e, element, clicked = false) => {
-            items.forEach(item => item.classList.remove('selected'));
-            element.classList.add('selected');
-            if(clicked) displayAction(e, element.getAttribute('uuid'));
-        }
     }
-
+    const selected = (e, element, clicked = false) => {
+        items.forEach(item => item.classList.remove('selected'));
+        element.classList.add('selected');
+        if (clicked) displayAction(e, element.getAttribute('uuid'));
+    }
 
 }
 doc.querySelector('.contains').addEventListener('click', (e) => {
-    if(doc.querySelector('.rightclick').classList.contains('hide')) return;
-    if(!e.target.closest('.rightclick')) doc.querySelector('.rightclick').classList.add('hide')
+    if (doc.querySelector('.rightclick').classList.contains('hide')) return;
+    if (!e.target.closest('.rightclick')) doc.querySelector('.rightclick').classList.add('hide')
 })
 
-window.addEventListener('scroll',(event) => {
-    if(doc.querySelector('.rightclick').classList.contains('hide')) return;
-     doc.querySelector('.rightclick').classList.add('hide')
+window.addEventListener('scroll', (event) => {
+    if (doc.querySelector('.rightclick').classList.contains('hide')) return;
+    doc.querySelector('.rightclick').classList.add('hide')
 });
 const displayAction = (e, uuid) => {
-    if(doc.querySelector(`.item[uuid="${uuid}"]`).hasAttribute('not-folder')) return;
-    doc.querySelector('.rightclick').style.left = (e.pageX-50) +"px";
+    if (doc.querySelector(`.item[uuid="${uuid}"]`).hasAttribute('not-folder')) return;
+    doc.querySelector('.rightclick').style.left = (e.pageX - 50) + "px";
     doc.querySelector('.rightclick').classList.remove('hide');
-    doc.querySelector('.rightclick').style.top = (e.pageY+10) +"px";
+    doc.querySelector('.rightclick').style.top = (e.pageY + 10) + "px";
 }
 
 const downloadFile = (conn_id) => {
@@ -140,7 +126,7 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
     repositories.innerHTML = "";
     let repos = [];
     let files = [];
-    doc.querySelector('#log-'+data.conn_id).innerText = data.path;
+    doc.querySelector('#log-' + data.conn_id).innerText = data.path;
     repositories.innerHTML += `<div class="head"><div></div><div>Name</div><div>Date Modified</div><div>Size</div><div>Permissions</div></div>`;
     if (data.path !== "/") {
         const uuid = genUuid();
@@ -162,35 +148,34 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
         item.setAttribute('uuid', uuid)
 
 
-
         item.innerHTML = `<div></div><div>..</div><div></div>`;
         item.classList.add('gray');
         repositories.appendChild(item);
     }
 
     let path = data.path;
-    if(data.path === "/") path = "";
+    if (data.path === "/") path = "";
     for (const [key, value] of Object.entries(data.result)) {
         const uuid = genUuid();
         const ext = extRegex.exec(value.name)[1]; // Maybe null
-        if(value.type === "d")
+        if (value.type === "d")
             repositories.innerHTML += `<div type="folder" class="item" target="${path}/${value.name}" uuid="${uuid}"><div><i class='bx bx-folder'></i></div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div></div><div>${value.longname.split(' ')[0]}</div></div>`;
         else
-            repositories.innerHTML += `<div type="file" class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${ icones[ext] ? icones[ext] : 'bx-file-blank'}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
+            repositories.innerHTML += `<div type="file" class="item" uuid="${uuid}" name="${value.name}"><div><i class='bx ${icones[ext] ? icones[ext] : 'bx-file-blank'}'></i> </div><div>${value.name}</div><div>${new Date(value.modifyTime).toLocaleString()}</div><div>${formatBytes(value.size)}</div><div>${value.longname.split(' ')[0]}</div></div>`;
 
     }
-    if(Object.entries(data.result).length === 0)
+    if (Object.entries(data.result).length === 0)
         repositories.innerHTML += "<error>Ce dossier est vide</error>";
 
     elementClickable(data.conn_id);
 
 });
 doc.querySelector('.hosts').addEventListener("click", event => {
-    if(!event.target.closest('.icon')) return;
+    if (!event.target.closest('.icon')) return;
 });
 doc.querySelector('.hosts').addEventListener("dblclick", event => {
     const element = event.target.closest('.item');
-    if(event.target.closest('.icon')) return;
+    if (event.target.closest('.icon')) return;
     if (!element) return;
     const uuid = element.getAttribute('host');
     doc.querySelector('.loader stop').style.display = "inline-flex";
