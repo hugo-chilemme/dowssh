@@ -49,7 +49,7 @@ const application = async () => {
     })
     windows.application.loadFile('./bin/render/app.html');
 
-    windows.minimize();
+    windows.start.minimize();
     setTimeout(() => {
         windows.start.close()
     }, 2000)
