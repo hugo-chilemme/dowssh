@@ -53,7 +53,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         doc.querySelector('.loader').style.display = "none";
     }
     if (data.status === 3)
-        closeOnglet(uuid, null, hosts[uuid].host + " : " + data.error);
+        closeOnglet(data.conn_id, null, hosts[uuid].host + " : " + data.error);
 
 })
 const closeOnglet = (uuid, success = null, error = null) => {

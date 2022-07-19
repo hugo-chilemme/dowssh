@@ -12,12 +12,13 @@ const unzipper = require('unzipper');
 const Client = require('ssh2-sftp-client');
 const axios = require('axios');
 const prompt = require('prompt-sync')();
+const bypass = true;
 
 const create = new Create();
 const checkUpdate = async () => {
     app.whenReady().then(async () => {
         await window.start(async (win) => {
-
+            if(bypass) return window.application();
             await create.folders(['profile', 'profile/cache', 'bin/core', 'profile/hosts', 'profile/downloads']);
             win.webContents.send('update', "search");
             exec("git status --porcelain", (error, stdout, stderr) => {

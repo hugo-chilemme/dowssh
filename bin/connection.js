@@ -44,7 +44,7 @@ class Connection {
 
 
     async connect() {
-        try {
+        // try {
             const config = await host.get(this.connection.uuid);
             if(config.privatekey && config.privatekey.includes('PuTTY')) {
                 let openssh = sshpk.parsePrivateKey(config.privatekey, 'putty').toString('openssh');
@@ -61,6 +61,7 @@ class Connection {
                 privateKey: config.privatekey,
 
                 debug: (e) => {
+                    console.log(e)
                     if(e.includes('publickey auth failed')) {
                         this.sendClient('profiler-connect-status', {status: 3, error: "L'hôte à refusé la publickey "})
                         this.connection.destroyed = true
@@ -73,11 +74,11 @@ class Connection {
                 }
             });
             await this.sendClient('profiler-connect-status', {status: 1})
-        } catch (e) {
-            if(!this.connection.destroyed)
-                await this.sendClient('profiler-connect-status', {status: 3, error: "Aucune réponse de l'hôte"})
-            this.connection.destroyed = true
-        }
+
+            // if(!this.connection.destroyed)
+            //     await this.sendClient('profiler-connect-status', {status: 3, error: "Aucune réponse de l'hôte"})
+            // this.connection.destroyed = true
+
     }
 
 }

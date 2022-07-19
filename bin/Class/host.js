@@ -42,24 +42,24 @@ class Host {
     }
 
     async get(uuid) {
-        let datas = await this.getAll();
         let callback = {};
-        for (let i = 0; i < datas.length; i++) {
-            if (datas[i].uuid === uuid) {
+        for (let i = 0; i < hosts.length; i++) {
+            if (hosts[i].uuid === uuid) {
                 callback = {
-                    host: datas[i].host,
-                    uuid: datas[i].uuid,
-                    port: datas[i].port,
-                    username: datas[i].username
+                    host: hosts[i].host,
+                    uuid: hosts[i].uuid,
+                    port: hosts[i].port,
+                    username: hosts[i].username
                 };
-                console.log(datas[i])
-                if (datas[i].name) callback.name = datas[i].name;
+                if (hosts[i].name) callback.name = hosts[i].name;
                 callback.password = await keytar.getPassword(uuid, 'default');
                 callback.passphrase = await keytar.getPassword(uuid + "-passphrase", 'default');
                 callback.privatekey = await keytar.getPassword(uuid + "-privatekey", 'default');
             }
         }
         return callback;
+
+
     }
 
 
@@ -71,7 +71,9 @@ class Host {
                 const result = await create.read("/profile/hosts/" + files[i]);
                 hosts.push(Object.assign({}, result, {uuid: files[i].split('.json')[0]}));
             }
-            cb(hosts);
+            if (cb) cb(hosts);
+            return hosts;
+
         });
 
     }
