@@ -37,5 +37,5 @@ doc.querySelector('[action="window-reduce"]').addEventListener('click', () => {
 })
 
 const winAction = (type, force = false) => {
-    sendData('window', type);
+    sendData('window', {type: 'application', action: type});
 }

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dowssh</title>
+    <link href="assets/styles/base.css" rel="stylesheet">
+    <link href="assets/styles/header.css" rel="stylesheet">
+
+    <link href="assets/fonts/Ubuntu.css" rel="stylesheet">
+    <link href="assets/fonts/boxicons/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<style>
+
+    .contains {
+        margin: 25px;
+    }
+
+
+    .loader {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #edf1f2;
+    }
+
+    .loader-animation {
+        display: flex;
+        flex-direction: column;
+        height: 200px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loader-animation span {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 100px;
+        border: 3px solid #009BFF;
+        animation: loader 2s infinite;
+    }
+
+    .loader-animation span:nth-child(1) {
+        animation-delay: -0.99s
+    }
+
+    .loader-animation span:nth-child(2) {
+        animation-delay: -0.66s
+    }
+
+    .loader-animation span:nth-child(3) {
+        animation-delay: -0.33s
+    }
+
+    @keyframes loader {
+        0% {
+            transform: scale(0);
+            z-index: 3;
+            opacity: 1;
+        }
+        50% {
+            transform: scale(2);
+            z-index: 2;
+        }
+        75% {
+            transform: scale(2);
+
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0);
+            z-index: 0;
+        }
+    }
+
+    .ent {
+        display: flex;
+        flex-direction: column;
+        height: 300px;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .ent .sync {
+        background: #E8E8E8;
+        margin-top: 50px;
+        padding: 15px 25px;
+        display: grid;
+        grid-template-columns: 50px calc(100% - 50px);
+        width: 100%;
+        align-items: center;
+    }
+
+    .ent .sync h4 {
+        color: #141236;
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+    .ent .sync p {
+        color: #505050;
+        font-weight: 400;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .login {
+        padding: 30px ;
+    }
+
+    .login .btn {
+        padding: 10px;
+        background: #fff;
+        cursor: pointer;
+        display: flex;
+        box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+        border-radius: 7px;
+        align-items: center;
+        justify-content: center;
+        color:#141236;
+        margin-bottom: 10px;
+        font-size:14px;
+        transition: 250ms;
+        font-weight: 600;
+    }
+
+    .login .btn:hover {
+        transform:scale(1.05)
+    }
+
+    .login .btn img {
+        margin-right:10px;
+        height:32px;
+        width:32px;
+        display:inline-flex;
+    }
+
+    .login p {
+        margin-top: 5px;
+    }
+
+
+</style>
+<div class="contains">
+    <div class="header">
+        <div action="window-close">
+            <i class='bx bx-x'></i>
+        </div>
+    </div>
+    <div class="ent">
+        <h2>Salut 👋</h2>
+        <div class="sync">
+            <div>
+                <i class='bx bx-message-error'></i>
+            </div>
+            <div>
+                <h4>Vous n'êtes pas connecté</h4>
+                <p>Connectez-vous pour les synchronisés </p>
+            </div>
+        </div>
+    </div>
+    <div class="login">
+        <div class="btn" connect="google">
+            <img src="https://www.google.com/favicon.ico"> Se connecter à Google
+        </div>
+        <div class="btn" connect="github">
+            <img src="https://github.com/favicon.ico"> Se connecter à GitHub
+        </div>
+
+
+    </div>
+    <div class="loader">
+        <div class="loader-animation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<script>
+    const doc = document;
+    const {ipcRenderer} = require('electron')
+    const sendData = (type, value) => ipcRenderer.send(type, value)
+    setTimeout(() => {
+        doc.querySelector('.loader').classList.add('hide');
+    }, 1000)
+
+    doc.querySelectorAll('.btn[connect]').forEach((e) => {
+        e.addEventListener('click', (ev) => {
+            sendData('profiler-account-redirect', e.getAttribute('connect'));
+        })
+    })
+
+    doc.querySelector('[action="window-close"]').addEventListener('click', () => {
+        sendData('window', {type: 'account', action: 'close'});
+    })
+</script>
+</body>
+</html>

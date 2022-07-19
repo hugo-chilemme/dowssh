@@ -26,6 +26,14 @@ const sendData = (type, value) => {
     ipcRenderer.send(type, value);
 }
 
+doc.querySelector('[action="onglet-account"]').addEventListener('click', () => {
+    doc.querySelector('.loader').style.display = "flex";
+    sendData("profiler-account", "open");
+})
+ipcRenderer.on('profiler-account-status', async (event, data) => {
+    doc.querySelector('.loader').style.display = "none";
+})
+
 window.addEventListener('load', () => sendData('profiler-get', 'hosts'), false)
 
 

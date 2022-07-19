@@ -163,9 +163,10 @@ label.addInput {
 .connections-menu {
     display: flex;
     height: 65px;
-    margin-right:150px;
+    padding:0 0 0 25px;
     -webkit-user-select: none;
     -webkit-app-region: drag;
+    margin-right: 150px;
     margin-bottom: 25px;
     align-items: center;
 }
@@ -177,11 +178,11 @@ label.addInput {
     height: 65px;
     align-items: center;
 }
-.connections-menu .onglet-add, .connections-menu .onglet-other {
+.connections-menu .onglet-btn, .connections-menu .onglet-other {
     display: inline-grid;
-    padding: 0 35px;
-    margin-left:10px;
+    padding: 0 15px;
     height: 100%;
+    font-size:16px;
     border-radius: 7px;
     -webkit-app-region: no-drag;
     align-items: center;
@@ -190,7 +191,7 @@ label.addInput {
 .connections-menu .onglet-other {
     display:none;
 }
-.connections-menu .onglet-add:hover, .connections-menu .onglet-other:hover {
+.connections-menu .onglet-btn:hover, .connections-menu .onglet-other:hover {
     transform:scale(1.5);
 }
 
@@ -221,8 +222,9 @@ label.addInput {
     min-width: 250px;
     opacity: 0;
     visibility: hidden;
-    z-index: 999;
+    z-index: 999999;
     border-radius: 7px;
+
     background: #2A2671;
     display:grid;
     line-height: 1.25em;

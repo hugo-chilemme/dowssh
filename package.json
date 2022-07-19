@@ -26,6 +26,7 @@
     "keytar": "^7.9.0",
     "md5": "^2.3.0",
     "prompt-sync": "^4.2.0",
+    "shell": "^0.9.4",
     "shelljs": "^0.8.5",
     "ssh2": "^1.11.0",
     "ssh2-sftp-client": "^9.0.1",

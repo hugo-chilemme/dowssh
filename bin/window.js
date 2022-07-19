@@ -6,7 +6,7 @@ const Connection = require('./connection');
 const Host = require('./Class/host');
 const host = new Host();
 const md5 = require('md5');
-
+const shell = require('electron').shell;
 let connections = {};
 let windows = {};
 
@@ -27,6 +27,7 @@ const start = async (callback) => {
             contextIsolation: false
         }
     })
+    windows.start.focus();
     windows.start.loadFile('./bin/render/start.html');
    setTimeout(() =>  callback(windows.start), 2000)
 }
@@ -81,6 +82,32 @@ ipcMain.on('profiler-disconnect', async (event, conn_id) => {
     delete connections[conn_id];
 
 })
+ipcMain.on('profiler-account', async (event) => {
+    if(!windows.account)
+        windows.account = new BrowserWindow({
+            width: 450,
+            height: 650,
+            resizable: false,
+            transparent: true,
+            center:false,
+            x: 0,
+            y: 0,
+            frame: false,
+            icon: './bin/render/Dowssh.ico',
+            webPreferences: {
+                webviewTag: true,
+                nodeIntegration: true,
+                contextIsolation: false
+            }
+        })
+    windows.account.loadFile('./bin/render/account.html');
+    sendData('profiler-account-status', 1)
+})
+
+ipcMain.on('profiler-account-redirect', async (event, site) => {
+    console.log(site)
+    shell.openExternal("https://hugochilemme.com/oauth?scope="+md5(site))
+});
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
     if (connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
@@ -88,10 +115,12 @@ ipcMain.on('profiler-sftp-list', async (event, data) => {
 
 
 ipcMain.on('window', async (event, data) => {
-    if (data === "reduce")
-        windows.application.isMinimized() ? windows.application.restore() : windows.application.minimize()
-    if (data === "close")
-        windows.application.close()
+    if (data.action === "reduce")
+        windows[data.type].isMinimized() ? windows[data.type].restore() : windows[data.type].minimize()
+    if (data.action === "close") {
+        windows[data.type].close();
+        delete windows[data.type];
+    }
 
 
 })
