@@ -6,6 +6,7 @@ const elementRepositories = doc.querySelector('.connections .repositories');
 const elementHome = doc.querySelector('.home');
 
 let connections = {};
+let first_host = true;
 ipcRenderer.on('profiler-connect-status', async (event, data) => {
     if (!connections[data.conn_id]) connections[data.conn_id] = data;
 
@@ -46,7 +47,11 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
 
     }
     if (data.status === 1) {
-
+        if(first_host) {
+            doc.querySelector('.conseil').classList.add('show');
+            setTimeout(async() => doc.querySelector('.conseil').classList.remove('show'), 4000)
+            first_host = false;
+        }
         let repos = hosts[uuid].username !== "root" ? "/home/" + hosts[uuid].username : '/root';
         menu.displayConnection(data.conn_id);
         sendData('profiler-sftp-list', {conn_id: data.conn_id, path: repos});

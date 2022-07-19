@@ -215,8 +215,41 @@ label.addInput {
 #onglets .item.active h4 {
     color:#2A2671;
 }
+.conseil {
+    position: fixed;
+    right: 112px;
+    top: 6px;
+    padding: 7px 15px;
+    min-width: 250px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 999;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    border-radius: 10px;
+    background: #2A2671;
+    display:grid;
+    line-height: 1.25em;
+    max-width: 300px;
+    transition: 250ms linear;
+    grid-template-columns: calc(100% - 75px) 75px;
+}
 
-
+.conseil.show {
+    visibility: inherit;
+    opacity: 1;
+}
+.conseil h4 {
+    font-weight: 400;
+    color:#eee;
+    font-size:13px;
+}
+.conseil div:nth-child(2) {
+    display: flex;
+    font-size:16px;
+    justify-content: flex-end;
+    color:#fff;
+    align-items: center;
+}
 .connections-menu .item h4 {
     font-weight: 600;
     color:#606060;
