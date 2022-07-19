@@ -26,10 +26,10 @@ const checkUpdate = async () => {
                 exec("git pull", (error, stdout, stderr) => {
                     app.relaunch();
                     app.exit();
+                    return;
                 });
-                return;
             });
-            window.application();
+
         });
     });
 }
