@@ -25,7 +25,6 @@
     right: 60px;
     display: inline-flex;
     border-radius: 5px;
-    cursor: pointer;
     padding: 9px;
     color: #959595;
 }
@@ -54,7 +53,6 @@
     border-radius: 7px;
 
     grid-template-columns: 30px calc(100% - 30px);
-    cursor: pointer;
     color: #858585;
     transition: 250ms;
     align-items: center;
@@ -79,7 +77,6 @@
 
 .main .menu .field-dropdown div {
     display:flex;
-    cursor: pointer;
     color:#aaa;
     padding:15px 20px;
     font-size:14px;
@@ -134,7 +131,6 @@ label.addInput {
     color:#fff;
     font-size:20px;
     justify-content: center;
-    cursor: pointer;
     align-items: center;
     transition: 250ms;
 }
@@ -324,7 +320,6 @@ error {
 .target_listening {
     position: fixed;
     bottom: 0;
-    cursor: pointer;
     left:0;
     font-size:13px;
     padding:10px;
@@ -368,7 +363,6 @@ error {
 }
 
 .connections .repositories .item:hover {
-    cursor: pointer;
     background:#E8E8E8;
 }
 .connections .connection {
@@ -413,7 +407,6 @@ error {
     color: #959595;
     top: 30px;
     font-size: 25px;
-    cursor: pointer;
 }
 
 .menu .close:hover {

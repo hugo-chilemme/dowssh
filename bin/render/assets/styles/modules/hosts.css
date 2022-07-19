@@ -7,7 +7,6 @@
 .hosts-action span {
     display:inline-flex;
     padding:14px;
-    cursor: pointer;
     border:1px solid rgba(0, 0, 0, 0.05);
     font-size:25px;
     border-radius: 10px;
@@ -32,7 +31,6 @@
     transition: 250ms;
     border-radius: 10px;
     margin-bottom: 25px;
-    cursor: pointer;
     margin-right: 25px;
     overflow: hidden;
     flex-direction: column;
