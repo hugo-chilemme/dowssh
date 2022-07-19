@@ -19,6 +19,7 @@ const menu = {
         doc.querySelector('.connections').setAttribute('active', uuid);
         doc.querySelector('.connections #conn-'+uuid).classList.remove('hide');
         doc.querySelector('#tab-'+uuid).classList.add('active');
+        doc.querySelector('#onglet-disconnect').classList.remove('hide');
     },
     home: () => {
         doc.querySelector('.main').classList.remove('open-menu');
@@ -26,6 +27,7 @@ const menu = {
         doc.querySelectorAll('#onglets .item').forEach((e) => e.classList.remove('active'));
         doc.querySelector('.connections').setAttribute('active', "default");
         doc.querySelector('.home').classList.remove('hide');
+        doc.querySelector('#onglet-disconnect').classList.add('hide');
         doc.querySelector('.connections').classList.add('hide');
     }
 }

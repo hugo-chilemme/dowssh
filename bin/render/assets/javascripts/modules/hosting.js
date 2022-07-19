@@ -11,7 +11,6 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
 
     const uuid = connections[data.conn_id].uuid;
     if (data.status === 0) {
-        doc.querySelector('.main .menu').style.left = "-460px";
         const div_conn = doc.createElement('div');
         div_conn.setAttribute('id', 'conn-' + data.conn_id);
         div_conn.classList.add('conn-id');
@@ -40,15 +39,16 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         count > 1 ? name += ` (${count})` : null;
 
 
-        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item active"><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div></div>`
+        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item"><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div></div>`
+
+        setTimeout(async () => doc.querySelector('#tab-'+data.conn_id).classList.add('active'),500)
         renewTabs();
 
     }
     if (data.status === 1) {
-        elementConnections.classList.remove('hide');
-        elementHome.classList.add('hide');
-        let repos = hosts[uuid].username !== "root" ? "/home/" + hosts[uuid].username : '/root';
 
+        let repos = hosts[uuid].username !== "root" ? "/home/" + hosts[uuid].username : '/root';
+        menu.displayConnection(data.conn_id);
         sendData('profiler-sftp-list', {conn_id: data.conn_id, path: repos});
         doc.querySelector('.loader').style.display = "none";
     }
@@ -72,8 +72,9 @@ const renewTabs = () => {
     doc.querySelectorAll('#onglets .item').forEach((e) => {
         const uuid = e.getAttribute('uuid');
         e.addEventListener('click', (e) => {
-            if (!e.target.closest('.closed')) return menu.displayConnection(uuid);
+            menu.displayConnection(uuid);
         })
+
 
     });
 }
@@ -173,6 +174,14 @@ ipcRenderer.on('profiler-sftp-list', async (event, data) => {
 doc.querySelector('.hosts').addEventListener("click", event => {
     if (!event.target.closest('.icon')) return;
 });
+
+doc.querySelector('[action="onglet-disconnect"]').addEventListener("click", event => {
+    let uuid = doc.querySelector('.connections').getAttribute('active');
+    if(uuid === "default") return;
+    closeOnglet(uuid, "Succès de déconnexion");
+});
+
+
 doc.querySelector('.hosts').addEventListener("dblclick", event => {
     const element = event.target.closest('.item');
     if (event.target.closest('.icon')) return;
@@ -181,12 +190,6 @@ doc.querySelector('.hosts').addEventListener("dblclick", event => {
     doc.querySelector('.loader stop').style.display = "inline-flex";
     doc.querySelector('.loader').style.display = "flex";
     menu.close();
-    doc.querySelector('#loader-status').innerText = `Envoi de la demande`;
     sendData('profiler-connect', uuid);
 })
 
-doc.querySelector('[action="connect-cancel"]').addEventListener('click', async () => {
-    doc.querySelector('#loader-status').innerText = `Tentative d'annulation...`;
-    doc.querySelector('.loader').style.display = "none";
-    doc.querySelector('.loader stop').style.display = "none";
-})
