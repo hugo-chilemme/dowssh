@@ -12,9 +12,6 @@ const checkAddress = (str) => {
 let hosts = [];
 
 class Host {
-    constructor() {
-        this.getAll(true);
-    }
 
     add(value, cb) {
         if (!checkAddress(value.host.trim())) return cb({type: "addHost", error: true, message: "Hôte invalide"});
