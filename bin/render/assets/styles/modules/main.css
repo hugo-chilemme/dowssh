@@ -224,11 +224,11 @@ label.addInput {
     opacity: 0;
     visibility: hidden;
     z-index: 999;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    border-radius: 10px;
+    border-radius: 7px;
     background: #2A2671;
     display:grid;
     line-height: 1.25em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     max-width: 300px;
     transition: 250ms linear;
     grid-template-columns: calc(100% - 75px) 75px;
