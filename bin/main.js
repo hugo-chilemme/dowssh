@@ -12,7 +12,7 @@ const unzipper = require('unzipper');
 const Client = require('ssh2-sftp-client');
 const axios = require('axios');
 const prompt = require('prompt-sync')();
-const bypass = true;
+const bypass = false;
 
 const create = new Create();
 const checkUpdate = async () => {

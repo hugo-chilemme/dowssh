@@ -65,17 +65,12 @@ class Host {
 
     async list(cb) {
         hosts = [];
-        await fs.readdir(project_path + "/profile/hosts", async (err, files) => {
-            if (err) return console.error(err);
-            for (let i = 0; i < files.length; i++) {
-                const result = await create.read("/profile/hosts/" + files[i]);
-                hosts.push(Object.assign({}, result, {uuid: files[i].split('.json')[0]}));
-            }
-            if (cb) cb(hosts);
-            return hosts;
-
-        });
-
+        const files = await fs.readdirSync(project_path + "/profile/hosts")
+        for (let i = 0; i < files.length; i++) {
+            const result = await create.read("/profile/hosts/" + files[i]);
+            hosts.push(Object.assign({}, result, {uuid: files[i].split('.json')[0]}));
+        }
+        cb(hosts);
     }
 }
 
