@@ -167,7 +167,7 @@ label.addInput {
 .connections-menu {
     display: flex;
     height: 65px;
-    margin-right:100px;
+    margin-right:150px;
     -webkit-user-select: none;
     -webkit-app-region: drag;
     margin-bottom: 25px;
