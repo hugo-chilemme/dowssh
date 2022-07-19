@@ -2,16 +2,16 @@ console.log('modules/hosts.js loaded');
 
 let hosts = {};
 const elementHosts = doc.querySelector('.hosts');
+doc.querySelector('.hosts').innerHTML = "";
 
 ipcRenderer.on('profiler-hosts', async (event, data) => {
-    doc.querySelector('.hosts').innerHTML = "";
-    console.log(data);
     for (const [key, value] of Object.entries(data))
         addHostElement(value.uuid, value.host, value.username, value.port, value.name);
     doc.querySelector('.loader').style.display = "none";
 })
 
 const addHostElement = (uuid, host, username, port, name, alert = false) => {
+    console.log(host);
     hosts[uuid] = {uuid: uuid, username: username, port: port, host: host, name: name};
     if (alert) notification.success("Ajouté avec succès");
     menu.close();
