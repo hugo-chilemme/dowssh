@@ -50,7 +50,7 @@ const application = async () => {
         }
     })
     windows.application.loadFile('./bin/render/app.html');
-    setTimeout(() => windows.start.close(), 1000)
+    windows.start.close()
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
