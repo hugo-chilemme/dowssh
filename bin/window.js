@@ -48,7 +48,11 @@ const application = async () => {
         }
     })
     windows.application.loadFile('./bin/render/app.html');
-    windows.start.close()
+
+    windows.minimize();
+    setTimeout(() => {
+        windows.start.close()
+    }, 2000)
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
