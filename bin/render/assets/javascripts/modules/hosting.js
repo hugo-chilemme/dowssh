@@ -40,7 +40,7 @@ ipcRenderer.on('profiler-connect-status', async (event, data) => {
         count > 1 ? name += ` (${count})` : null;
 
 
-        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item active"><div><i class='bx bx-broadcast' ></i></div><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div><div><div class="closed"><i class='bx bx-x'></i></div></div></div>`
+        document.querySelector('#onglets').innerHTML += `<div id="tab-${data.conn_id}" uuid="${data.conn_id}" class="item active"><div><h4>${name}</h4><p>${hosts[data.uuid].host}:${hosts[data.uuid].port}</p></div></div>`
         renewTabs();
 
     }
@@ -74,7 +74,7 @@ const renewTabs = () => {
         e.addEventListener('click', (e) => {
             if (!e.target.closest('.closed')) return menu.displayConnection(uuid);
         })
-        doc.querySelector('#onglets .item#tab-' + uuid + " .closed").addEventListener('click', () => closeOnglet(uuid, 'Déconnexion'))
+
     });
 }
 const elementClickable = (conn_id) => {

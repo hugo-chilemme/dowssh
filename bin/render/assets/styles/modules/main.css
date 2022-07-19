@@ -160,97 +160,100 @@ label.addInput {
 
 .connections {
     padding:0;
+    margin-top:-2px;
     transition: 250ms;
     margin-bottom: 25px;
 }
 .connections-menu {
     display: flex;
-    height: 50px;
+    height: 65px;
 
-    margin-top: 0;
+    margin-bottom: 25px;
     align-items: center;
 }
 
+
+
 #onglets {
     display: inline-flex;
-    height: 50px;
+    height: 65px;
     align-items: center;
 }
 .connections-menu .onglet-add, .connections-menu .onglet-other {
     display: inline-grid;
-    padding: 0 15px;
+    padding: 0 35px;
     cursor: pointer;
     margin-left:10px;
-    height: calc(100% - 10px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    height: 100%;
     border-radius: 7px;
     align-items: center;
     transition: 250ms;
 }
-
+.connections-menu .onglet-other {
+    display:none;
+}
 .connections-menu .onglet-add:hover, .connections-menu .onglet-other:hover {
-    transform:scale(1.1);
+    transform:scale(1.4);
 }
 
 .connections-menu .item {
-    display: inline-grid;
-    width: 205px;
-    padding: 0 15px;
+    display: inline-flex;
+    padding: 0 25px;
     cursor: pointer;
-    height: calc(100% - 10px);
-    margin-left:10px;
 
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: auto;
+    height: calc(100% - 20px);
+    margin:10px;
     border-radius: 7px;
-    grid-template-columns: 25px calc(100% - 40px) 15px;
+    border-bottom: 1px solid transparent;
     align-items: center;
     transition: 250ms;
 }
-
-#onglets .item.active h4 {
-    font-weight: 700;
+#onglets .item.active {
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
+#onglets .item.active h4 {
+    margin-left:0;
+    color:#2A2671;
+}
+
+
 .connections-menu .item h4 {
-    font-weight: 500;
-    transform:translateY(5.5px);
+    font-weight: 600;
+    color:#606060;
+    transform:translateY(7.5px);
     font-size: 13px;
     transition: 250ms;
 }
 
 .connections-menu .item .closed {
     display:inline-flex;
-    transform:scale(1.1);
+    transform:scale(1);
+    position: absolute;
     opacity: 0;
+    z-index: 2;
     padding:5px;
     transition: 250ms;
     border-radius: 5px;
-}
-.connections-menu .item:hover .closed{
-    transform:scale(1);
-    opacity: 1;
-}
-.connections-menu .item .closed:hover {
-    background:#dadada
 }
 
 
 
 .connections-menu .item p {
-    font-size:12px;
+    font-size:10px;
     font-weight: 500;
     color:#959595;
+    margin-top:3px;
     opacity: 0;
-    transform:translateY(5.5px) scale(0);
     transition: 250ms;
 }
 
 
-.connections-menu .item:hover h4 {
+ .connections-menu .item.active h4 {
     transform:translateY(-1px);
 }
-.connections-menu .item:hover p {
-    transform:scale(1.0) translateY(1px);
+ .connections-menu .item.active p {
     opacity: 1;
 }
 

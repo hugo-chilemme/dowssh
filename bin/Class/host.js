@@ -1,8 +1,8 @@
 const Create = require('../doc');
 const create = new Create();
 const md5 = require('md5');
+
 const keytar = require('keytar')
-const fs = require("fs-extra");
 const {Client} = require('ssh2');
 
 const project_path = process.cwd();
@@ -18,12 +18,9 @@ class Host {
         if (value.port < 0 || value.port > 65353) return cb({type: "addHost", error: true, message: "Port invalide"});
         const uuid = md5(value.host + new Date().getTime());
 
-        if (value.password)
-            keytar.setPassword(uuid, "default", value.password);
-        if (value.passphrase)
-            keytar.setPassword(uuid + "-passphrase", "default", value.passphrase);
-        if (value.privatekey)
-            keytar.setPassword(uuid + "-privatekey", "default", value.privatekey);
+        if (value.password) keytar.setPassword(uuid, "default", value.password);
+        if (value.passphrase) keytar.setPassword(uuid + "-passphrase", "default", value.passphrase);
+        if (value.privatekey) keytar.setPassword(uuid + "-privatekey", "default", value.privatekey);
         delete value.password;
         delete value.privatekey;
         delete value.passphrase;
@@ -36,9 +33,6 @@ class Host {
             username: value.username,
             name: value.name
         });
-        setTimeout(() => {
-            this.getAll(true);
-        }, 1000)
     }
 
     async get(uuid) {
