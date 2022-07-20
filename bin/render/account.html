@@ -17,15 +17,24 @@
 
 
     .loader {
-        display: flex;
         align-items: center;
         position: absolute;
         top: 0;
+        flex-direction: column;
         bottom: 0;
         left: 0;
+        display: flex;
         right: 0;
         background: #edf1f2;
+        justify-content: center;
     }
+
+    .loader h2 {
+        font-weight: 300;
+        font-size:25px;
+
+    }
+
 
     .loader-animation {
         display: flex;
@@ -164,7 +173,7 @@
             </div>
             <div>
                 <h4>Vous n'êtes pas connecté</h4>
-                <p>Connectez-vous pour les synchronisés </p>
+                <p>Connectez-vous pour les synchroniser</p>
             </div>
         </div>
     </div>
@@ -184,20 +193,29 @@
             <span></span>
             <span></span>
         </div>
+        <h2></h2>
     </div>
 </div>
 <script>
     const doc = document;
+    let websocket = null;
     const {ipcRenderer} = require('electron')
     const sendData = (type, value) => ipcRenderer.send(type, value)
     setTimeout(() => {
         doc.querySelector('.loader').classList.add('hide');
     }, 1000)
 
-    doc.querySelectorAll('.btn[connect]').forEach((e) => {
-        e.addEventListener('click', (ev) => {
-            sendData('profiler-account-redirect', e.getAttribute('connect'));
+    doc.querySelectorAll('.btn[connect]').forEach(async (e) => {
+        e.addEventListener('click', async (ev) => {
+            sendData('profiler-account-connect', e.getAttribute('connect'));
         })
+    })
+
+
+    ipcRenderer.on('profiler-account-link', async (event, data) => {
+        doc.querySelector('.loader').style.display = "flex";
+        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter";
+
     })
 
     doc.querySelector('[action="window-close"]').addEventListener('click', () => {

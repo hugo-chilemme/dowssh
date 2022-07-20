@@ -3,6 +3,8 @@ const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 const Create = require('./doc');
 const create = new Create();
 const Connection = require('./connection');
+const Api = require('./api');
+const api = new Api();
 const Host = require('./Class/host');
 const host = new Host();
 const md5 = require('md5');
@@ -48,6 +50,7 @@ const application = async () => {
             contextIsolation: false
         }
     })
+
     windows.application.loadFile('./bin/render/app.html');
 
     windows.start.close()
@@ -83,7 +86,8 @@ ipcMain.on('profiler-disconnect', async (event, conn_id) => {
 
 })
 ipcMain.on('profiler-account', async (event) => {
-    if(!windows.account)
+    sendData('profiler-account-status', 1)
+    if(windows.account) return windows.account.focus();
         windows.account = new BrowserWindow({
             width: 450,
             height: 650,
@@ -101,13 +105,18 @@ ipcMain.on('profiler-account', async (event) => {
             }
         })
     windows.account.loadFile('./bin/render/account.html');
-    sendData('profiler-account-status', 1)
 })
 
-ipcMain.on('profiler-account-redirect', async (event, site) => {
-    console.log(site)
-    shell.openExternal("https://hugochilemme.com/oauth?scope="+md5(site))
+
+websocket = null;
+request = false;
+ipcMain.on('profiler-account-connect', async (event, site) => {
+    api.connect(site);
+    api.setWin(windows.account);
+    // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
 });
+
+
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
     if (connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
