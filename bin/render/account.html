@@ -24,6 +24,7 @@
         bottom: 0;
         left: 0;
         display: flex;
+        z-index: 999999999;
         right: 0;
         background: #edf1f2;
         justify-content: center;
@@ -32,7 +33,10 @@
     .loader h2 {
         font-weight: 300;
         font-size:25px;
+    }
 
+    .loader h2 span {
+        font-weight: 500;
     }
 
 
@@ -214,7 +218,7 @@
 
     ipcRenderer.on('profiler-account-link', async (event, data) => {
         doc.querySelector('.loader').style.display = "flex";
-        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter";
+        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter, <span>"+json.name+"</span>";
 
     })
 
