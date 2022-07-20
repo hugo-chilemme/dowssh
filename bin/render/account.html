@@ -218,7 +218,7 @@
 
     ipcRenderer.on('profiler-account-link', async (event, data) => {
         doc.querySelector('.loader').style.display = "flex";
-        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter, <span>"+json.name+"</span>";
+        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter, <span>"+data.name+"</span>";
 
     })
 
