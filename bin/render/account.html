@@ -251,9 +251,7 @@
     let websocket = null;
     const {ipcRenderer} = require('electron')
     const sendData = (type, value) => ipcRenderer.send(type, value)
-    setTimeout(() => {
-        ipcRenderer.send('profiler-authentification', false);
-    }, 1000)
+    ipcRenderer.send('profiler-authentification', false);
     ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
         if (!data) return doc.querySelector('.loader').style.display = "none";
         displayAccount(data);
