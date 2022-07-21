@@ -16,9 +16,10 @@ const bypass = true;
 
 const create = new Create();
 const checkUpdate = async () => {
+    await create.folders(['profile', 'profile/cache', 'profile/accounts', 'profile/hosts', 'profile/downloads']);
     app.whenReady().then(async () => {
         await window.start(async (win) => {
-            await create.folders(['profile', 'profile/cache', 'profile/accounts', 'profile/hosts', 'profile/downloads']);
+
             if(bypass) return window.application();
             win.webContents.send('update', "search");
 

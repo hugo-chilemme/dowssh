@@ -55,7 +55,7 @@ class Api {
             client = null;
         }
         websocket = new WebSocket();
-
+        const connect = () => this.connect();
 
         websocket.on('connect', function(connection) {
             client = connection;
@@ -64,14 +64,14 @@ class Api {
 
             connection.on('error', function(error) {
                 websocket = null;
-                setInterval(() => {
-                    this.connect();
+                setTimeout(() => {
+                    connect();
                 }, 10000)
             });
             connection.on('close', function() {
                 websocket = null;
-                setInterval(() => {
-                    this.connect();
+                setTimeout(() => {
+                    connect();
                 }, 10000)
             });
 
