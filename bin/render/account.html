@@ -254,13 +254,13 @@
         ipcRenderer.send('profiler-authentification', false);
     }, 1000)
     ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
-        doc.querySelector('.loader').classList.add('hide');
-        if(data) {
-            displayAccount(data);
-        }
+        if(!data) return doc.querySelector('.loader').classList.add('hide');
+        displayAccount(data);
+
     });
 
     const displayAccount = (data) => {
+        doc.querySelector('.loader').classList.add('hide');
         doc.querySelector('.login').style.display = "none";
         doc.querySelector('.ent .welcome-message').innerText = "Hey "+data.fn+ " 👋";
         setTimeout(() => {
