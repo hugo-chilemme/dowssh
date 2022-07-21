@@ -117,7 +117,7 @@ request = false;
 ipcMain.on('profiler-account-connect', async (event, site) => {
 
     await api.link(site);
-    // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
+
 });
 
 ipcMain.on('profiler-authentification', async (event, site) => {

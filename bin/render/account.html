@@ -255,13 +255,13 @@
         ipcRenderer.send('profiler-authentification', false);
     }, 1000)
     ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
-        if (!data) return doc.querySelector('.loader').classList.add('hide');
+        if (!data) return doc.querySelector('.loader').style.display = "none";
         displayAccount(data);
 
     });
 
-    const displayAccount = (data) => {
-        doc.querySelector('.loader').classList.add('hide');
+    const displayAccount = async (data) => {
+        doc.querySelector('.loader').style.display = "none";
         doc.querySelector('.login').style.display = "none";
         doc.querySelector('.ent .welcome-message').innerText = "Hey " + data.fn + " 👋";
         if (data.picture) {
@@ -284,6 +284,7 @@
                 doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
 
             })
+            doc.querySelector('.loader').classList.add('hide');
         }, 750)
     }
 
@@ -302,14 +303,9 @@
 
     })
 
-    ipcRenderer.on('profiler-account-link-connect', async (event, data) => {
-        doc.querySelector('.loader').style.display = "flex";
-        doc.querySelector('.loader h2').innerHTML = "Connexion";
-
-    })
 
     ipcRenderer.on('profiler-account-link-error', async (event, data) => {
-        doc.querySelector('.loader').style.display = "none";
+        oc.querySelector('.loader').style.display = "none";
         alert('error auith');
     })
 

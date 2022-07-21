@@ -81,8 +81,11 @@ class Api {
                     let json = JSON.parse(message.utf8Data);
                     if(!json.type) return;
                     if(json.type === "user-get") return oauth.receive(json);
-                    if(json.type.substring(0, 5) === "link-") sendUI('profiler-account-'+json.type, json, true);
-                    if(json.type === "link-connect") account_register(json.profile);
+                    if(json.type.substring(0, 5) === "link-") {
+                        if(json.type === "link-connect") return account_register(json.profile);
+                        sendUI('profiler-account-'+json.type, json, true);
+                    }
+
                 }
             });
 
@@ -174,9 +177,10 @@ oauth.receive = async (obj) => {
 
     };
     if (win_app) {
-        if(!profile.settings['passphrase'])
+        if(!profile.settings['passphrase'] && obj.scope === "get-settings")
             win_app.send('add-security-problem', 'passphrase');
 
+        console.log(obj.result.data)
         win_app.send(obj.scope, obj.result.data);
     }
     if(oauth.tasks.length > 0) setTimeout(() => oauth.task_start(), 500);
