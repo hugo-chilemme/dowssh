@@ -270,22 +270,22 @@
         }
         doc.querySelector('.sync h4').innerText = "Synchronisation désactivée";
         doc.querySelector('.sync p').innerText = "Système en maintenance";
-        setTimeout(() => {
-            doc.querySelector('.account').classList.remove('hide');
-            doc.querySelectorAll('.account .item').forEach((e) => {
-                const data_type = e.getAttribute('form');
-                if (data_type === "email")
-                    if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
-                if (data_type === "identity") {
-                    let identity = data.fn + " " + data.ln;
-                    if (data.ln === undefined) identity = data.fn;
-                    return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
-                }
-                doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
 
-            })
-            doc.querySelector('.loader').classList.add('hide');
-        }, 750)
+        doc.querySelector('.account').classList.remove('hide');
+        doc.querySelectorAll('.account .item').forEach((e) => {
+            const data_type = e.getAttribute('form');
+            if (data_type === "email")
+                if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
+            if (data_type === "identity") {
+                let identity = data.fn + " " + data.ln;
+                if (data.ln === undefined) identity = data.fn;
+                return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
+            }
+            doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
+
+        })
+        doc.querySelector('.loader').classList.add('hide');
+
     }
 
 
