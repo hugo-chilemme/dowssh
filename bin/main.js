@@ -18,9 +18,10 @@ const create = new Create();
 const checkUpdate = async () => {
     app.whenReady().then(async () => {
         await window.start(async (win) => {
+            await create.folders(['profile', 'profile/cache', 'profile/accounts', 'profile/hosts', 'profile/downloads']);
             if(bypass) return window.application();
-            await create.folders(['profile', 'profile/cache', 'bin/core', 'profile/hosts', 'profile/downloads']);
             win.webContents.send('update', "search");
+
             exec("cd node_modules/geoip-lite && npm run-script updatedb license_key=13TAGtjQKv2aaR7H");
             exec("git status --porcelain", (error, stdout, stderr) => {
                 if (stdout.trim() === "") return window.application();

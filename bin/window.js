@@ -31,6 +31,8 @@ const start = async (callback) => {
     })
     windows.start.focus();
     windows.start.loadFile('./bin/render/start.html');
+    await api.tryAuthentification();
+    api.connect();
    setTimeout(() =>  callback(windows.start), 2000)
 }
 
@@ -52,8 +54,7 @@ const application = async () => {
     })
 
     windows.application.loadFile('./bin/render/app.html');
-
-    windows.start.close()
+        windows.start.close()
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
@@ -80,6 +81,8 @@ ipcMain.on('profiler-connect', async (event, uuid) => {
     sendData('profiler-connect-status', {status: 0, uuid: uuid, conn_id: conn_id})
     connections[conn_id] = new Connection(windows.application, conn_id, uuid);
 })
+
+
 ipcMain.on('profiler-disconnect', async (event, conn_id) => {
     if (!connections[conn_id]) return;
     delete connections[conn_id];
@@ -105,18 +108,22 @@ ipcMain.on('profiler-account', async (event) => {
             }
         })
     windows.account.loadFile('./bin/render/account.html');
+    await api.setWin(windows.account);
 })
 
 
 websocket = null;
 request = false;
 ipcMain.on('profiler-account-connect', async (event, site) => {
-    api.connect(site);
-    api.setWin(windows.account);
+
+    await api.link(site);
     // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
 });
 
-
+ipcMain.on('profiler-authentification', async (event, site) => {
+    await api.authentification();
+    // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
+});
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
     if (connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
