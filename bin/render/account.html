@@ -98,6 +98,14 @@
         justify-content: flex-end;
         align-items: center;
     }
+    .ent img.profile {
+        border-radius: 100px;
+        width: 75px;
+        height: 75px;
+        margin-bottom: 25Px;
+        object-fit: cover;
+        box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    }
 
     .ent .sync {
         background: #E8E8E8;
@@ -170,6 +178,7 @@
         </div>
     </div>
     <div class="ent">
+        <img class="profile hide" src="">
         <h2 class="welcome-message">Salut 👋</h2>
         <div class="sync">
             <div class="icon">
@@ -189,6 +198,17 @@
 <!--            <img src="https://github.com/favicon.ico"> Se connecter à GitHub-->
 <!--        </div>-->
 
+
+    </div>
+    <div class="account hide">
+        <div class="item" form="email">
+            <h5>Adresse e-mail</h5>
+            <h2></h2>
+        </div>
+        <div class="item" form="email">
+            <h5>Identité</h5>
+            <h2></h2>
+        </div>
 
     </div>
     <div class="loader">
@@ -245,6 +265,10 @@
                 doc.querySelector('.sync h4').innerText = "Sauvegarde en cours";
                 doc.querySelector('.sync p').innerText = "Vos données sont en cours de synchronisation";
                 doc.querySelector('.sync .icon').innerHTML = "<i style='font-size:20px' class='bx bx-sync bx-spin' ></i>";
+                if(data.picture) {
+                    doc.querySelector('img.profile').setAttribute('src', data.picture);
+                    doc.querySelector('img.profile').classList.remove('hide');
+                }
             }, 500)
         }, 750)
     })
