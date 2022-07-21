@@ -32,7 +32,7 @@
 
     .loader h2 {
         font-weight: 300;
-        font-size:20px;
+        font-size:25px;
     }
 
     .loader h2 span {
@@ -170,14 +170,14 @@
         </div>
     </div>
     <div class="ent">
-        <h2>Salut 👋</h2>
+        <h2 class="welcome-message">Salut 👋</h2>
         <div class="sync">
-            <div>
+            <div class="icon">
                 <i class='bx bx-message-error'></i>
             </div>
             <div>
                 <h4>Vous n'êtes pas connecté</h4>
-                <p>Connectez-vous pour les synchroniser</p>
+                <p>La sauvegarde sur le nuage est désactivée</p>
             </div>
         </div>
     </div>
@@ -216,10 +216,37 @@
     })
 
 
-    ipcRenderer.on('profiler-account-link', async (event, data) => {
+    ipcRenderer.on('profiler-account-link-receive', async (event, data) => {
         doc.querySelector('.loader').style.display = "flex";
-        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter, <span>"+data.name+"</span>";
+        if(data.data) return doc.querySelector('.loader h2').innerHTML = "En attente du serveur";
+        doc.querySelector('.loader h2').innerHTML = "Veuillez patienter";
 
+    })
+
+    ipcRenderer.on('profiler-account-link-connect', async (event, data) => {
+        doc.querySelector('.loader').style.display = "flex";
+        doc.querySelector('.loader h2').innerHTML = "Connexion";
+
+    })
+
+    ipcRenderer.on('profiler-account-link-error', async (event, data) => {
+        doc.querySelector('.loader').style.display = "none";
+        alert('error auith');
+    })
+
+    ipcRenderer.on('get-profile', async (event, data) => {
+        doc.querySelector('.loader').style.display = "none";
+        setTimeout(() => {
+            doc.querySelector('.login').style.display = "none";
+            doc.querySelector('.ent .welcome-message').innerText = "Hey "+data.fn+ " 👋";
+            doc.querySelector('.sync h4').innerText = "Échec de la sauvegarde";
+            doc.querySelector('.sync p').innerText = "Nous réessayerons plus tard";
+            setTimeout(() => {
+                doc.querySelector('.sync h4').innerText = "Sauvegarde en cours";
+                doc.querySelector('.sync p').innerText = "Vos données sont en cours de synchronisation";
+                doc.querySelector('.sync .icon').innerHTML = "<i style='font-size:20px' class='bx bx-sync bx-spin' ></i>";
+            }, 500)
+        }, 1000)
     })
 
     doc.querySelector('[action="window-close"]').addEventListener('click', () => {
