@@ -36,7 +36,7 @@
 
     .loader h2 {
         font-weight: 300;
-        font-size:25px;
+        font-size: 25px;
     }
 
     .loader h2 span {
@@ -102,6 +102,7 @@
         justify-content: flex-end;
         align-items: center;
     }
+
     .ent img.profile {
         border-radius: 100px;
         width: 100px;
@@ -135,7 +136,7 @@
     }
 
     .sync i {
-        font-size:20px
+        font-size: 20px
     }
 
     .hide {
@@ -143,7 +144,7 @@
     }
 
     .login {
-        padding: 30px ;
+        padding: 30px;
     }
 
     .login .btn {
@@ -155,22 +156,22 @@
         border-radius: 7px;
         align-items: center;
         justify-content: center;
-        color:#141236;
+        color: #141236;
         margin-bottom: 10px;
-        font-size:14px;
+        font-size: 14px;
         transition: 250ms;
         font-weight: 600;
     }
 
     .login .btn:hover {
-        transform:scale(1.05)
+        transform: scale(1.05)
     }
 
     .login .btn img {
-        margin-right:10px;
-        height:32px;
-        width:32px;
-        display:inline-flex;
+        margin-right: 10px;
+        height: 32px;
+        width: 32px;
+        display: inline-flex;
     }
 
     .login p {
@@ -178,22 +179,22 @@
     }
 
     .account {
-        padding:30px;
+        padding: 30px;
     }
 
     .account .item {
         margin-bottom: 30px;
     }
+
     .account h5 {
-        font-size:14px;
+        font-size: 14px;
     }
+
     .account h2 {
         font-weight: 400;
-        font-size:15px;
+        font-size: 15px;
         margin-top: 5px;
     }
-
-
 
 
 </style>
@@ -221,9 +222,9 @@
         <div class="btn" connect="google">
             <img src="https://www.google.com/favicon.ico"> Se connecter à Google
         </div>
-<!--        <div class="btn" connect="github">-->
-<!--            <img src="https://github.com/favicon.ico"> Se connecter à GitHub-->
-<!--        </div>-->
+        <!--        <div class="btn" connect="github">-->
+        <!--            <img src="https://github.com/favicon.ico"> Se connecter à GitHub-->
+        <!--        </div>-->
 
     </div>
     <div class="account hide">
@@ -254,7 +255,7 @@
         ipcRenderer.send('profiler-authentification', false);
     }, 1000)
     ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
-        if(!data) return doc.querySelector('.loader').classList.add('hide');
+        if (!data) return doc.querySelector('.loader').classList.add('hide');
         displayAccount(data);
 
     });
@@ -262,30 +263,28 @@
     const displayAccount = (data) => {
         doc.querySelector('.loader').classList.add('hide');
         doc.querySelector('.login').style.display = "none";
-        doc.querySelector('.ent .welcome-message').innerText = "Hey "+data.fn+ " 👋";
+        doc.querySelector('.ent .welcome-message').innerText = "Hey " + data.fn + " 👋";
+        if (data.picture) {
+            doc.querySelector('img.profile').setAttribute('src', data.picture);
+            doc.querySelector('img.profile').classList.remove('hide');
+        }
+        doc.querySelector('.sync h4').innerText = "Synchronisation désactivée";
+        doc.querySelector('.sync p').innerText = "Système en maintenance";
         setTimeout(() => {
-            if(data.picture) {
-                doc.querySelector('img.profile').setAttribute('src', data.picture);
-                doc.querySelector('img.profile').classList.remove('hide');
-            }
-            doc.querySelector('.sync h4').innerText = "Synchronisation désactivée";
-            doc.querySelector('.sync p').innerText = "Système en maintenance";
-            setTimeout(() => {
-                doc.querySelector('.account').classList.remove('hide');
-                doc.querySelectorAll('.account .item').forEach((e) => {
-                    const data_type = e.getAttribute('form');
-                    if(data_type === "email")
-                        if(data.email_verified) doc.querySelector('.account .item[form="'+data_type+'"] h5 span').classList.remove('hide')
-                    if(data_type === "identity") {
-                        let identity = data.fn + " " + data.ln;
-                        if(data.ln === undefined) identity = data.fn;
-                        return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
-                    }
-                    doc.querySelector('.account .item[form="'+data_type+'"] h2').innerText = data[data_type];
+            doc.querySelector('.account').classList.remove('hide');
+            doc.querySelectorAll('.account .item').forEach((e) => {
+                const data_type = e.getAttribute('form');
+                if (data_type === "email")
+                    if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
+                if (data_type === "identity") {
+                    let identity = data.fn + " " + data.ln;
+                    if (data.ln === undefined) identity = data.fn;
+                    return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
+                }
+                doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
 
-                })
-            }, 750)
-        }, 1250)
+            })
+        }, 750)
     }
 
 
@@ -298,7 +297,7 @@
 
     ipcRenderer.on('profiler-account-link-receive', async (event, data) => {
         doc.querySelector('.loader').style.display = "flex";
-        if(data.data) return doc.querySelector('.loader h2').innerHTML = "En attente du serveur";
+        if (data.data) return doc.querySelector('.loader h2').innerHTML = "En attente du serveur";
         doc.querySelector('.loader h2').innerHTML = "Veuillez patienter";
 
     })
