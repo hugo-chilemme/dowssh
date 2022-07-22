@@ -143,6 +143,18 @@ ipcMain.on('window', async (event, data) => {
     if (data.action === "close") {
         windows[data.type].close();
         delete windows[data.type];
+
+        if(data.type === "application") {
+            console.log('Aborded')
+            for (const [key, window] of Object.entries(windows)) {
+                try {
+                    window.close();
+                } catch (e) {
+
+                }
+            }
+            return;
+        }
         api.setBroadcast(windows);
     }
 
