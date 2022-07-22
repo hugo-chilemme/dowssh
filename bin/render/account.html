@@ -251,12 +251,15 @@
     let websocket = null;
     const {ipcRenderer} = require('electron')
     const sendData = (type, value) => ipcRenderer.send(type, value)
-    ipcRenderer.send('profiler-authentification', false);
+    ipcRenderer.send('profiler-authentification', 'account');
     ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
         if (!data) return doc.querySelector('.loader').style.display = "none";
         displayAccount(data);
-
+        ipcRenderer.send('profiler-sync-status');
     });
+
+
+
 
     const displayAccount = async (data) => {
         doc.querySelector('.loader').style.display = "none";
@@ -266,8 +269,9 @@
             doc.querySelector('img.profile').setAttribute('src', data.picture);
             doc.querySelector('img.profile').classList.remove('hide');
         }
-        doc.querySelector('.sync h4').innerText = "Synchronisation désactivée";
-        doc.querySelector('.sync p').innerText = "Système en maintenance";
+        doc.querySelector('.sync h4').innerText = "En attente de synchronisation";
+        doc.querySelector('.sync p').innerText = "Attente de l'échange serveur";
+        doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-time-five' ></i>"
 
         doc.querySelector('.account').classList.remove('hide');
         doc.querySelectorAll('.account .item').forEach((e) => {
@@ -309,9 +313,26 @@
 
     ipcRenderer.on('add-security-problem', async (event, data) => {
         console.log(data);
-
-
     });
+
+    ipcRenderer.on('profiler-sync', async (event, status) => {
+        if(status) {
+            doc.querySelector('.sync h4').innerText = "Synchronisation en cours";
+            doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-sync bx-spin' ></i>";
+            doc.querySelector('.sync p').innerText = "Communication avec le serveur";
+            return;
+        } else {
+            doc.querySelector('.sync h4').innerText = "Synchronisation terminée";
+            doc.querySelector('.sync p').innerText = "Vous êtes désormais à jour";
+            doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-check' ></i>";
+            setTimeout(() => {
+                ipcRenderer.send('profiler-sync-status');
+            }, 1000)
+            return;
+        }
+    });
+
+
     ipcRenderer.on('get-profile', async (event, data) => {
         displayAccount(data);
     })

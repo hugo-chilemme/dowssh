@@ -52,9 +52,10 @@ const application = async () => {
             contextIsolation: false
         }
     })
-
     windows.application.loadFile('./bin/render/app.html');
-        windows.start.close()
+    windows.start.close()
+    delete windows.start;
+    api.setBroadcast(windows);
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
@@ -107,6 +108,7 @@ ipcMain.on('profiler-account', async (event) => {
                 contextIsolation: false
             }
         })
+    api.setBroadcast(windows);
     windows.account.loadFile('./bin/render/account.html');
     await api.setWin(windows.account);
 })
@@ -119,9 +121,11 @@ ipcMain.on('profiler-account-connect', async (event, site) => {
     await api.link(site);
 
 });
-
-ipcMain.on('profiler-authentification', async (event, site) => {
-    await api.authentification();
+ipcMain.on('profiler-sync-status', async (event) => {
+    await api.synchronisation();
+});
+ipcMain.on('profiler-authentification', async (event, window) => {
+    await api.authentification(windows[window]);
     // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
 });
 
@@ -136,6 +140,7 @@ ipcMain.on('window', async (event, data) => {
     if (data.action === "close") {
         windows[data.type].close();
         delete windows[data.type];
+        api.setBroadcast(windows);
     }
 
 

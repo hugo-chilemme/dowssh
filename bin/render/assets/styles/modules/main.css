@@ -188,6 +188,15 @@ label.addInput {
     align-items: center;
     transition: 250ms;
 }
+.connections-menu .onglet-btn img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 100px;
+
+}
+
+
 .connections-menu .onglet-other {
     display:none;
 }
