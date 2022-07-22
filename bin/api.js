@@ -57,6 +57,7 @@ class Api {
         waitReady();
     }
     async synchronisation() {
+        if(!profile.user) return;
         await broadcast('profiler-sync', sync.status);
     }
     async connect(uuid = false) {
