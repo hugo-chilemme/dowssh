@@ -325,7 +325,7 @@
             doc.querySelector('.sync h4').innerText = "Synchronisation terminée";
             doc.querySelector('.sync p').innerText = "Vous êtes désormais à jour";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-check' ></i>";
-            setTimeout(() => {
+            setTimeout(async () => {
                 ipcRenderer.send('profiler-sync-status');
             }, 1000)
             return;

@@ -54,7 +54,7 @@ ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
 ipcRenderer.on('profiler-sync', async (event, status) => {
     if(status) return doc.querySelector('.onglet-btn[action="onglet-sync"]').classList.remove('hide');
     doc.querySelector('.onglet-btn[action="onglet-sync"]').classList.add('hide');
-    setTimeout(() => ipcRenderer.send('profiler-sync-status'), 1000)
+    setTimeout(async () => ipcRenderer.send('profiler-sync-status'), 1000)
 });
 
 ipcRenderer.on('profiler-callback', async (event, data) => {
