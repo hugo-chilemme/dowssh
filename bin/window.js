@@ -128,6 +128,9 @@ ipcMain.on('profiler-authentification', async (event, window) => {
     await api.authentification(windows[window]);
     // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
 });
+ipcMain.on('profiler-settings-verification', async (event, window) => {
+    await api.settingsVerification(windows['account']);
+});
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
     if (connections[data.conn_id]) connections[data.conn_id].action('list', data.path);

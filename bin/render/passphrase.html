@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dowssh</title>
+    <link href="assets/styles/base.css" rel="stylesheet">
+
+    <link href="assets/fonts/Ubuntu.css" rel="stylesheet">
+    <link href="assets/fonts/boxicons/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+<style>
+
+    * {
+        user-select: none;
+    }
+
+
+    .contains {
+        margin: 5px;
+    }
+    .head {
+        display:flex;
+        flex-direction: column;
+        height:400px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        margin-top:25px;
+        color:#141236;
+        font-weight: 500;
+    }
+    h3 {
+        margin-top:20px;
+        color:#303030;
+        font-weight: 300;
+    }
+    img {
+        border-radius: 100px;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+
+    }
+
+</style>
+<div class="contains">
+    <div class="head">
+        <img class="picture hide" src="">
+        <h1></h1>
+        <h3>Veuillez compléter votre profil</h3>
+    </div>
+    <div class="main">
+
+
+    </div>
+</div>
+<script>
+    const doc = document;
+    let websocket = null;
+    const {ipcRenderer} = require('electron')
+    const sendData = (type, value) => ipcRenderer.send(type, value)
+
+
+    window.addEventListener('load', () => {
+        ipcRenderer.send('profiler-authentification', 'passphrase');
+    }, false)
+
+    ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
+        console.log(data);
+        if (data) {
+            if (data.picture) {
+                doc.querySelector('.picture').setAttribute('src', data.picture);
+                doc.querySelector('.picture').classList.remove('hide')
+            }
+            doc.querySelector('h1').innerText = data.fn + " " + data.ln;
+        }
+    });
+
+
+</script>
+</body>
+</html>

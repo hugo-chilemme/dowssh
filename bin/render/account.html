@@ -196,6 +196,105 @@
         margin-top: 5px;
     }
 
+    .config {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: #202020;
+        z-index: 999999999;
+    }
+
+    .config .checking {
+        display: flex;
+        height: 200px;
+        margin-top: 25px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 55px;
+    }
+
+    .config .checking h2 {
+        color: #eeee;
+        text-align: center;
+        line-height: 1.25em;
+        font-size: 25px;
+        font-weight: 400;
+        margin-top: 25px;
+    }
+
+    .config .checking i {
+        color: #fc2e57;
+        font-size: 40px;
+    }
+
+    .config .acc {
+        display: grid;
+        grid-template-columns: 75px calc(100% - 75px);
+        background: #252525;
+        padding: 15px 20px;
+        justify-content: center;
+    }
+
+    .config .acc h3 {
+        color: #eee;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .config .acc p {
+        color: #858585;
+        font-size: 14px;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    .config .acc img {
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        object-fit: cover;
+    }
+
+    .config label {
+        background: #202020;
+        color: #ccc;
+    }
+
+    .config .input {
+        margin-top: 20px;
+        padding: 20px;
+    }
+
+    .config .input .info {
+        margin-bottom:20px;
+        margin-top:-10px;
+        justify-content: center;
+        display:grid;
+        line-height: 1.5em;
+        background: rgba(48, 48, 48, 0.30);
+        color:#aaa;
+        grid-template-columns: 25px calc(100% - 25px);
+        border:1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 7px;
+        padding:10px;
+        font-size:13px;
+    }
+
+    .config .input .confirmer {
+        width:100%;
+        display:flex;
+        padding:15px;
+        background:#252525;
+        color:#aaa;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        border-radius: 7px;
+    }
+
 
 </style>
 <div class="contains">
@@ -204,7 +303,40 @@
             <i class='bx bx-x'></i>
         </div>
     </div>
+    <div class="config hide">
+        <div class="checking">
+            <i class='bx bx-error'></i>
+            <h2>Synchronisation impossible</h2>
 
+        </div>
+        <div class="acc">
+            <div>
+                <img src="">
+            </div>
+            <div>
+                <h3></h3>
+                <p></p>
+            </div>
+
+        </div>
+        <div class="input">
+            <div class="info">
+                <div>
+                    <i class='bx bx-info-circle'></i>
+                </div>
+                <div>
+                    Ce mot de passe est essentiel à la sécurisation de vos données sur le cloud, il vous sera demandé à chaque connexion
+                </div>
+            </div>
+            <label>Créer un mot de passe</label>
+            <input placeholder="Veuillez saisir un mot de passe" type="password">
+
+
+            <button class="confirmer disabled">Confirmer</button>
+        </div>
+
+
+    </div>
     <div class="ent">
         <img class="profile hide" src="">
         <h2 class="welcome-message">Salut 👋</h2>
@@ -256,9 +388,15 @@
         if (!data) return doc.querySelector('.loader').style.display = "none";
         displayAccount(data);
         ipcRenderer.send('profiler-sync-status');
+        ipcRenderer.send('profiler-settings-verification');
     });
 
+    ipcRenderer.on('profiler-settings-verification-callback', async (event, data) => {
+        if (!data.passphrase)
+            doc.querySelector('.config').classList.remove('hide');
 
+
+    })
 
 
     const displayAccount = async (data) => {
@@ -266,6 +404,7 @@
         doc.querySelector('.login').style.display = "none";
         doc.querySelector('.ent .welcome-message').innerText = "Hey " + data.fn + " 👋";
         if (data.picture) {
+            doc.querySelector('.config .acc img').setAttribute('src', data.picture);
             doc.querySelector('img.profile').setAttribute('src', data.picture);
             doc.querySelector('img.profile').classList.remove('hide');
         }
@@ -277,10 +416,12 @@
         doc.querySelectorAll('.account .item').forEach((e) => {
             const data_type = e.getAttribute('form');
             if (data_type === "email")
-                if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
+                doc.querySelector('.config .acc p').innerText = data[data_type];
+            if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
             if (data_type === "identity") {
                 let identity = data.fn + " " + data.ln;
                 if (data.ln === undefined) identity = data.fn;
+                doc.querySelector('.config .acc h3').innerText = identity;
                 return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
             }
             doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
@@ -316,7 +457,7 @@
     });
 
     ipcRenderer.on('profiler-sync', async (event, status) => {
-        if(status) {
+        if (status) {
             doc.querySelector('.sync h4').innerText = "Synchronisation en cours";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-sync bx-spin' ></i>";
             doc.querySelector('.sync p').innerText = "Communication avec le serveur";

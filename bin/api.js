@@ -51,7 +51,7 @@ class Api {
             if (files.length > 0) {
                 const account = await create.read("profile/accounts/" + files[0]);
                 if (client) this.account_load(account.uuid);
-                else setTimeout(() => waitReady(), 2500)
+                else setTimeout(() => waitReady(), 1000)
             }
         }
         waitReady();
@@ -159,6 +159,18 @@ class Api {
         window.send('profiler-authentification-callback', profile.user)
     }
 
+    async settingsVerification(window = null) {
+
+        if(!window) return;
+
+
+        let checkup = { passphrase: false};
+        if(profile.settings) {
+            if (profile.settings['passphrase']) checkup.passphrase = true
+        }
+        window.send('profiler-settings-verification-callback', checkup);
+    }
+
 
     async sync(status = false) {
         await this.broadcast('profiler-sync', status);
@@ -171,8 +183,14 @@ const broadcast = async (type, message) => {
     if (!windows) return;
     if(type === "profiler-sync") sync.status = message;
 
-    for (const [key, window] of Object.entries(windows))
-        if (window) window.send(type, message);
+    for (const [key, window] of Object.entries(windows)) {
+        try {
+            window.send(type, message);
+        } catch (e) {
+            delete windows[key];
+        }
+    }
+
 }
 
 
@@ -203,19 +221,27 @@ oauth.receive = async (obj) => {
             profile.settings[settings_brut.key] = settings.value;
         }
     }
-    if (obj.scope === "get-profile") {
+    if (obj.scope === "get-profile")
         profile.user = obj.result.data;
-        await broadcast('profiler-authentification-callback', profile.user)
 
+    if(obj.scope === "get-settings") {
+        if (!profile.settings || !profile.settings['passphrase'])
+            ipcMain.emit('profiler-account');
+
+        else {
+            await broadcast('profiler-authentification-callback', profile.user)
+        }
     }
-    ;
+
+
     if (win_app) {
-        console.log(obj.result.data)
         win_app.send(obj.scope, obj.result.data);
     }
     if (oauth.tasks.length > 0) setTimeout(() => oauth.task_start(), 5000);
     else await broadcast('profiler-sync', false)
 }
+
+
 oauth.task_start = () => {
     let scope = oauth.tasks.shift();
     oauth.get(scope);
@@ -224,6 +250,8 @@ oauth.task_add = (array) => {
     for (let i = 0; i < array.length; i++)
         oauth.tasks.push(array[i]);
 }
+
+
 
 
 module.exports = Api;
