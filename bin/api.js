@@ -141,7 +141,7 @@ class Api {
     }
 
     async account_register(data) {
-        await create.file(project_path + 'accounts/' + data.uuid + ".json", JSON.stringify({
+        await create.file(project_path + '/accounts/' + data.uuid + ".json", JSON.stringify({
             uuid: data.uuid,
             device: data.device,
             access_token: data.access_token
@@ -151,7 +151,7 @@ class Api {
 
     async account_load(uuid) {
 
-        const account = await create.read(project_path + 'accounts/' + uuid + ".json");
+        const account = await create.read(project_path + '\'/accounts/' + uuid + ".json");
         if (!account) return;
         oauth.tasks.length = 0;
         oauth.configure(account);
