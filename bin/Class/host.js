@@ -6,7 +6,7 @@ const keytar = require('keytar')
 
 
 
-const project_path = process.cwd();
+const project_path = (process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "/dowssh/profile";
 const checkAddress = (str) => {
     return /^((\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z\d\-]*[a-zA-Z\d])\.)*([A-Za-z]|[A-Za-z][A-Za-z\d\-]*[A-Za-z\d])$|^\s*((([\dA-Fa-f]{1,4}:){7}([\dA-Fa-f]{1,4}|:))|(([\dA-Fa-f]{1,4}:){6}(:[\dA-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([\dA-Fa-f]{1,4}:){5}(((:[\dA-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([\dA-Fa-f]{1,4}:){4}(((:[\dA-Fa-f]{1,4}){1,3})|((:[\dA-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([\dA-Fa-f]{1,4}:){3}(((:[\dA-Fa-f]{1,4}){1,4})|((:[\dA-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([\dA-Fa-f]{1,4}:){2}(((:[\dA-Fa-f]{1,4}){1,5})|((:[\dA-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([\dA-Fa-f]{1,4}:)(((:[\dA-Fa-f]{1,4}){1,6})|((:[\dA-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[\dA-Fa-f]{1,4}){1,7})|((:[\dA-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/.test(str);
 }
@@ -26,7 +26,7 @@ class Host {
         delete value.password;
         delete value.privatekey;
         delete value.passphrase;
-        await create.file('profile/hosts/' + uuid + ".json", JSON.stringify(value));
+        await create.file(project_path +'/hosts/' + uuid + ".json", JSON.stringify(value));
 
 
         cb({
@@ -63,10 +63,10 @@ class Host {
 
     async list(cb) {
         hosts = [];
-        const files = await fs.readdirSync(project_path + "/profile/hosts")
+        const files = await fs.readdirSync(project_path + "/hosts")
         for (let i = 0; i < files.length; i++) {
             try {
-                const result = await create.read("/profile/hosts/" + files[i]);
+                const result = await create.read(project_path + "/hosts/" + files[i]);
                 hosts.push(Object.assign({}, result, {uuid: files[i].split('.json')[0]}));
             } catch (e) {}
         }

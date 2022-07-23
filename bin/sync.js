@@ -6,12 +6,15 @@ let hosts;
 
 
 class Sync {
-    constructor(api_class) {
-        api = api_class;
+    constructor(ApiIns) {
+        api = ApiIns
+    }
+
+    async start() {
         hosts = this.get('hosts');
-        setInterval(() => {
-            this.haveModification();
-        }, 1000)
+        setInterval(async () => {
+            await this.haveModification();
+        }, 2500);
     }
 
     async get(type) {

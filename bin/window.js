@@ -63,6 +63,7 @@ const application = async () => {
     api.setWindows(windows);
     windows.start.close()
     delete windows.start;
+    await sync.start();
 
 }
 
