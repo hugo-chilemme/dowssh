@@ -1,8 +1,14 @@
 const fs = require('fs-extra');
+const userData = (process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share"));
 const project_path = (process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "/dowssh/profile";
 
 
 class Create {
+    constructor(props) {
+        fs.mkdirSync(userData+"/dowssh", {recursive: true});
+    }
+
+
     async folder(path, absolute = false, cb) {
         if (!absolute) {
             if (await this.exist(path)) return false;
