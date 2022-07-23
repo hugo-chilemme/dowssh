@@ -1,9 +1,11 @@
-const {app, BrowserWindow, ipcMain, ipcRenderer, shell} = require('electron');
+const {ipcMain, shell} = require('electron');
+const listener = require('../bin/Listeners/api');
+
+
 const md5 = require('md5');
 const WebSocket = require('websocket').client;
 const Create = require('./doc');
 const create = new Create();
-
 // Only used for devices list in your account profile
 const os = require('os');
 const fs = require("fs-extra");
@@ -13,13 +15,12 @@ const fs = require("fs-extra");
 let websocket;
 let client;
 let vsync;
-let sync = {status: false}
 
 function newToken() {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < 128; i++)
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < 128; i++)
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     return result;
 }
@@ -28,70 +29,86 @@ let profile = {
     user: null,
     settings: null,
     hosts: null,
+    sync: { status: 0, error: null }
 }
-let win_app = null;
 let windows = null;
 
-class Api {
-    setWin(win) {
-        win_app = win;
-        console.log('Api: Windows receive');
-        win_app.focus();
 
+let api;
+class Api {
+
+    constructor() {
+        listener.define(this);
+        api = this;
     }
 
-    setBroadcast(wins) {
+    setWindows(wins) {
         windows = wins;
-        console.log('Windows Broadcast receive');
+    }
+
+    async synchronisation() {
+        await broadcast('profiler-sync', profile.sync);
+    }
+
+    async isSync() {
+        if (profile.user && profile.sync.error === 'passphrase') {
+            await windows.account.send('request-passphrase', true);
+        }
+    }
+
+    async isReady(win_name) {
+        if(win_name === "account") await this.isSync();
+        await this.synchronisation();
     }
 
     async tryAuthentification() {
         const waitReady = async () => {
-            const files = await fs.readdirSync(process.cwd() + "/profile/accounts")
+            const files = await fs.readdirSync(process.cwd() + "/profile/accounts");
             if (files.length > 0) {
                 const account = await create.read("profile/accounts/" + files[0]);
-                if (client) this.account_load(account.uuid);
+                if (client) await this.account_load(account.uuid);
                 else setTimeout(() => waitReady(), 1000)
             }
         }
-        waitReady();
+        await waitReady();
     }
-    async synchronisation() {
-        if(!profile.user) return;
-        await broadcast('profiler-sync', sync.status);
-    }
-    async connect(uuid = false) {
+
+
+
+    async connect() {
         if (websocket) {
             websocket = null;
             client = null;
         }
-        websocket = new WebSocket();
+        websocket = new WebSocket(null);
+        websocket.connect('wss://api.hugochilemme.com/v1/profile');
         const connect = () => this.connect();
 
-        websocket.on('connect', function (connection) {
+        websocket.on('connect', async (connection) => {
             client = connection;
             console.log('connect');
+            await this.tryAuthentification();
 
 
-            connection.on('error', function (error) {
+            connection.on('error', async () => {
                 websocket = null;
                 setTimeout(() => {
                     connect();
                 }, 10000)
             });
-            connection.on('close', function () {
+            connection.on('close',  async() => {
                 websocket = null;
                 setTimeout(() => {
                     connect();
                 }, 10000)
             });
-
-            const api = this;
+            
             connection.on('message', async (message) => {
                 if (message.type === 'utf8') {
                     let json = JSON.parse(message.utf8Data);
                     if (!json.type) return;
-                    if (json.type === "user-get") return oauth.receive(json);
+                    if (json.type === "logout") return oauth.callback['logout'](json);
+                    if (json.type === "user") return oauth.receive(json);
                     if (json.type.substring(0, 5) === "link-") {
                         if (json.type === "link-connect") return account_register(json.profile);
                         sendUI('profiler-account-' + json.type, json, true);
@@ -111,19 +128,15 @@ class Api {
         }
 
 
-        websocket.connect('wss://api.hugochilemme.com/v1/profile');
     }
 
-    sendData(message) {
-        client.sendUTF(JSON.stringify(message));
-    }
 
     sendUI(type, message, focus = false) {
-        win_app.send(type, message);
+        windows.account.send(type, message);
         if (focus) {
-            win_app.setAlwaysOnTop(true);
-            win_app.focus();
-            win_app.setAlwaysOnTop(false);
+            windows.account.setAlwaysOnTop(true);
+            windows.account.focus();
+            windows.account.setAlwaysOnTop(false);
         }
     }
 
@@ -133,7 +146,7 @@ class Api {
             device: data.device,
             access_token: data.access_token
         }))
-        this.account_load(data.uuid);
+        await this.account_load(data.uuid);
     }
 
     async account_load(uuid) {
@@ -142,46 +155,32 @@ class Api {
         if (!account) return;
         oauth.tasks.length = 0;
         oauth.configure(account);
-        oauth.task_add(['get-settings', 'get-hosts'])
-        oauth.get('get-profile');
+        oauth.task_add(['get-settings', 'get-hosts', 'get-statuspass'])
+        await oauth.get('get-profile');
     }
 
     async link(site) {
         if (!vsync) vsync = newToken();
         const device = os.hostname();
         const webhash = md5(site);
-        this.sendData({type: "link", token: vsync, device: device});
-        shell.openExternal("https://api.hugochilemme.com/authorize?scope=" + webhash + "&vsync=" + vsync + "&vdev=" + md5(device));
+        sendData({type: "link", token: vsync, device: device});
+        await shell.openExternal("https://api.hugochilemme.com/authorize?scope=" + webhash + "&vsync=" + vsync + "&vdev=" + md5(device));
     }
 
     async authentification(window = null) {
-        if (!window) return;
-        window.send('profiler-authentification-callback', profile.user)
+        if (!windows || !windows[window]) return;
+        windows[window].send('api:get-account', profile.user)
     }
-
-    async settingsVerification(window = null) {
-
-        if(!window) return;
-
-
-        let checkup = { passphrase: false};
-        if(profile.settings) {
-            if (profile.settings['passphrase']) checkup.passphrase = true
-        }
-        window.send('profiler-settings-verification-callback', checkup);
-    }
-
-
-    async sync(status = false) {
-        await this.broadcast('profiler-sync', status);
-    }
-
-
 }
+
+
+
+
+const sendData = (message) => client.sendUTF(JSON.stringify(message));
+
 
 const broadcast = async (type, message) => {
     if (!windows) return;
-    if(type === "profiler-sync") sync.status = message;
 
     for (const [key, window] of Object.entries(windows)) {
         try {
@@ -194,62 +193,82 @@ const broadcast = async (type, message) => {
 }
 
 
-let oauth = {scopes: ['get-profile', 'get-settings', 'get-hosts'], tasks: []};
+
+
+let oauth = {tasks: []};
 oauth.configure = (account) => {
     oauth.config = account;
 }
+oauth.setToken = async (access_token) => {
+    let account = oauth.config;
+    account.access_token = access_token;
+    oauth.config = account;
+    await create.edit('profile/accounts/' + oauth.config.uuid + ".json", JSON.stringify(account))
+}
 
-oauth.get = (scope) => {
+oauth.get = async (scope) => {
     if (!client || !websocket) return false;
-    client.sendUTF(JSON.stringify({type: 'user-get', scope: scope, session: oauth.config}));
+    profile.sync = {status: 2, error: null};
+    await api.synchronisation();
+    client.sendUTF(JSON.stringify({type: 'user', scope: scope, session: oauth.config}));
 }
 
 oauth.receive = async (obj) => {
-    if (!oauth.scopes.includes(obj.scope)) return console.log(obj.scope + " not found");
-    let account = oauth.config;
+    if (obj.message || obj.error) return console.log('Error ', obj.message, obj.error);
+    if (!obj.result.access_token) return create.delete('profile/accounts/' + oauth.config.uuid + ".json");
 
-    await broadcast('profiler-sync', oauth.scopes)
-    if (obj.message) return create.delete('profile/accounts/' + oauth.config.uuid + ".json");
-    account.access_token = obj.result.access_token;
-    oauth.config = account;
+    console.log(obj)
 
-    await create.edit('profile/accounts/' + oauth.config.uuid + ".json", JSON.stringify(account))
-    if (obj.scope === "get-settings") {
+    await broadcast('profiler-sync', {type: 'get', data: obj.scope})
+    await oauth.setToken(obj.result.access_token);
 
-        const settings_brut = obj.result.data;
-        for (let i = 0; i < settings_brut.length; i++) {
-            profile.settings[settings_brut.key] = settings.value;
-        }
-    }
-    if (obj.scope === "get-profile")
-        profile.user = obj.result.data;
+    if (obj.scope && oauth.callback[obj.scope])
+        oauth.callback[obj.scope](obj.result.data);
 
-    if(obj.scope === "get-settings") {
-        if (!profile.settings || !profile.settings['passphrase'])
-            ipcMain.emit('profiler-account');
+    profile.sync = {status: 1, error: null};
+    await api.synchronisation();
 
-        else {
-            await broadcast('profiler-authentification-callback', profile.user)
-        }
-    }
-
-
-    if (win_app) {
-        win_app.send(obj.scope, obj.result.data);
-    }
-    if (oauth.tasks.length > 0) setTimeout(() => oauth.task_start(), 5000);
-    else await broadcast('profiler-sync', false)
+    await broadcast(obj.scope, obj.result.data);
+    if (oauth.tasks.length > 0)
+        return oauth.get(oauth.tasks.shift());
+    await broadcast('profiler-sync', false)
 }
 
-
-oauth.task_start = () => {
-    let scope = oauth.tasks.shift();
-    oauth.get(scope);
+oauth.callback = {};
+oauth.callback['get-settings'] = async (data) => {
+    for (let i = 0; i < data.length; i++)
+        profile.settings[data[i].key] = data[i].value;
 }
+oauth.callback['get-statuspass'] = async (data) => {
+    if (data) return profile.sync = {status: 2, error: null};
+    ipcMain.emit('profiler-account');
+    return profile.sync = {status: 0, error: 'passphrase'};
+
+}
+oauth.callback['get-profile'] = async (data) => {
+    profile.user = data;
+    await broadcast('api:get-account', profile.user)
+}
+oauth.callback['set-passphrase'] = async (data) => {
+    windows.account.send('set-passphrase-callback', data.success);
+}
+// If your change that, the system can be automatically ban you
+oauth.callback['logout'] = async () => {
+    await create.delete('profile/accounts/' + oauth.config.uuid + ".json");
+    profile = { user: null, settings: null, hosts: null, sync: {status: 0, error: null}};
+    delete oauth.config;
+    websocket = null;
+    client = null;
+    await api.synchronisation();
+    await broadcast('api:get-account', profile.user);
+}
+
 oauth.task_add = (array) => {
     for (let i = 0; i < array.length; i++)
         oauth.tasks.push(array[i]);
 }
+
+
 
 
 

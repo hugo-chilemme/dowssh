@@ -1,13 +1,6 @@
 const fs = require('fs-extra');
 const project_path = process.cwd();
 
-function formatBytes(a, b = 2, k = 1024) {
-    with (Math) {
-        let d = floor(log(a) / log(k));
-        return 0 == a ? "0 Bytes" : parseFloat((a / pow(k, d)).toFixed(max(0, b))) + " " + ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]
-    }
-}
-
 class Create {
     async folder(path, absolute = false, cb) {
         if(!absolute) {
@@ -52,9 +45,7 @@ class Create {
         return fs.existsSync(path);
     }
 
-    async stream(full_path) {
-        return fs.createWriteStream(full_path);
-    }
+
 
     async delete(path) {
         fs.unlinkSync(project_path + "/" + path);
@@ -64,19 +55,6 @@ class Create {
         return JSON.parse(fs.readFileSync(project_path + "/" + path, {encoding:'utf8', flag:'r'}));
     }
 
-    scanDir(path) {
-        fs.readdir(project_path + "/" + path, (err, files) => {
-            if (!err) {
-                for(let i = 0; i < files.length; i++) {
-                    this.read( path+"/"+files[i], (data) => {
-                        datas.push(data);
-                    })
-                }
-            }
-        })
-        return datas;
-        // return await fs.readdirSync(project_path + "/" + path, {withFileTypes: true});
-    }
 
     async move(old_path, new_path) {
         fs.rename(process.cwd() + "/" + old_path, process.cwd() + "/" + new_path, function (err) {

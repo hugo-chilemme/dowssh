@@ -1,10 +1,9 @@
-const Create = require('./doc');
+
 const sshpk = require('sshpk');
 const keytar = require('keytar');
 const Client = require('ssh2-sftp-client');
-const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 
-const create = new Create();
+
 
 const Host = require('./Class/host');
 const host = new Host();
@@ -38,7 +37,7 @@ class Connection {
                 return a.name - b.name;
             return a.type.charCodeAt(0) > b.type.charCodeAt(0) ? 1 : -1;
         })
-        this.sendClient('profiler-sftp-list', {path: path, result: sending});
+        await this.sendClient('profiler-sftp-list', {path: path, result: sending});
     }
 
 
@@ -48,7 +47,7 @@ class Connection {
             const config = await host.get(this.connection.uuid);
             if(config.privatekey && config.privatekey.includes('PuTTY')) {
                 let openssh = sshpk.parsePrivateKey(config.privatekey, 'putty').toString('openssh');
-                keytar.setPassword(this.connection.uuid+"-privatekey", "default", openssh);
+                await keytar.setPassword(this.connection.uuid+"-privatekey", "default", openssh);
                 config.privatekey = openssh;
             }
 

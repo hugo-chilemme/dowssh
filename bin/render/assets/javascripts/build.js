@@ -39,15 +39,14 @@ ipcRenderer.on('profiler-account-status', async (event, data) => {
 
 window.addEventListener('load', () => {
     sendData('profiler-get', 'hosts');
-    ipcRenderer.send('profiler-authentification', 'application');
-    ipcRenderer.send('profiler-sync-status');
+    ipcRenderer.send('api:get-account', 'application');
 }, false)
 
 
-ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
-    if(data) {
-        doc.querySelector('.onglet-btn[action="onglet-account"]').innerHTML = `<img src="${data.picture}">`;
-    }
+ipcRenderer.on('api:get-account', async (event, data) => {
+    if(data) return  doc.querySelector('.onglet-btn[action="onglet-account"]').innerHTML = `<img alt="account" src="${data.picture}">`;
+    doc.querySelector('.onglet-btn[action="onglet-account"]').innerHTML = `<i class='bx bx-user-circle'></i>`;
+    doc.querySelector('.onglet-btn[action="onglet-sync"]').classList.add('hide');
 });
 
 

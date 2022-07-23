@@ -1,20 +1,25 @@
-const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+const {BrowserWindow, ipcMain} = require('electron');
 
-const Create = require('./doc');
-const create = new Create();
 const Connection = require('./connection');
 const Api = require('./api');
 const api = new Api();
+
+const Sync = require('./sync');
+const sync = new Sync(api);
+
+
 const Host = require('./Class/host');
 const host = new Host();
 const md5 = require('md5');
-const shell = require('electron').shell;
+
 let connections = {};
 let windows = {};
 
 
+
 /* Starter windows */
 const start = async (callback) => {
+
     windows.start = new BrowserWindow({
         width: 450,
         height: 450,
@@ -30,10 +35,11 @@ const start = async (callback) => {
         }
     })
     windows.start.focus();
-    windows.start.loadFile('./bin/render/start.html');
-    await api.tryAuthentification();
-    api.connect();
-   setTimeout(() =>  callback(windows.start), 2000)
+    await windows.start.loadFile('./bin/render/start.html');
+    setTimeout(async () => {
+        await api.connect();
+        callback(windows.start)
+    }, 2000)
 }
 
 const application = async () => {
@@ -52,10 +58,12 @@ const application = async () => {
             contextIsolation: false
         }
     })
-    windows.application.loadFile('./bin/render/app.html');
+    await windows.application.loadFile('./bin/render/app.html');
+
+    api.setWindows(windows);
     windows.start.close()
     delete windows.start;
-    api.setBroadcast(windows);
+
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
@@ -66,7 +74,9 @@ ipcMain.on("profiler-get", async (event, type) => {
 })
 
 ipcMain.on("profiler-add", async (event, data) => {
-    if (data.type === "host") return host.add(data.data, (obj) => sendData('profiler-callback', obj));
+    if (data.type === "host") return host.add(data.data, (obj) => {
+        sendData('profiler-callback', obj)
+    });
 })
 
 
@@ -87,50 +97,39 @@ ipcMain.on('profiler-connect', async (event, uuid) => {
 ipcMain.on('profiler-disconnect', async (event, conn_id) => {
     if (!connections[conn_id]) return;
     delete connections[conn_id];
-
 })
-ipcMain.on('profiler-account', async (event) => {
+
+
+ipcMain.on('profiler-account', async () => {
     sendData('profiler-account-status', 1)
-    if(windows.account) return windows.account.focus();
-        windows.account = new BrowserWindow({
-            width: 450,
-            height: 650,
-            resizable: false,
-            transparent: true,
-            center:false,
-            x: 0,
-            y: 0,
-            frame: false,
-            icon: './bin/render/Dowssh.ico',
-            webPreferences: {
-                webviewTag: true,
-                nodeIntegration: true,
-                contextIsolation: false
-            }
-        })
-    api.setBroadcast(windows);
-    windows.account.loadFile('./bin/render/account.html');
-    await api.setWin(windows.account);
+    if (windows.account) {
+        await api.isSync();
+        return windows.account.focus();
+    }
+    windows.account = new BrowserWindow({
+        width: 450,
+        height: 650,
+        resizable: false,
+        transparent: true,
+        center: false,
+        x: 0,
+        y: 0,
+        frame: false,
+        icon: './bin/render/Dowssh.ico',
+        webPreferences: {
+            webviewTag: true,
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    })
+    await windows.account.loadFile('./bin/render/account.html');
+    api.setWindows(windows);
+    await api.isReady('account')
+
 })
 
 
-websocket = null;
-request = false;
-ipcMain.on('profiler-account-connect', async (event, site) => {
 
-    await api.link(site);
-
-});
-ipcMain.on('profiler-sync-status', async (event) => {
-    await api.synchronisation();
-});
-ipcMain.on('profiler-authentification', async (event, window) => {
-    await api.authentification(windows[window]);
-    // shell.openExternal("https://api.hugochilemme.com/authorize?scope="+md5(site))
-});
-ipcMain.on('profiler-settings-verification', async (event, window) => {
-    await api.settingsVerification(windows['account']);
-});
 
 ipcMain.on('profiler-sftp-list', async (event, data) => {
     if (connections[data.conn_id]) connections[data.conn_id].action('list', data.path);
@@ -144,7 +143,7 @@ ipcMain.on('window', async (event, data) => {
         windows[data.type].close();
         delete windows[data.type];
 
-        if(data.type === "application") {
+        if (data.type === "application") {
             console.log('Aborded')
             for (const [key, window] of Object.entries(windows)) {
                 try {
@@ -155,7 +154,7 @@ ipcMain.on('window', async (event, data) => {
             }
             return;
         }
-        api.setBroadcast(windows);
+        api.setWindows(windows);
     }
 
 

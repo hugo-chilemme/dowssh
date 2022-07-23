@@ -1,7 +1,7 @@
 console.log('views/window.js loaded');
 
 let chr = {timeout: 10, active: false};
-doc.querySelector('[action="window-close"]').addEventListener('click', () => {
+doc.querySelector('[action="window-close"]').addEventListener('click', async () => {
     if (Object.keys(connections).length === 0) return winAction('close', true);
 
     let text = "<span>une session</span> est toujours en cours";
@@ -11,7 +11,7 @@ doc.querySelector('[action="window-close"]').addEventListener('click', () => {
     doc.querySelector('.win-close').classList.remove('hide');
 
     chr = {active: true, timeout: 10};
-    chrono();
+    await chrono();
 })
 
 const chrono = async () => {
@@ -36,6 +36,6 @@ doc.querySelector('[action="window-reduce"]').addEventListener('click', () => {
     winAction('reduce', true);
 })
 
-const winAction = (type, force = false) => {
+const winAction = (type) => {
     sendData('window', {type: 'application', action: type});
 }

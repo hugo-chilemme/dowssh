@@ -1,17 +1,11 @@
-const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+const {app} = require('electron');
 
 const Create = require('./doc');
 const window = require('./window');
 
 const exec = require('child_process').exec;
 
-const fs = require('fs-extra');
-const unzipper = require('unzipper');
 
-
-const Client = require('ssh2-sftp-client');
-const axios = require('axios');
-const prompt = require('prompt-sync')();
 const bypass = true;
 
 const create = new Create();
@@ -23,14 +17,13 @@ const checkUpdate = async () => {
             if(bypass) return window.application();
             win.webContents.send('update', "search");
 
-            exec("cd node_modules/geoip-lite && npm run-script updatedb license_key=13TAGtjQKv2aaR7H");
-            exec("git status --porcelain", (error, stdout, stderr) => {
+            exec("git status --porcelain", (error, stdout) => {
                 if (stdout.trim() === "") return window.application();
                 win.webContents.send('update', "install");
-                exec("git pull", (error, stdout, stderr) => {
+                exec("git pull", () => {
                     app.relaunch();
-                    app.exit();
-                    return;
+                    return app.exit();
+
                 });
             });
 

@@ -208,7 +208,7 @@
 
     .config .checking {
         display: flex;
-        height: 200px;
+        height: 125px;
         margin-top: 25px;
         justify-content: center;
         align-items: center;
@@ -232,9 +232,14 @@
 
     .config .acc {
         display: grid;
-        grid-template-columns: 75px calc(100% - 75px);
+        grid-template-columns: 100px calc(100% - 100px);
         background: #252525;
-        padding: 15px 20px;
+        padding: 27px 30px;
+        justify-content: center;
+    }
+
+    .config .acc div:nth-child(1) {
+        display:flex;
         justify-content: center;
     }
 
@@ -265,22 +270,32 @@
 
     .config .input {
         margin-top: 20px;
+
         padding: 20px;
     }
 
-    .config .input .info {
+    .config .input .info, .config .input .error {
         margin-bottom:20px;
         margin-top:-10px;
         justify-content: center;
         display:grid;
         line-height: 1.5em;
         background: rgba(48, 48, 48, 0.30);
-        color:#aaa;
+        color:#bbb;
         grid-template-columns: 25px calc(100% - 25px);
         border:1px solid rgba(255, 255, 255, 0.05);
         border-radius: 7px;
-        padding:10px;
-        font-size:13px;
+        padding:15px;
+        font-weight: 500;
+        font-size:12px;
+    }
+    .config .input .error {
+        background:rgba(202, 45, 45, 0.25);
+        border:1px solid rgba(202, 45, 45, 1);
+    }
+
+    .config .input .info p,  .config .input .error p {
+        margin-top: -2px;
     }
 
     .config .input .confirmer {
@@ -293,6 +308,19 @@
         align-items: center;
         border: none;
         border-radius: 7px;
+        transition: 250ms;
+    }
+
+    .config .input .confirmer.enabled {
+        background:#009BFF !important;
+        color:#fff;
+    }
+
+
+    .config .input .confirmer.enabled:hover {
+        transform:scale(1.05);
+        cursor: pointer;
+
     }
 
 
@@ -304,11 +332,6 @@
         </div>
     </div>
     <div class="config hide">
-        <div class="checking">
-            <i class='bx bx-error'></i>
-            <h2>Synchronisation impossible</h2>
-
-        </div>
         <div class="acc">
             <div>
                 <img src="">
@@ -319,17 +342,29 @@
             </div>
 
         </div>
+        <div class="checking">
+            <h2>Une action sur votre compte est requise</h2>
+
+        </div>
         <div class="input">
+            <label>Créer un mot de passe</label>
+            <input id="passphrase-password" placeholder="Veuillez saisir un mot de passe" type="password">
             <div class="info">
                 <div>
                     <i class='bx bx-info-circle'></i>
                 </div>
                 <div>
-                    Ce mot de passe est essentiel à la sécurisation de vos données sur le cloud, il vous sera demandé à chaque connexion
+                    <p>Ce mot de passe est essentiel à la sécurité de vos données, il vous sera demandé à chaque connexion.</p>
                 </div>
             </div>
-            <label>Créer un mot de passe</label>
-            <input placeholder="Veuillez saisir un mot de passe" type="password">
+            <div class="error">
+                <div>
+                    <i class='bx bx-error'></i>
+                </div>
+                <div>
+                    <p>En cas de perte de celui-ci, vous ne pourrez pas récupérer les données.</p>
+                </div>
+            </div>
 
 
             <button class="confirmer disabled">Confirmer</button>
@@ -380,26 +415,26 @@
 </div>
 <script>
     const doc = document;
+    const CONTAINS = doc.querySelector('.contains').innerHTML;
     let websocket = null;
+    let sync = false;
     const {ipcRenderer} = require('electron')
     const sendData = (type, value) => ipcRenderer.send(type, value)
-    ipcRenderer.send('profiler-authentification', 'account');
-    ipcRenderer.on('profiler-authentification-callback', async (event, data) => {
+    ipcRenderer.send('api:get-account', 'account');
+
+    ipcRenderer.on('api:get-account', async (event, data) => {
         if (!data) return doc.querySelector('.loader').style.display = "none";
         displayAccount(data);
-        ipcRenderer.send('profiler-sync-status');
-        ipcRenderer.send('profiler-settings-verification');
     });
 
-    ipcRenderer.on('profiler-settings-verification-callback', async (event, data) => {
-        if (!data.passphrase)
-            doc.querySelector('.config').classList.remove('hide');
 
-
+    ipcRenderer.on('request-passphrase', async (event, data) => {
+        doc.querySelector('.config').classList.remove('hide');
     })
 
 
     const displayAccount = async (data) => {
+        if(!data) return doc.querySelector('.contains').innerHTML = CONTAINS;
         doc.querySelector('.loader').style.display = "none";
         doc.querySelector('.login').style.display = "none";
         doc.querySelector('.ent .welcome-message').innerText = "Hey " + data.fn + " 👋";
@@ -408,9 +443,10 @@
             doc.querySelector('img.profile').setAttribute('src', data.picture);
             doc.querySelector('img.profile').classList.remove('hide');
         }
-        doc.querySelector('.sync h4').innerText = "En attente de synchronisation";
-        doc.querySelector('.sync p').innerText = "Attente de l'échange serveur";
-        doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-time-five' ></i>"
+        doc.querySelector('.sync h4').innerText = "Préparation de synchronisation";
+        doc.querySelector('.sync p').innerText = "Chargement de l'autorité de synchronisation";
+        doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-sync bx-spin' ></i>";
+
 
         doc.querySelector('.account').classList.remove('hide');
         doc.querySelectorAll('.account .item').forEach((e) => {
@@ -427,6 +463,7 @@
             doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
 
         })
+        ipcRenderer.send('api:get-sync-status');
         doc.querySelector('.loader').classList.add('hide');
 
     }
@@ -434,7 +471,7 @@
 
     doc.querySelectorAll('.btn[connect]').forEach(async (e) => {
         e.addEventListener('click', async (ev) => {
-            sendData('profiler-account-connect', e.getAttribute('connect'));
+            sendData('api:open-link', e.getAttribute('connect'));
         })
     })
 
@@ -448,28 +485,25 @@
 
 
     ipcRenderer.on('profiler-account-link-error', async (event, data) => {
-        oc.querySelector('.loader').style.display = "none";
+        doc.querySelector('.loader').style.display = "none";
         alert('error auith');
     })
 
-    ipcRenderer.on('add-security-problem', async (event, data) => {
-        console.log(data);
-    });
 
-    ipcRenderer.on('profiler-sync', async (event, status) => {
-        if (status) {
+    ipcRenderer.on('profiler-sync', async (event, data) => {
+        console.log(data);
+        if (data.status === 2) {
             doc.querySelector('.sync h4').innerText = "Synchronisation en cours";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-sync bx-spin' ></i>";
-            doc.querySelector('.sync p').innerText = "Communication avec le serveur";
-            return;
-        } else {
+            doc.querySelector('.sync p').innerText = "Cela peut prendre plusieurs minutes";
+        } else if(data.status === 1) {
             doc.querySelector('.sync h4').innerText = "Synchronisation terminée";
-            doc.querySelector('.sync p').innerText = "Vous êtes désormais à jour";
+            doc.querySelector('.sync p').innerText = "Votre compte est à jour";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-check' ></i>";
-            setTimeout(async () => {
-                ipcRenderer.send('profiler-sync-status');
-            }, 1000)
-            return;
+        } else {
+            doc.querySelector('.sync h4').innerText = "Vous n'êtes pas connecté";
+            doc.querySelector('.sync p').innerText = "La sauvegarde sur le nuage est désactivé";
+            doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-message-error'></i>";
         }
     });
 
@@ -481,6 +515,28 @@
     doc.querySelector('[action="window-close"]').addEventListener('click', () => {
         sendData('window', {type: 'account', action: 'close'});
     })
+
+    doc.querySelector("#passphrase-password").addEventListener('input', (e) =>  {
+        if(doc.querySelector("#passphrase-password").value.length > 6)
+            return doc.querySelector('.confirmer').classList.add('enabled');
+        return doc.querySelector('.confirmer').classList.remove('enabled');
+    });
+
+    doc.querySelector('.confirmer').addEventListener('click', () => {
+        const value = doc.querySelector("#passphrase-password").value;
+        if(value.length > 6) {
+            doc.querySelector('.loader').style.display = "flex";
+            doc.querySelector('.config').classList.add('hide');
+
+            ipcRenderer.send('api:set-settings', {type: 'passphrase', value: value});
+        }
+    })
+    ipcRenderer.on('set-passphrase-callback', async (event, data) => {
+        doc.querySelector('.loader').style.display = "none";
+        doc.querySelector('.config').classList.add('hide');
+    })
+
+
 </script>
 </body>
 </html>
