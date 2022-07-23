@@ -21,8 +21,8 @@ let windows = {};
 const start = async (callback) => {
 
     windows.start = new BrowserWindow({
-        width: 450,
-        height: 450,
+        width: 350,
+        height: 350,
         center: true,
         resizable: false,
         transparent: true,
@@ -39,7 +39,7 @@ const start = async (callback) => {
     setTimeout(async () => {
         await api.connect();
         callback(windows.start)
-    }, 2000)
+    }, 1000)
 }
 
 const application = async () => {
