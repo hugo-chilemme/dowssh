@@ -35,8 +35,8 @@ class Create {
 
     async file(path, data, cb = null) {
 
-        if (await this.exist(project_path + '/' + path, true)) return false;
-        fs.writeFileSync(project_path + '/' + path, data, {flag: 'a+'});
+        if (await this.exist(project_path + path, true)) return false;
+        fs.writeFileSync(project_path  + path, data, {flag: 'a+'});
         if (cb) cb(path)
         return true;
 
@@ -53,7 +53,7 @@ class Create {
     }
 
     read(path) {
-        return JSON.parse(fs.readFileSync(project_path + "/" + path, {encoding: 'utf8', flag: 'r'}));
+        return JSON.parse(fs.readFileSync(project_path + path, {encoding: 'utf8', flag: 'r'}));
     }
 
 

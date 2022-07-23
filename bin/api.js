@@ -65,7 +65,7 @@ class Api {
         const waitReady = async () => {
             const files = await fs.readdirSync(project_path + "/accounts");
             if (files.length > 0) {
-                const account = await create.read(project_path + "/accounts/" + files[0]);
+                const account = await create.read("/accounts/" + files[0]);
                 if (client) await this.account_load(account.uuid);
                 else setTimeout(() => waitReady(), 1000)
             }
@@ -141,7 +141,7 @@ class Api {
     }
 
     async account_register(data) {
-        await create.file(project_path + '/accounts/' + data.uuid + ".json", JSON.stringify({
+        await create.file('/accounts/' + data.uuid + ".json", JSON.stringify({
             uuid: data.uuid,
             device: data.device,
             access_token: data.access_token
@@ -151,7 +151,7 @@ class Api {
 
     async account_load(uuid) {
 
-        const account = await create.read(project_path + '\'/accounts/' + uuid + ".json");
+        const account = await create.read('/accounts/' + uuid + ".json");
         if (!account) return;
         oauth.tasks.length = 0;
         oauth.configure(account);
@@ -203,7 +203,7 @@ oauth.setToken = async (access_token) => {
     let account = oauth.config;
     account.access_token = access_token;
     oauth.config = account;
-    await create.edit(project_path + '/accounts/' + oauth.config.uuid + ".json", JSON.stringify(account))
+    await create.edit( '/accounts/' + oauth.config.uuid + ".json", JSON.stringify(account))
 }
 
 oauth.get = async (scope) => {
@@ -215,7 +215,7 @@ oauth.get = async (scope) => {
 
 oauth.receive = async (obj) => {
     if (obj.message || obj.error) return console.log('Error ', obj.message, obj.error);
-    if (!obj.result.access_token) return create.delete(project_path + '/accounts/' + oauth.config.uuid + ".json");
+    if (!obj.result.access_token) return create.delete('/accounts/' + oauth.config.uuid + ".json");
 
     console.log(obj)
 
