@@ -1,6 +1,8 @@
 const {app} = require('electron');
 
 const Create = require('./doc');
+const create = new Create();
+
 const window = require('./window');
 
 const exec = require('child_process').exec;
@@ -8,9 +10,9 @@ const exec = require('child_process').exec;
 
 const bypass = true;
 
-const create = new Create();
+
 const checkUpdate = async () => {
-    await create.folders(['hosts', 'accounts', 'accounts/default']);
+
     app.whenReady().then(async () => {
         await window.start(async (win) => {
 

@@ -5,6 +5,8 @@ const project_path = require('./Class/userdata').path('profile');
 class Create {
     constructor(props) {
         fs.mkdirSync(userData+"/dowssh", {recursive: true});
+        fs.mkdirSync(userData+"/dowssh/profile", {recursive: true});
+        this.folders(['hosts', 'accounts', 'accounts/default']);
     }
 
 
@@ -28,7 +30,6 @@ class Create {
 
     async folders(obj) {
         for (let i = 0; i < obj.length; i++) {
-            console.log(obj[i])
             await this.folder(obj[i], false);
         }
     }
