@@ -360,6 +360,140 @@
         font-size: 16px;
     }
 
+    .device-alert {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: #202020;
+        z-index: 999999997;
+    }
+    .device-alert {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: #202020;
+        z-index: 999999999;
+    }
+
+    .device-alert .checking {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 55px;
+    }
+
+    .device-alert .checking h2 {
+        color: #eeee;
+        text-align: center;
+        line-height: 1.5em;
+        font-size: 25px;
+        font-weight: 500;
+        margin-top: 25px;
+    }
+
+    .device-alert .checking i {
+        color: #009BFF;
+        font-size: 40px;
+    }
+
+    .device-alert .acc {
+        display: grid;
+        grid-template-columns: 100px calc(100% - 100px);
+        background: #252525;
+        padding: 27px 30px;
+        justify-content: center;
+    }
+
+    .device-alert .acc div:nth-child(1) {
+        display:flex;
+        justify-content: center;
+    }
+
+    .device-alert .acc h3 {
+        color: #eee;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .device-alert .acc p {
+        color: #858585;
+        font-size: 14px;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    .device-alert .acc img {
+        width: 40px;
+        height: 40px;
+        border-radius: 100px;
+        object-fit: cover;
+    }
+
+
+    .device-alert .input {
+        margin-top: 20px;
+
+        padding: 20px;
+    }
+
+    .device-alert .input .info, .device-alert .input .error {
+        margin-bottom:20px;
+        margin-top:-10px;
+        justify-content: center;
+        display:grid;
+        line-height: 1.5em;
+        background: rgba(48, 48, 48, 0.30);
+        color:#bbb;
+        grid-template-columns: 25px calc(100% - 25px);
+        border:1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 7px;
+        padding:15px;
+        font-weight: 500;
+        font-size:12px;
+    }
+    .device-alert .input .error {
+        background:rgba(202, 45, 45, 0.25);
+        border:1px solid rgba(202, 45, 45, 1);
+    }
+
+    .device-alert .device {
+        background: #272727;
+        padding: 30px;
+        display: grid;
+        grid-template-columns: 60px calc(100% - 60px);
+        align-items: center;
+    }
+
+    .device-alert .device_name {
+        color:#fff;
+        font-weight: 700;
+        font-size:17px;
+    }
+
+    .device-alert .device_loc {
+        color:#ccc;
+        font-weight: 400;
+        margin-top:10px;
+        font-size:19px;
+    }
+
+    .device-alert  p {
+        color:#858585;
+        font-weight: 500;
+        margin-top: 30px;
+        font-size:15px;
+    }
+
+    .device-alert .device i {
+        color:#009BFF;
+        font-size:28px
+    }
 
 
 
@@ -375,6 +509,28 @@
             <i class='bx bx-x'></i>
         </div>
     </div>
+    <div class="device-alert hide">
+
+        <div class="checking">
+            <i class='bx bxl-windows' ></i>
+            <h2>DESKTOP-QMKBDP2</h2>
+            <div class="device_loc">Cugnaux (Occitanie) — France</div>
+            <p>Windows • 91.170.22.198</p>
+        </div>
+<!--        <div class="input">-->
+<!--            <div class="info">-->
+<!--                <div>-->
+<!--                    <i class='bx bx-info-circle'></i>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                    <p>Alerte émise par le serveur Dowssh-Germany-1</p>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+
+    </div>
     <div class="config hide">
         <div class="acc">
             <div>
@@ -388,7 +544,6 @@
         </div>
         <div class="checking">
             <h2>Une action sur votre compte est requise</h2>
-
         </div>
         <div class="input">
             <label>Créer un mot de passe</label>
@@ -488,6 +643,7 @@
         doc.querySelector('.ent .welcome-message').innerText = "Hey " + data.fn + " 👋";
         if (data.picture) {
             doc.querySelector('.config .acc img').setAttribute('src', data.picture);
+            doc.querySelector('.device-alert .acc img').setAttribute('src', data.picture);
             doc.querySelector('img.profile').setAttribute('src', data.picture);
             doc.querySelector('img.profile').classList.remove('hide');
         }
@@ -500,12 +656,14 @@
         doc.querySelectorAll('.account .item').forEach((e) => {
             const data_type = e.getAttribute('form');
             if (data_type === "email")
+                doc.querySelector('.device-alert .acc p').innerText = data[data_type];
                 doc.querySelector('.config .acc p').innerText = data[data_type];
             if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
             if (data_type === "identity") {
                 let identity = data.fn + " " + data.ln;
                 if (data.ln === undefined) identity = data.fn;
                 doc.querySelector('.config .acc h3').innerText = identity;
+                doc.querySelector('.device-alert .acc h3').innerText = identity;
                 return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
             }
             doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
@@ -564,7 +722,7 @@
     })
 
     ipcRenderer.on('alert-system', async(event, data) => {
-        console.log(data);
+        doc.querySelector('.device-alert').classList.remove('hide');
     });
 
     doc.querySelector('[action="window-close"]').addEventListener('click', () => {
