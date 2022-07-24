@@ -4,7 +4,7 @@ const project_path = require('../bin/Class/userdata').path('profile');
 
 const Account = require('../bin/Class/account.js');
 let account;
-
+const notifier = require('node-notifier');
 
 const md5 = require('md5');
 const WebSocket = require('websocket').client;
@@ -272,7 +272,27 @@ oauth.callback['set-passphrase'] = async (data) => {
     windows.account.send('set-passphrase-callback', true);
 }
 oauth.callback['alert-system'] = async (data) => {
-    console.log(data);
+
+
+    if(data['new-device']) {
+        let regionNames = new Intl.DisplayNames([data['new-device'].country.toLowerCase()], {type: 'region'});
+
+
+        notifier.notify({
+            title: 'Nouvelle appareil détecté',
+            message: data['new-device'].city + ", "+regionNames.of(data['new-device'].country),
+            sticky: false,
+            label: "Dowssh",
+            sound: true,
+            icon: "",
+            appName: "Dowssh",
+            a: 'Dowssh',
+            contentImage: undefined,
+        });
+        notifier.on('click', function (notifierObject, options, event) {
+            ipcMain.emit('profiler-account');
+        });
+    }
 }
 // If your change that, the system can be automatically ban you
 oauth.callback['logout'] = async () => {
