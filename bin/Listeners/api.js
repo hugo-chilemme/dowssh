@@ -22,10 +22,11 @@ ipcMain.on('api:set-settings', (event, data) => {
     if (!keytarStock.includes(data.type)) return profile.settings[data.type] = data.value;
 
     keytar.setPassword('settings-' + data.type, 'default', data.value);
-    sendData({type: "user", scope: 'set-passphrase', value: data.value, session: oauth.config});
+    api.sendData({type: "user", scope: 'set-passphrase', value: data.value, session: api.oauth.config});
 })
 
-ipcMain.on('api:get-sync-status', async (event, window) => {
+ipcMain.on('api:get-status', async (event, window) => {
+    console.log('ttt');
     await api.synchronisation();
 });
 

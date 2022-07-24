@@ -51,7 +51,7 @@ ipcRenderer.on('api:get-account', async (event, data) => {
 
 
 ipcRenderer.on('profiler-sync', async (event, status) => {
-    if(status) return doc.querySelector('.onglet-btn[action="onglet-sync"]').classList.remove('hide');
+    if(status === 3) return doc.querySelector('.onglet-btn[action="onglet-sync"]').classList.remove('hide');
     doc.querySelector('.onglet-btn[action="onglet-sync"]').classList.add('hide');
     setTimeout(async () => ipcRenderer.send('profiler-sync-status'), 1000)
 });

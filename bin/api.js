@@ -1,5 +1,9 @@
 const {ipcMain, shell} = require('electron');
 const listener = require('../bin/Listeners/api');
+const project_path = require('../bin/Class/userdata').path('profile');
+
+const Account = require('../bin/Class/account.js');
+let account;
 
 
 const md5 = require('md5');
@@ -9,9 +13,15 @@ const create = new Create();
 // Only used for devices list in your account profile
 const os = require('os');
 const fs = require("fs-extra");
+
+const machineId = require('node-machine-id').machineId;
+
+let hash_device;
+const getHashMachine = async () => { hash_device = await machineId() };
+getHashMachine()
 //
 
-const project_path = (process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "/dowssh/profile";
+
 let websocket;
 let client;
 let vsync;
@@ -29,7 +39,8 @@ let profile = {
     user: null,
     settings: null,
     hosts: null,
-    sync: { status: 0, error: null }
+    passphrase: false,
+    sync: 0
 }
 let windows = null;
 
@@ -38,8 +49,17 @@ let api;
 class Api {
 
     constructor() {
+        this.oauth = oauth;
         listener.define(this);
         api = this;
+
+        this.account_onload = null;
+        const files = fs.readdirSync(project_path + "/accounts");
+        for(let i = 0; i < files.length; i++) {
+            if(files[i] !== "default") {
+                this.account_onload = new Account(files[0]);
+            }
+        }
     }
 
     setWindows(wins) {
@@ -47,31 +67,23 @@ class Api {
     }
 
     async synchronisation() {
+        console.log(profile.sync)
         await broadcast('profiler-sync', profile.sync);
     }
 
     async isSync() {
-        if (profile.user && profile.sync.error === 'passphrase') {
-            await windows.account.send('request-passphrase', true);
-        }
+        await this.synchronisation();
+        if(!account) return;
+        if(!profile.passphrase) await windows.account.send('request-passphrase', true);
+
     }
 
     async isReady(win_name) {
         if(win_name === "account") await this.isSync();
+        if(win_name === "application" && this.account_onload) await this.account_load(this.account_onload);
         await this.synchronisation();
     }
 
-    async tryAuthentification() {
-        const waitReady = async () => {
-            const files = await fs.readdirSync(project_path + "/accounts");
-            if (files.length > 0) {
-                const account = await create.read("/accounts/" + files[0]);
-                if (client) await this.account_load(account.uuid);
-                else setTimeout(() => waitReady(), 1000)
-            }
-        }
-        await waitReady();
-    }
 
 
 
@@ -86,10 +98,10 @@ class Api {
 
         websocket.on('connect', async (connection) => {
             client = connection;
-            console.log('connect');
-            await this.tryAuthentification();
 
-
+            setInterval(() => {
+                if(client) this.sendData({present: true})
+            }, 5000)
             connection.on('error', async () => {
                 websocket = null;
                 setTimeout(() => {
@@ -130,7 +142,9 @@ class Api {
 
     }
 
-
+    sendData(message) {
+        client.sendUTF(JSON.stringify(message))
+    }
     sendUI(type, message, focus = false) {
         windows.account.send(type, message);
         if (focus) {
@@ -141,20 +155,21 @@ class Api {
     }
 
     async account_register(data) {
-        await create.file('/accounts/' + data.uuid + ".json", JSON.stringify({
+        let acc = new Account(data.uuid);
+        acc.set('auths', {
             uuid: data.uuid,
             device: data.device,
             access_token: data.access_token
-        }))
-        await this.account_load(data.uuid);
+        })
+        await this.account_load(acc);
     }
 
-    async account_load(uuid) {
 
-        const account = await create.read('/accounts/' + uuid + ".json");
-        if (!account) return;
+    async account_load(acc) {
+        if(!acc) return;
+        account = acc;
         oauth.tasks.length = 0;
-        oauth.configure(account);
+        oauth.configure();
         oauth.task_add(['get-settings', 'get-hosts', 'get-statuspass'])
         await oauth.get('get-profile');
     }
@@ -162,8 +177,9 @@ class Api {
     async link(site) {
         if (!vsync) vsync = newToken();
         const device = os.hostname();
+        const user = os.userInfo();
         const webhash = md5(site);
-        sendData({type: "link", token: vsync, device: device});
+        sendData({type: "link", token: vsync, device: { name: device, hash: hash_device, user_id: user.uid, user_name: user.username }, });
         await shell.openExternal("https://api.hugochilemme.com/authorize?scope=" + webhash + "&vsync=" + vsync + "&vdev=" + md5(device));
     }
 
@@ -196,28 +212,27 @@ const broadcast = async (type, message) => {
 
 
 let oauth = {tasks: []};
-oauth.configure = (account) => {
-    oauth.config = account;
+oauth.configure = () => {
+    console.log(account.user.email + "\tConnecting...")
+    oauth.config = account.get('auths');
 }
 oauth.setToken = async (access_token) => {
-    let account = oauth.config;
-    account.access_token = access_token;
-    oauth.config = account;
-    await create.edit( '/accounts/' + oauth.config.uuid + ".json", JSON.stringify(account))
+    let acc = oauth.config;
+    acc.access_token = access_token;
+    oauth.config = acc;
+    account.set('auths', JSON.stringify(acc));
 }
 
 oauth.get = async (scope) => {
     if (!client || !websocket) return false;
-    profile.sync = {status: 2, error: null};
+    profile.sync = 3;
     await api.synchronisation();
     client.sendUTF(JSON.stringify({type: 'user', scope: scope, session: oauth.config}));
 }
 
 oauth.receive = async (obj) => {
     if (obj.message || obj.error) return console.log('Error ', obj.message, obj.error);
-    if (!obj.result.access_token) return create.delete('/accounts/' + oauth.config.uuid + ".json");
-
-    console.log(obj)
+    if (!obj.result.access_token) return console.log('Error access_token');
 
     await broadcast('profiler-sync', {type: 'get', data: obj.scope})
     await oauth.setToken(obj.result.access_token);
@@ -225,7 +240,7 @@ oauth.receive = async (obj) => {
     if (obj.scope && oauth.callback[obj.scope])
         oauth.callback[obj.scope](obj.result.data);
 
-    profile.sync = {status: 1, error: null};
+    profile.sync = 2;
     await api.synchronisation();
 
     await broadcast(obj.scope, obj.result.data);
@@ -240,25 +255,31 @@ oauth.callback['get-settings'] = async (data) => {
         profile.settings[data[i].key] = data[i].value;
 }
 oauth.callback['get-statuspass'] = async (data) => {
-    if (data) return profile.sync = {status: 2, error: null};
+    if (data) return profile.passphrase = true;
+    profile.passphrase = false;
     ipcMain.emit('profiler-account');
-    return profile.sync = {status: 0, error: 'passphrase'};
-
+    console.log(account.user.email + "\tRequesting input passphrase")
 }
 oauth.callback['get-profile'] = async (data) => {
     profile.user = data;
+    console.log(account.user.email + "\tConnected")
+    account.set('profile', JSON.stringify(profile.user));
     await broadcast('api:get-account', profile.user)
 }
 oauth.callback['set-passphrase'] = async (data) => {
-    windows.account.send('set-passphrase-callback', data.success);
+    profile.sync = 1;
+    windows.account.send('set-passphrase-callback', true);
+}
+oauth.callback['alert-system'] = async (data) => {
+    console.log(data);
 }
 // If your change that, the system can be automatically ban you
 oauth.callback['logout'] = async () => {
-    await create.delete(project_path+'/accounts/' + oauth.config.uuid + ".json");
-    profile = { user: null, settings: null, hosts: null, sync: {status: 0, error: null}};
+    profile = { user: null, settings: null, hosts: null, sync: 0 };
     delete oauth.config;
     websocket = null;
     client = null;
+    console.log(account.user.email + "\tLogout...")
     await api.synchronisation();
     await broadcast('api:get-account', profile.user);
 }

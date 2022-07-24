@@ -100,6 +100,7 @@
         display: flex;
         flex-direction: column;
         height: 200px;
+        margin-top:25px;
         justify-content: flex-end;
         align-items: center;
     }
@@ -324,9 +325,51 @@
 
     }
 
+    .account-action {
+        height: 65px;
+        overflow: hidden;
+        transition: 250ms;
+        position: absolute;
+        margin-left: 20px;
+        left: 0;
+        top: 0;
+        z-index: 99999;
+        -webkit-user-select: none;
+        -webkit-app-region: drag;
+        justify-content: flex-end;
+        align-items: center;
+        display: flex;
+    }
+
+    .account-action  div {
+        display: inline-grid;
+        padding: 0 15px;
+        -webkit-app-region: no-drag;
+        height: 100%;
+        border-radius: 7px;
+        align-items: center;
+        transition: 250ms;
+    }
+
+    .account-action  div:hover {
+        transform:scale(1.5);
+    }
+
+    .account-action i {
+        color: #000000;
+        font-size: 16px;
+    }
+
+
+
 
 </style>
 <div class="contains">
+    <div class="account-action">
+        <div action="display-device">
+            <i class='bx bx-devices' ></i>
+        </div>
+    </div>
     <div class="header">
         <div action="window-close">
             <i class='bx bx-x'></i>
@@ -422,6 +465,7 @@
     const {ipcRenderer} = require('electron')
     const sendData = (type, value) => ipcRenderer.send(type, value)
     ipcRenderer.send('api:get-account', 'account');
+    ipcRenderer.send('api:get-status');
 
     ipcRenderer.on('api:get-account', async (event, data) => {
         if (!data) return doc.querySelector('.loader').style.display = "none";
@@ -492,16 +536,19 @@
 
 
     ipcRenderer.on('profiler-sync', async (event, data) => {
-        console.log(data);
-        if (data.status === 2) {
+        if (data === 3) {
             doc.querySelector('.sync h4').innerText = "Synchronisation en cours";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-sync bx-spin' ></i>";
             doc.querySelector('.sync p').innerText = "Cela peut prendre plusieurs minutes";
-        } else if(data.status === 1) {
+        } else if(data === 2) {
             doc.querySelector('.sync h4').innerText = "Synchronisation terminée";
             doc.querySelector('.sync p').innerText = "Votre compte est à jour";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-check' ></i>";
-        } else {
+        } else if(data === 1) {
+            doc.querySelector('.sync h4').innerText = "Attente de synchronisation";
+            doc.querySelector('.sync p').innerText = "Cette opération peut durée plusieurs minutes";
+            doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-sync bx-spin'></i>";
+        } else  {
             doc.querySelector('.sync h4').innerText = "Vous n'êtes pas connecté";
             doc.querySelector('.sync p').innerText = "La sauvegarde sur le nuage est désactivé";
             doc.querySelector('.sync .icon').innerHTML = "<i class='bx bx-message-error'></i>";

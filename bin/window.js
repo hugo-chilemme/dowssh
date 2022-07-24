@@ -64,6 +64,7 @@ const application = async () => {
     windows.start.close()
     delete windows.start;
     await sync.start();
+    await api.isReady('application')
 
 }
 

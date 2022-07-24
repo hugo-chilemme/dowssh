@@ -10,7 +10,7 @@ const bypass = true;
 
 const create = new Create();
 const checkUpdate = async () => {
-    await create.folders(['hosts', 'accounts']);
+    await create.folders(['hosts', 'accounts', 'accounts/default']);
     app.whenReady().then(async () => {
         await window.start(async (win) => {
 

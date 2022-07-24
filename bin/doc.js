@@ -1,7 +1,6 @@
 const fs = require('fs-extra');
-const userData = (process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share"));
-const project_path = (process.env.APPDATA || (process.platform === 'darwin' ? process.env.HOME + '/Library/Preferences' : process.env.HOME + "/.local/share")) + "/dowssh/profile";
-
+const userData = require('./Class/userdata').path();
+const project_path = require('./Class/userdata').path('profile');
 
 class Create {
     constructor(props) {
