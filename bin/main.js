@@ -1,10 +1,5 @@
 const {app} = require('electron');
-
-const Create = require('./doc');
-const create = new Create();
-
 const window = require('./window');
-
 const exec = require('child_process').exec;
 
 
@@ -12,7 +7,6 @@ const bypass = true;
 
 
 const checkUpdate = async () => {
-
     app.whenReady().then(async () => {
         await window.start(async (win) => {
 
