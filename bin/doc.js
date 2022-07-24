@@ -6,11 +6,14 @@ class Create {
     constructor(props) {
         fs.mkdirSync(userData+"/dowssh", {recursive: true});
         fs.mkdirSync(userData+"/dowssh/profile", {recursive: true});
-        this.folders(['hosts', 'accounts', 'accounts/default']);
+        fs.mkdirSync(userData+"/dowssh/profile/hosts", {recursive: true});
+        fs.mkdirSync(userData+"/dowssh/profile/accounts", {recursive: true});
+        fs.mkdirSync(userData+"/dowssh/profile/accounts/default", {recursive: true});
     }
 
 
     async folder(path, absolute = false, cb) {
+        console.log(project_path + "/" + path)
         if (!absolute) {
             if (await this.exist(path)) return false;
             fs.mkdirSync(project_path + "/" + path, {recursive: true});
