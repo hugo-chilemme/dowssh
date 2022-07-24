@@ -213,7 +213,7 @@ const broadcast = async (type, message) => {
 
 let oauth = {tasks: []};
 oauth.configure = () => {
-    console.log(account.user.email + "\tConnecting...")
+    if(account.user) console.log(account.user.email + "\tConnecting...")
     oauth.config = account.get('auths');
 }
 oauth.setToken = async (access_token) => {
@@ -258,12 +258,12 @@ oauth.callback['get-statuspass'] = async (data) => {
     if (data) return profile.passphrase = true;
     profile.passphrase = false;
     ipcMain.emit('profiler-account');
-    console.log(account.user.email + "\tRequesting input passphrase")
+    if(account.user) console.log(account.user.email + "\tRequesting input passphrase")
 }
 oauth.callback['get-profile'] = async (data) => {
     profile.user = data;
-    console.log(account.user.email + "\tConnected")
-    account.set('profile', JSON.stringify(profile.user));
+    if(account.user)  console.log(account.user.email + "\tConnected")
+    account.set('profile', profile.user);
     await broadcast('api:get-account', profile.user)
 }
 oauth.callback['set-passphrase'] = async (data) => {
@@ -279,7 +279,7 @@ oauth.callback['logout'] = async () => {
     delete oauth.config;
     websocket = null;
     client = null;
-    console.log(account.user.email + "\tLogout...")
+    if(account.user) console.log(account.user.email + "\tLogout...")
     await api.synchronisation();
     await broadcast('api:get-account', profile.user);
 }

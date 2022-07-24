@@ -5,12 +5,17 @@ const project_path = require('./userdata').path('profile');
 class Account {
 
     constructor(uuid) {
-        if (!uuid) return;
+
+        if (!uuid || uuid.length !== 36) return;
+        this.uuid = uuid;
+
+
         this.configure();
         if (!fs.existsSync(project_path + "/accounts/" + uuid + "/auths.json"))
             return null;
 
-        this.uuid = uuid;
+
+        console.log(uuid);
         this.user = this.get('profile');
         return this;
     }
@@ -21,7 +26,7 @@ class Account {
     }
 
     set(type, data) {
-        fs.writeFileSync(project_path + "/accounts/" + this.uuid + "/" + type + ".json", data);
+        fs.writeFileSync(project_path + "/accounts/" + this.uuid + "/" + type + ".json", JSON.stringify(data));
         return this;
     }
 
