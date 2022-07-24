@@ -280,7 +280,7 @@ oauth.callback['alert-system'] = async (data) => {
 
         notifier.notify({
             title: 'Nouvelle appareil détecté',
-            message: data['new-device'].city + ", "+regionNames.of(data['new-device'].country),
+            message: data['new-device'].city + ", "+regionNames.of(data['new-device'].country) + " ("+data['new-device'].name+")",
             sticky: false,
             label: "Dowssh",
             sound: true,

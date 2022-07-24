@@ -62,6 +62,7 @@
     "mkdirp": "^0.5.6",
     "ms": "^2.1.2",
     "node-machine-id": "^1.1.12",
+    "node-notifier": "^10.0.1",
     "normalize-url": "^4.5.1",
     "npm-conf": "^1.1.3",
     "object-keys": "^1.1.1",
