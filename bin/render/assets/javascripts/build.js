@@ -18,7 +18,7 @@ const icones = {
     "tar": "bxs-file-archive",
     "xz": "bxs-file-archive",
     "gz": "bxs-file-archive",
-} 
+}
 
 ipcRenderer.send('onready', 'application');
 const sendData = (type, value) => {

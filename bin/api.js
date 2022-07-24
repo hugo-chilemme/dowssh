@@ -179,7 +179,7 @@ class Api {
         const device = os.hostname();
         const user = os.userInfo();
         const webhash = md5(site);
-        sendData({type: "link", token: vsync, device: { name: device, hash: hash_device, user_id: user.uid, user_name: user.username }, });
+        sendData({type: "link", token: vsync, device: { name: device, os: os.platform(), hash: hash_device, user_id: user.uid, user_name: user.username }, });
         await shell.openExternal("https://api.hugochilemme.com/authorize?scope=" + webhash + "&vsync=" + vsync + "&vdev=" + md5(device));
     }
 
