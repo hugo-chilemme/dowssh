@@ -156,11 +156,11 @@ class Api {
 
     async account_register(data) {
         let acc = new Account(data.uuid);
-        acc.set('auths', {
+        acc.set('auths', JSON.stringify({
             uuid: data.uuid,
             device: data.device,
             access_token: data.access_token
-        })
+        }))
         await this.account_load(acc);
     }
 
@@ -263,7 +263,7 @@ oauth.callback['get-statuspass'] = async (data) => {
 oauth.callback['get-profile'] = async (data) => {
     profile.user = data;
     if(account.user)  console.log(account.user.email + "\tConnected")
-    account.set('profile', profile.user);
+    account.set('profile', JSON.stringify(profile.user));
     await broadcast('api:get-account', profile.user)
 }
 oauth.callback['set-passphrase'] = async (data) => {

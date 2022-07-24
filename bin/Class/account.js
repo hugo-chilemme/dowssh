@@ -26,7 +26,7 @@ class Account {
     }
 
     set(type, data) {
-        fs.writeFileSync(project_path + "/accounts/" + this.uuid + "/" + type + ".json", JSON.stringify(data));
+        fs.writeFileSync(project_path + "/accounts/" + this.uuid + "/" + type + ".json", data);
         return this;
     }
 
