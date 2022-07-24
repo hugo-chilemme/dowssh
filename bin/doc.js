@@ -28,6 +28,7 @@ class Create {
 
     async folders(obj) {
         for (let i = 0; i < obj.length; i++) {
+            console.log(obj[i])
             await this.folder(obj[i], false);
         }
     }
