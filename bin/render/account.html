@@ -560,6 +560,10 @@
         displayAccount(data);
     })
 
+    ipcRenderer.on('alert-system', async(event, data) => {
+        console.log(data);
+    });
+
     doc.querySelector('[action="window-close"]').addEventListener('click', () => {
         sendData('window', {type: 'account', action: 'close'});
     })

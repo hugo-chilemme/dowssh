@@ -75,7 +75,7 @@ class Api {
         await this.synchronisation();
         if(!account) return;
         if(!profile.passphrase) await windows.account.send('request-passphrase', true);
-
+        if(profile.alertSystem) await windows.account.send('alert-system', profile.alertSystem);
     }
 
     async isReady(win_name) {
@@ -288,12 +288,15 @@ console.log(data['new-device'])
             appName: "Dowssh",
             a: 'Dowssh',
             contentImage: undefined,
-        });
-        notifier.on('click', function (notifierObject, options, event) {
+        }, function () {
             ipcMain.emit('profiler-account');
+            profile.alertSystem = data;
         });
+
     }
 }
+
+
 // If your change that, the system can be automatically ban you
 oauth.callback['logout'] = async () => {
     profile = { user: null, settings: null, hosts: null, sync: 0 };
