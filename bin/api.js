@@ -232,6 +232,7 @@ oauth.get = async (scope) => {
 
 oauth.receive = async (obj) => {
     if (obj.message || obj.error) return console.log('Error ', obj.message, obj.error);
+    if(obj.scope === "alert-system") return oauth.callback[obj.scope](obj.result.data);
     if (!obj.result.access_token) return console.log('Error access_token');
 
     await broadcast('profiler-sync', {type: 'get', data: obj.scope})
