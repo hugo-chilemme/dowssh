@@ -20,7 +20,7 @@ const icones = {
     "gz": "bxs-file-archive",
 }
 
-
+ipcRenderer.send('onready', 'application');
 const sendData = (type, value) => {
     if(type==="profiler-connect") console.log('Connecting to '+value);
     ipcRenderer.send(type, value);

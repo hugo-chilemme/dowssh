@@ -462,8 +462,11 @@
     const CONTAINS = doc.querySelector('.contains').innerHTML;
     let websocket = null;
     let sync = false;
-    const {ipcRenderer} = require('electron')
-    const sendData = (type, value) => ipcRenderer.send(type, value)
+    const {ipcRenderer} = require('electron');
+    const sendData = (type, value) => ipcRenderer.send(type, value);
+
+
+    ipcRenderer.send('onready', 'account');
     ipcRenderer.send('api:get-account', 'account');
     ipcRenderer.send('api:get-status');
 

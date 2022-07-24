@@ -64,12 +64,15 @@ const application = async () => {
     windows.start.close()
     delete windows.start;
     await sync.start();
-    await api.isReady('application')
 
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
 
+
+ipcMain.on("onready", async (event, name) => {
+    api.isReady(name)
+})
 ipcMain.on("profiler-get", async (event, type) => {
     if (type !== "hosts") return;
     await host.list((hosts) => sendData('profiler-' + type, hosts))
@@ -126,7 +129,6 @@ ipcMain.on('profiler-account', async () => {
     })
     await windows.account.loadFile('./bin/render/account.html');
     api.setWindows(windows);
-    await api.isReady('account')
 
 })
 
