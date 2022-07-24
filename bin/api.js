@@ -277,9 +277,9 @@ oauth.callback['alert-system'] = async (data) => {
     if(data['new-device']) {
         let regionNames = new Intl.DisplayNames([data['new-device'].country.toLowerCase()], {type: 'region'});
 
-
+console.log(data['new-device'])
         notifier.notify({
-            title: 'Nouvelle appareil détecté',
+            title: 'Nouvel appareil détecté',
             message: data['new-device'].city + ", "+regionNames.of(data['new-device'].country) + " ("+data['new-device'].name+")",
             sticky: false,
             label: "Dowssh",
