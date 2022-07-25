@@ -35,22 +35,13 @@ const application = async () => {
     windows.application = new BrowserWindow(doc.readSyst('/bin/Window/application.json'));
     host.setWindows(windows);
     api.setWindows(windows);
-
     await windows.application.loadFile('./bin/render/app.html');
-
-
     windows.start.close()
-
     delete windows.start;
     await sync.start();
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
-
-
-ipcMain.on("onready", async (event, name) => {
-    await api.isReady(name)
-})
 
 
 
@@ -77,7 +68,7 @@ ipcMain.on('profiler-disconnect', async (event, conn_id) => {
 ipcMain.on('profiler-account', async () => {
     sendData('profiler-account-status', 1)
     if (windows.account) {
-        await api.isSync();
+        await api.sync();
         return windows.account.focus();
     }
     windows.account = new BrowserWindow(doc.readSyst('/bin/Window/account.json'))

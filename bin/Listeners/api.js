@@ -7,6 +7,9 @@ let api;
 const define = (InsApi) => api = InsApi;
 
 
+ipcMain.on("onready", async (event, name) => {
+    await this.sync();
+})
 
 ipcMain.on('api:open-link', async (event, site) => {
     await api.oauth.link(site);

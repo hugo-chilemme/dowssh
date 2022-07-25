@@ -22,16 +22,15 @@ let windows = null;
 let api;
 class Api {
     constructor() {
+        this.account_onload = null;
         this.oauth = oauth;
         api = this;
 
-        this.account_onload = null;
+
         const files = doc.scandir('accounts');
-        for(let i = 0; i < files.length; i++) {
-            if(files[i] !== "default") {
+        for(let i = 0; i < files.length; i++)
+            if(files[i] !== "default")
                 this.account_onload = new Account(files[0]);
-            }
-        }
 
         listener.define(api);
     }
@@ -40,25 +39,13 @@ class Api {
         windows = wins;
     }
 
-    async synchronisation() {
-        if(!account) return  await this.broadcast('profiler-sync', 0)
+
+    async sync() {
+        if(!account) return await this.broadcast('profiler-sync', 0);
         await this.broadcast('profiler-sync', account.cache.sync);
-    }
-
-    async isSync() {
-        await this.synchronisation();
-
-        if(!account) return;
         if(!account.cache.passphrase) await windows.account.send('request-passphrase', true);
         if(account.cache['device-alert']) await windows.account.send('alert-system', profile.alertSystem);
     }
-
-    async isReady(win_name) {
-        if(win_name === "account") await this.isSync();
-        await this.synchronisation();
-    }
-
-
 
 
     async connect() {
@@ -152,14 +139,8 @@ class Api {
 
     async broadcast(type, message) {
         if (!windows) return;
-
-        for (const [key, window] of Object.entries(windows)) {
-            try {
-                window.send(type, message);
-            } catch (e) {
-                delete windows[key];
-            }
-        }
+        for (const [key, window] of Object.entries(windows))
+            try { window.send(type, message) } catch (e) { delete windows[key] }
 
     }
 
