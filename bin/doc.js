@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const userData = require('./Class/userdata').path();
 const project_path = require('./Class/userdata').path('profile');
 
-class Create {
+class Doc {
     constructor(props) {
         fs.mkdirSync(userData+"/dowssh", {recursive: true});
         fs.mkdirSync(userData+"/dowssh/profile", {recursive: true});
@@ -11,6 +11,9 @@ class Create {
         fs.mkdirSync(userData+"/dowssh/profile/accounts/default", {recursive: true});
     }
 
+    scandir(path) {
+        return fs.readdirSync(project_path + "/" +path);
+    }
 
     async folder(path, absolute = false, cb) {
         console.log(project_path + "/" + path)
@@ -37,13 +40,13 @@ class Create {
         }
     }
 
+
     async file(path, data, cb = null) {
 
         if (await this.exist(project_path + path, true)) return false;
         fs.writeFileSync(project_path  + path, data, {flag: 'a+'});
         if (cb) cb(path)
         return true;
-
     }
 
     async exist(path, absolute = false) {
@@ -56,6 +59,9 @@ class Create {
         fs.unlinkSync(project_path + "/" + path);
     }
 
+    readSyst(path) {
+        return JSON.parse(fs.readFileSync(process.cwd() + path, {encoding: 'utf8', flag: 'r'}));
+    }
     read(path) {
         return JSON.parse(fs.readFileSync(project_path + path, {encoding: 'utf8', flag: 'r'}));
     }
@@ -69,4 +75,4 @@ class Create {
 
 }
 
-module.exports = Create;
+module.exports = Doc;

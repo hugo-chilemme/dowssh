@@ -643,7 +643,6 @@
         doc.querySelector('.ent .welcome-message').innerText = "Hey " + data.fn + " 👋";
         if (data.picture) {
             doc.querySelector('.config .acc img').setAttribute('src', data.picture);
-            doc.querySelector('.device-alert .acc img').setAttribute('src', data.picture);
             doc.querySelector('img.profile').setAttribute('src', data.picture);
             doc.querySelector('img.profile').classList.remove('hide');
         }
@@ -656,20 +655,18 @@
         doc.querySelectorAll('.account .item').forEach((e) => {
             const data_type = e.getAttribute('form');
             if (data_type === "email")
-                doc.querySelector('.device-alert .acc p').innerText = data[data_type];
                 doc.querySelector('.config .acc p').innerText = data[data_type];
             if (data.email_verified) doc.querySelector('.account .item[form="' + data_type + '"] h5 span').classList.remove('hide')
             if (data_type === "identity") {
                 let identity = data.fn + " " + data.ln;
                 if (data.ln === undefined) identity = data.fn;
                 doc.querySelector('.config .acc h3').innerText = identity;
-                doc.querySelector('.device-alert .acc h3').innerText = identity;
                 return doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = identity;
             }
             doc.querySelector('.account .item[form="' + data_type + '"] h2').innerText = data[data_type];
 
         })
-        ipcRenderer.send('api:get-sync-status');
+        ipcRenderer.send('api:get-status');
         doc.querySelector('.loader').classList.add('hide');
 
     }

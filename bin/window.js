@@ -7,9 +7,12 @@ const api = new Api();
 const Sync = require('./sync');
 const sync = new Sync(api);
 
+const Doc = require('./doc');
+const doc = new Doc();
 
 const Host = require('./Class/host');
 const host = new Host();
+
 const md5 = require('md5');
 
 let connections = {};
@@ -19,21 +22,7 @@ let windows = {};
 
 /* Starter windows */
 const start = async (callback) => {
-
-    windows.start = new BrowserWindow({
-        width: 350,
-        height: 350,
-        center: true,
-        resizable: false,
-        transparent: true,
-        frame: false,
-        icon: './bin/render/Dowssh.ico',
-        webPreferences: {
-            webviewTag: true,
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    })
+    windows.start = new BrowserWindow(doc.readSyst('/bin/Window/start.json'))
     windows.start.focus();
     await windows.start.loadFile('./bin/render/start.html');
     setTimeout(async () => {
@@ -43,46 +32,26 @@ const start = async (callback) => {
 }
 
 const application = async () => {
+    windows.application = new BrowserWindow(doc.readSyst('/bin/Window/application.json'));
+    host.setWindows(windows);
+    api.setWindows(windows);
 
-    windows.application = new BrowserWindow({
-        width: 1300,
-        height: 650,
-        center: true,
-        resizable: false,
-        transparent: true,
-        frame: false,
-        icon: './bin/render/Dowssh.ico',
-        webPreferences: {
-            webviewTag: true,
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    })
     await windows.application.loadFile('./bin/render/app.html');
 
-    api.setWindows(windows);
+
     windows.start.close()
+
     delete windows.start;
     await sync.start();
-
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
 
 
 ipcMain.on("onready", async (event, name) => {
-    api.isReady(name)
-})
-ipcMain.on("profiler-get", async (event, type) => {
-    if (type !== "hosts") return;
-    await host.list((hosts) => sendData('profiler-' + type, hosts))
+    await api.isReady(name)
 })
 
-ipcMain.on("profiler-add", async (event, data) => {
-    if (data.type === "host") return host.add(data.data, (obj) => {
-        sendData('profiler-callback', obj)
-    });
-})
 
 
 setInterval(() => {
@@ -111,27 +80,11 @@ ipcMain.on('profiler-account', async () => {
         await api.isSync();
         return windows.account.focus();
     }
-    windows.account = new BrowserWindow({
-        width: 450,
-        height: 650,
-        resizable: false,
-        transparent: true,
-        center: false,
-        x: 0,
-        y: 0,
-        frame: false,
-        icon: './bin/render/Dowssh.ico',
-        webPreferences: {
-            webviewTag: true,
-            nodeIntegration: true,
-            contextIsolation: false
-        }
-    })
+    windows.account = new BrowserWindow(doc.readSyst('/bin/Window/account.json'))
     await windows.account.loadFile('./bin/render/account.html');
     api.setWindows(windows);
-
+    host.setWindows(windows);
 })
-
 
 
 
@@ -148,7 +101,6 @@ ipcMain.on('window', async (event, data) => {
         delete windows[data.type];
 
         if (data.type === "application") {
-            console.log('Aborded')
             for (const [key, window] of Object.entries(windows)) {
                 try {
                     window.close();
@@ -160,8 +112,6 @@ ipcMain.on('window', async (event, data) => {
         }
         api.setWindows(windows);
     }
-
-
 })
 
 

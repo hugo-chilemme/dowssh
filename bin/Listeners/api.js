@@ -9,7 +9,7 @@ const define = (InsApi) => api = InsApi;
 
 
 ipcMain.on('api:open-link', async (event, site) => {
-    await api.link(site);
+    await api.oauth.link(site);
 });
 
 ipcMain.on('api:get-account', async (event, window) => {
@@ -25,9 +25,8 @@ ipcMain.on('api:set-settings', (event, data) => {
     api.sendData({type: "user", scope: 'set-passphrase', value: data.value, session: api.oauth.config});
 })
 
-ipcMain.on('api:get-status', async (event, window) => {
-    console.log('ttt');
-    await api.synchronisation();
-});
+ipcMain.on('api:get-status', async () => await api.synchronisation());
+
+
 
 exports.define = define;

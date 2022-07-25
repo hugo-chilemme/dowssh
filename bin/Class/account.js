@@ -8,7 +8,7 @@ class Account {
 
         if (!uuid || uuid.length !== 36) return;
         this.uuid = uuid;
-
+        this.cache = { sync: 0};
 
         this.configure();
         if (!fs.existsSync(project_path + "/accounts/" + uuid + "/auths.json"))

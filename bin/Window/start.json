@@ -1,0 +1,14 @@
+{
+  "width": 350,
+  "height": 350,
+  "center": true,
+  "resizable": false,
+  "transparent": true,
+  "frame": false,
+  "icon": "./bin/render/Dowssh.ico",
+  "webPreferences": {
+    "webviewTag": true,
+    "nodeIntegration": true,
+    "contextIsolation": false
+  }
+}
