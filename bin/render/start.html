@@ -94,9 +94,33 @@
                     margin-left:100%;
                 }
             }
+            @keyframes anim {
+
+                100% {
+                    transform: rotate(180deg);
+                }
+            }
+            .back span {
+                background:rgba(255, 255, 255, 0.1);
+                width: 50px;
+                position: absolute;
+                right:50px;
+                top:100px;
+                height:50px;
+                transition: 1s;
+                border-radius: 10px;
+                animation: anim 2s infinite linear;
+            }
 
         </style>
         <div class="contains">
+            <div class="back">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <h2>Dowssh</h2>
             <h3>github.com/HugoCLI</h3>
             <h1 id="announce">Démarrage</h1>
@@ -122,6 +146,15 @@
                 console.log(messages)
                 doc.querySelector('#announce').innerHTML = `Create <span>${messages}</span>`;
             });
+
+            const random = () => {
+                return Math.random() * (100 - 0) + 0;
+            }
+            document.querySelectorAll('.back span').forEach((e) => {
+                let size = random(); // Max 50px;
+                e.style.background = `rgba(255, 255, 255, calc(${random()} / 10000))`
+                e.style.cssText = `left: ${random()}%; top: ${random()}%; width: ${size}px; height: ${size}px; animation: anim 2000ms infinite linear !important`;
+            })
         </script>
     </body>
 </html>
