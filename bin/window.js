@@ -28,7 +28,7 @@ const start = async (callback) => {
     setTimeout(async () => {
         await api.connect();
         callback(windows.start)
-    }, 1000)
+    }, 3000)
 }
 
 const application = async () => {
