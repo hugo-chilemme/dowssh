@@ -32,13 +32,13 @@ const start = async (callback) => {
 }
 
 const application = async () => {
-    // windows.application = new BrowserWindow(doc.readSyst('/bin/Window/application.json'));
-    // host.setWindows(windows);
-    // api.setWindows(windows);
-    // await windows.application.loadFile('./bin/render/app.html');
-    // windows.start.close()
-    // delete windows.start;
-    // await sync.start();
+    windows.application = new BrowserWindow(doc.readSyst('/bin/Window/application.json'));
+    host.setWindows(windows);
+    api.setWindows(windows);
+    await windows.application.loadFile('./bin/render/app.html');
+    windows.start.close()
+    delete windows.start;
+    await sync.start();
 }
 
 const sendData = (type, data) => windows.application.send(type, data);
