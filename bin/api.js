@@ -43,8 +43,8 @@ class Api {
     async sync() {
         if(!account) return await this.broadcast('profiler-sync', 0);
         await this.broadcast('profiler-sync', account.cache.sync);
-        if(!account.cache.passphrase) await windows.account.send('request-passphrase', true);
-        if(account.cache['device-alert']) await windows.account.send('alert-system', profile.alertSystem);
+        if(!account.cache.passphrase && windows.account) await windows.account.send('request-passphrase', true);
+        if(account.cache['device-alert'] && windows.account) await windows.account.send('alert-system', account.cache['new-device']);
     }
 
 

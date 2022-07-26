@@ -8,7 +8,7 @@ const define = (InsApi) => api = InsApi;
 
 
 ipcMain.on("onready", async (event, name) => {
-    await this.sync();
+    await api.sync();
 })
 
 ipcMain.on('api:open-link', async (event, site) => {
@@ -16,7 +16,7 @@ ipcMain.on('api:open-link', async (event, site) => {
 });
 
 ipcMain.on('api:get-account', async (event, window) => {
-    await api.authentification(window);
+    await api.sync(window);
 });
 
 
@@ -28,7 +28,7 @@ ipcMain.on('api:set-settings', (event, data) => {
     api.sendData({type: "user", scope: 'set-passphrase', value: data.value, session: api.oauth.config});
 })
 
-ipcMain.on('api:get-status', async () => await api.synchronisation());
+ipcMain.on('api:get-status', async () => await api.sync());
 
 
 

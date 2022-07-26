@@ -59,7 +59,7 @@ const setToken = async (access_token) => {
 const get = async (scope) => {
     if (!client || !websocket) return false;
     account.cache['sync'] = 3
-    await api.synchronisation();
+    await api.sync();
     client.sendUTF(JSON.stringify({type: 'user', scope: scope, session: oauth.config}));
 }
 
@@ -75,7 +75,7 @@ const receive = async (obj) => {
         oauth.callback[obj.scope](obj.result.data);
 
     account.cache['sync'] = 2;
-    await api.synchronisation();
+    await api.sync();
 
     await api.broadcast(obj.scope, obj.result.data);
     if (oauth.tasks.length > 0)
@@ -136,7 +136,7 @@ oauth.callback['logout'] = async () => {
     websocket = null;
     client = null;
     if(account.user) console.log(account.user.email + "\tLogout...")
-    await api.synchronisation();
+    await api.sync();
     await api.broadcast('api:get-account', {});
 }
 

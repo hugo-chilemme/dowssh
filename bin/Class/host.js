@@ -23,7 +23,6 @@ class Host {
     }
 
 
-
     async add(value, cb) {
         if (!checkAddress(value.host.trim())) return cb({type: "addHost", error: true, message: "Hôte invalide"});
         if (value.port < 0 || value.port > 65353) return cb({type: "addHost", error: true, message: "Port invalide"});
@@ -37,7 +36,7 @@ class Host {
         delete value.password;
         delete value.privatekey;
         delete value.passphrase;
-        await create.file(project_path +'/hosts/' + uuid + ".json", JSON.stringify(value));
+        await doc.file('/hosts/' + uuid + ".json", JSON.stringify(value));
 
 
         cb({
@@ -76,21 +75,21 @@ class Host {
         hosts = [];
         const files = await fs.readdirSync(project_path + "/hosts")
         for (let i = 0; i < files.length; i++) {
-            try {
-                const result = await create.read(project_path + "/hosts/" + files[i]);
-                hosts.push(Object.assign({}, result, {uuid: files[i].split('.json')[0]}));
-            } catch (e) {}
+            const result = await doc.read( "/hosts/" + files[i]);
+            console.log(result);
+            hosts.push(Object.assign({}, result, {uuid: files[i].split('.json')[0]}));
         }
-        if(cb) cb(hosts);
+
+        if (cb) cb(hosts);
         return hosts;
     }
 
     async listObject(cb) {
         let obj = {};
         const hosts = await this.list();
-        for(let i = 0; i < hosts.length; i++)
+        for (let i = 0; i < hosts.length; i++)
             obj[hosts[i].uuid] = hosts[i];
-        if(cb) cb(obj);
+        if (cb) cb(obj);
         return obj;
     }
 }

@@ -6,7 +6,10 @@ exports.define = define;
 
 ipcMain.on("profiler-get", async (event, type) => {
     if (type !== "hosts") return;
-    await host.list((hosts) => host.windows.application.send('profiler-' + type, hosts))
+    await host.list((hosts) => {
+        console.log(hosts)
+        host.windows.application.send('profiler-' + type, hosts)
+    })
 })
 
 ipcMain.on("profiler-add", async (event, data) => {
