@@ -2,7 +2,11 @@ const SFTP = require('ssh2-sftp-client');
 
 
 module.exports = class SFTPConnector {
+    /**
+    * Import a SFTP connection
+    */
     #conn = new SFTP();
+
 
     /**
     * Function to connect to the server
@@ -16,6 +20,7 @@ module.exports = class SFTPConnector {
         } catch (e) { return { ok: false, error: e.message }; }
             
     }
+
 
     /**
     * Function to list files and directories of the path
@@ -36,6 +41,7 @@ module.exports = class SFTPConnector {
         return await this.#conn.mkdir(path, recursive);
     }
 
+
     /**
      * Function to create a new file
      * 
@@ -45,5 +51,14 @@ module.exports = class SFTPConnector {
         return await this.#conn.put(Buffer.from(''), path)
     }
 
+
+    /**
+     * Function to delete a directory
+     * 
+     * @param {string} path: path to the file
+     */
+    async rmdir(path, recursive = false) {
+        return await this.#conn.rmdir(path, recursive);
+    }
 
 }
