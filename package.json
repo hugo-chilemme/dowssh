@@ -1,0 +1,15 @@
+{
+  "name": "dowssh",
+  "version": "1.0.0",
+  "description": "Remote file transfer software",
+  "main": "bin/index.js",
+  "repository": "https://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@github.com/hugo-chilemme/dowssh.git",
+  "author": "= <hugo.chilemme@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ssh2-sftp-client": "^9.1.0"
+  },
+  "scripts":{
+    "dev": "node bin/index.js"
+  }
+}
