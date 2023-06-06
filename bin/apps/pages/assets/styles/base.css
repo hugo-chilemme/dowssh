@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
+
+:root {
+    --app-background-color: rgba(250,250,250,1.0);
+    --app-header-height: 24px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    background-color: var(--app-background-color);
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-family: 'Maven Pro', sans-serif;
+}
+
+.hide {
+    display:none !important
+}

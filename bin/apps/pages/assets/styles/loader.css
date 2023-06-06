@@ -1,0 +1,67 @@
+.cfx-loading {
+    position: fixed;
+    left:0;
+    top:var(--app-header-height);
+    right: 0;
+    bottom: 0;
+
+    background-color: var(--app-background-color);
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    animation: loaderPop 500ms 1;
+}
+
+@keyframes loaderPop {
+   0% {
+    transform:translateY(25px);
+    opacity: 0;
+   }
+   100% {
+    transform: translateY(0);
+    opacity: 1;
+   }
+}
+
+.cfx-loading h5 {
+    color:#404040;
+    font-weight: 500;
+}
+.cfx-loading-progress {
+    background-color: #ebebeb;
+    height: 5px;
+    border-radius: 100px;
+    margin-top: 35px;
+    display:flex;
+    width: 100%;
+    max-width: 250px;
+}
+
+.cfx-loading-progress span {
+    display:flex;
+    height: 5px;
+    width: 100%;
+    border-radius: 100px;
+    background-color: #7b62ff;
+
+    background: linear-gradient(0.25turn, #7b62ff, #b3a4ff);
+    animation: loading 2s 1;
+}
+
+
+
+@keyframes loading {
+    0% {
+     width: 0%
+    }
+    75% {
+        width: 33%;
+    }
+    100% {
+     width: 100%;
+    }
+ }
+ 
