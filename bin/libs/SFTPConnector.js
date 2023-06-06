@@ -16,5 +16,10 @@ module.exports = class SFTPConnector {
         return await this.#conn.list(path);
     }
 
+    async mkdir(path, recursive = false) {
+        return await this.#conn.mkdir(path, recursive);
+    }
+
+
 
 }
