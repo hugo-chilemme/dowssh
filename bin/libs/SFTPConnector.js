@@ -55,10 +55,21 @@ module.exports = class SFTPConnector {
     /**
      * Function to delete a directory
      * 
-     * @param {string} path: path to the file
+     * @param {string} path: path to the folder to delete
+     * @param {boolean} recursive: if you want to delete all children files
      */
     async rmdir(path, recursive = false) {
         return await this.#conn.rmdir(path, recursive);
     }
 
+
+    /**
+    * Function to delete a file
+    * 
+    * @param {string} path: path to the file to be deleted
+    */
+    async rmfile(path) {
+        return await this.#conn.delete(path);
+    }
+        
 }
