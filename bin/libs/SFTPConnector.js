@@ -114,4 +114,16 @@ module.exports = class SFTPConnector {
         return await this.#conn.uploadDir(path, destPath);
     }   
 
+
+    /**
+    * Function to download a file
+    * 
+    * @param {string} remotePath: the path of the remote file 
+    * @param {string} localPath: the destination path  
+    */
+    async downfile(remotePath, localPath) {
+        const file = fs.createWriteStream(localPath);
+        return await this.#conn.fastGet(remotePath, file);
+    }   
+
 }
