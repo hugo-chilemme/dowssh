@@ -95,7 +95,7 @@ module.exports = class SFTPConnector {
     /**
     * Function to upload a file
     * 
-    * @param {string} path: the path with the file or folder 
+    * @param {string} path: the path of the local file 
     * @param {string} destPath: the destination path 
     */
     async upfile(path, destPath) {
@@ -103,5 +103,15 @@ module.exports = class SFTPConnector {
         return await this.#conn.put(file, destPath);
     }        
 
+
+    /**
+    * Function to upload a directory
+    * 
+    * @param {string} path: the path of the local folder 
+    * @param {string} destPath: the destination path 
+    */
+    async updir(path, destPath) {
+        return await this.#conn.uploadDir(path, destPath);
+    }   
 
 }
