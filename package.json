@@ -7,9 +7,12 @@
   "author": "= <hugo.chilemme@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "ssh2-sftp-client": "^9.1.0"
+    "data-store": "^4.0.3",
+    "electron": "^25.0.1",
+    "ssh2-sftp-client": "^9.1.0",
+    "uuid": "^9.0.0"
   },
-  "scripts":{
-    "dev": "node bin/index.js"
+  "scripts": {
+    "dev": "electron ."
   }
 }
