@@ -18,7 +18,6 @@ module.exports = class SFTPConnector {
             await this.#conn.connect(config);
             return { ok: true };
         } catch (e) { return { ok: false, error: e.message }; }
-            
     }
 
 
@@ -30,6 +29,7 @@ module.exports = class SFTPConnector {
     async list(path) {
        return await this.#conn.list(path);
     }
+    
     
     /**
      * Function to create a new directory
@@ -126,4 +126,14 @@ module.exports = class SFTPConnector {
         return await this.#conn.fastGet(remotePath, file);
     }   
 
+
+    /**
+    * Function to download a folder
+    * 
+    * @param {string} remotePath: the path of the remote file 
+    * @param {string} localPath: the destination path  
+    */
+    async downdir(remotePath, localPath) {
+        return await this.#conn.downloadDir(remotePath, localPath);
+    }   
 }
