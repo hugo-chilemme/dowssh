@@ -12,6 +12,9 @@ module.exports = class SFTPConnector {
             
     }
 
+    async list(path) {
+        return await this.#conn.list(path);
+    }
 
 
 }
