@@ -71,5 +71,24 @@ module.exports = class SFTPConnector {
     async rmfile(path) {
         return await this.#conn.delete(path);
     }
-        
+
+
+    /**
+    * Function to rename a file or a folder
+    * 
+    * @param {string} path: the path with the file or folder 
+    * @param {string} destPath: the destination path 
+    */
+    async rename(path, destPath) {
+        return await this.#conn.rename(path, destPath);
+    }        
+
+
+    /**
+    * Alias of @rename function
+    */
+    async move() {
+        return (...args) => this.rename(...args);
+    }   
+
 }
