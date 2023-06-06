@@ -1,5 +1,5 @@
 const SFTP = require('ssh2-sftp-client');
-
+const fs = require('fs');
 
 module.exports = class SFTPConnector {
     /**
@@ -90,5 +90,18 @@ module.exports = class SFTPConnector {
     async move() {
         return (...args) => this.rename(...args);
     }   
+
+
+    /**
+    * Function to upload a file
+    * 
+    * @param {string} path: the path with the file or folder 
+    * @param {string} destPath: the destination path 
+    */
+    async upfile(path, destPath) {
+        const file = fs.createReadStream(path, 'utf8');
+        return await this.#conn.put(file, destPath);
+    }        
+
 
 }
