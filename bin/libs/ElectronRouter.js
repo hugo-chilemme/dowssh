@@ -8,7 +8,8 @@ exports.init = () => {
         width: 1400,
         height: 800,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false,
         },
         frame: false,
     });
@@ -16,9 +17,11 @@ exports.init = () => {
 }
 
 const Navigate = (name) => {
-    if (!RouterPages[name]) {
+    const Page = RouterPages[name];
+
+    if (!Page) {
         return console.error('Page not found');
     }
 
-    window.loadURL(process.cwd() + '/bin/apps/'+RouterPages[name]);
+    window.loadURL(process.cwd() + '/bin/apps/' + Page);
 }

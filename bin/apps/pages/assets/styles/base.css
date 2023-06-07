@@ -24,3 +24,25 @@ h1, h2, h3, h4, h5, h6, p {
 .hide {
     display:none !important
 }
+
+.button {
+    padding: 12.5px 20px;
+    border-radius: 10px;
+    background: #F0F0F0;
+    display:inline-flex;
+}
+
+.button.dark {
+    background-color: #000;
+}
+.button.dark h5 {
+    color:#fff
+}
+
+.button h5 {
+    font-weight: 500;
+}
+
+.button i {
+    margin-right: 5px;
+}

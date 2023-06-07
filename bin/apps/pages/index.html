@@ -3,25 +3,47 @@
     <head>
         <title>Dowssh</title>
 
-        <link rel="stylesheet" href="assets/styles/base.css">
-        <link rel="stylesheet" href="assets/styles/header.css">
+        <link rel='stylesheet' href='assets/styles/base.css'>
+        <link rel='stylesheet' href='assets/styles/header.css'>
 
-        <link rel="stylesheet" href="assets/styles/loader.css">
+        <link rel='stylesheet' href='assets/styles/loader.css'>
 
+        <link rel='stylesheet' href='assets/styles/aside_home.css'>
     </head>
     <body>
-        <div class="cfx-header">
-            <i class='bx bx-minus' ></i>
-            <i class='bx bx-rectangle' ></i>
-            <i class='bx bx-x'></i>
-        </div>
-        <div class="cfx-loading">
+        <div class='cfx-loading'>
             <h5>Robots warming up</h5>
-            
-            <div class="cfx-loading-progress">
-                <span></span>
+            <div class='cfx-loading-progress'><span></span></div>
+        </div>
+        
+        <div class='cfx-header'>
+            <div class='draggable-window'></div>
+            <div>
+                <i id='minimize-button' class='bx bx-minus' ></i>
+                <i id='maximize-button' class='bx bx-rectangle' ></i>
+                <i id='close-button' class='bx bx-x'></i>
             </div>
         </div>
 
+        <aside class='app-home'>
+            <div class='navbar'>
+                <div class="button dark">
+                    <h5><i class='bx bxs-server' ></i> Create host</h5>
+                </div>
+            </div>
+            <div>
+                <h1>My hosts</h1>
+
+                <div class='all-hosts'>
+                    <div class='item'>
+                        <h3>My server</h3>
+                        <h5>152.228.133.175:9429</h5>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <script type='text/javascript' src='assets/javascripts/handleHeader.js'></script>
+        <script type='text/javascript' src='assets/javascripts/handleBuild.js'></script>
     </body>
-</html>
+    </html>

@@ -2,20 +2,24 @@
     height: var(--app-header-height);
     display: flex;
     width: 100%;
-    background-color: #1f2328;
     justify-content: flex-end;
+}
+
+.cfx-header .draggable-window {
+    flex: 1;
+    -webkit-app-region: drag;
 }
 
 .cfx-header i {
     padding: 0 10px;
     font-size: 12Px;
     height: 100%;
-    color:#ccc;
+    color:#505050;
 
     display:inline-flex;
     align-items: center;
 }
 
 .cfx-header i:hover {
-    background:#404040;
+    background:#E5E5E5;
 }
