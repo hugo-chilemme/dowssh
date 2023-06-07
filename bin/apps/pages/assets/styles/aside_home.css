@@ -5,41 +5,130 @@ aside.app-home {
 
 aside.app-home .navbar {
     width: 300px;
-    margin: 20px;
-    border-radius: 50px;
-    height: calc(100vh - 100px);
+    background-color: #F5F5F5;
+    height: 100vh;
     display:flex;
-    background-color: #efeef4;
     flex-direction: column;
     align-items: start;
     padding: 20px;
 }
+aside.app-home .navbar h3 {
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 50px;
+    padding: 10px 0 20px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+aside.app-home .navbar .contains-navbar {
+    flex: 1;
+    width: 100%
+}
+aside.app-home .navbar .footer {
+    width: 100%
+}
+aside.app-home .navbar .footer .button {
+    width: 100%;
+}
+
+
+aside.app-home .navbar .item {
+    padding: 15px 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+aside.app-home .navbar .item:hover {
+    background: #EAEAEA;
+}
+
+aside.app-home .navbar .item h5 {
+    font-size: 16px;
+    color: #505050;
+    display:flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+aside.app-home .navbar .item i {
+    margin-right: 20px;
+}
+aside.app-home .contains .head {
+    height: 50px;
+    margin-bottom: 50px;
+}
+
+aside.app-home .contains .head .searchbar {
+    display:flex;
+    background:#F9F9F9;
+    display:flex;
+    align-items: center;
+    border-radius: 10px;
+}
+
+aside.app-home .contains .head .searchbar i {
+    margin-left: 15px;
+    font-size: 18px;
+    color:#999;
+}
+aside.app-home .contains .head .searchbar input {
+    padding: 15px 10px;
+    border:none;
+    outline: none;
+    font-size: 15px;
+    width: 200px;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+aside.app-home .contains .head .searchbar input::placeholder {
+    color:#999;
+}
+
+aside.app-home .contains {
+    border-radius: 10px;
+    width: 100%;
+    height: 100vh;
+    display:flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 20px 50px;
+}
 
 aside.app-home h1 {
-    color:#151515;
+    color:#4d4e8d;
+    font-weight: 500;
+    margin-bottom: 50px;
 }
-aside.app-home .all-hosts {
-    margin-top: 35px;
+
+aside.app-home h2 {
+    font-weight: 600;
+    font-size: 18px;
+    color:#303030;
+    margin-bottom: 25px;
+    margin-top:30px;
 }
+
 aside.app-home .all-hosts .item {
-    background:#F0F0F0;
-    border-radius: 20px;
+    background:#F5F5F5;
+    border-radius: 10px;
     width: 300px;
     margin: 0 15px 15px 0;
-    height: 150px;
     display:inline-flex;
     justify-content: center;
     flex-direction: column;
-    padding: 40px;
+    padding: 30px;
 }
 
 aside.app-home .all-hosts .item h3 {
     font-weight: 800;
+    color: #4d4e8d
 }
 
 aside.app-home .all-hosts .item h5 {
     margin-top: 10px;
-    color:#606060;
+    color:#808080;
     font-weight: 500;
 }
 

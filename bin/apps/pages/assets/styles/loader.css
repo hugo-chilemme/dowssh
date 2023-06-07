@@ -12,7 +12,6 @@
     align-items: center;
     flex-direction: column;
 
-    animation: loaderPop 500ms 1;
 }
 
 @keyframes loaderPop {
@@ -29,6 +28,7 @@
 .cfx-loading h5 {
     color:#404040;
     font-weight: 500;
+    animation: loaderPop 500ms 1;
     font-size: 15px;
 }
 .cfx-loading-progress {
@@ -38,6 +38,7 @@
     margin-top: 35px;
     display:flex;
     width: 100%;
+    animation: loaderPop 500ms 1;
     max-width: 250px;
 }
 

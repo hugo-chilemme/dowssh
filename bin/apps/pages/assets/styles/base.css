@@ -2,7 +2,7 @@
 @import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
 :root {
-    --app-background-color: rgba(250,250,250,1.0);
+    --app-background-color: rgba(255,255,255,1.0);
     --app-header-height: 24px;
 }
 
@@ -17,7 +17,7 @@ body {
     background-color: var(--app-background-color);
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, input {
     font-family: 'Maven Pro', sans-serif;
 }
 
@@ -29,20 +29,26 @@ h1, h2, h3, h4, h5, h6, p {
     padding: 12.5px 20px;
     border-radius: 10px;
     background: #F0F0F0;
-    display:inline-flex;
+    display: inline-flex;
+    justify-content: center;
+}
+.button:hover {
+    opacity: .8;
 }
 
-.button.dark {
-    background-color: #000;
+.button.primary {
+    background-color: #4d4e8d;
 }
-.button.dark h5 {
+.button.primary h4 {
     color:#fff
 }
 
-.button h5 {
-    font-weight: 500;
+.button h4 {
+    font-weight: 600;
+    display:flex;
+    align-items: center;
 }
 
 .button i {
-    margin-right: 5px;
+    margin-right: 10px;
 }

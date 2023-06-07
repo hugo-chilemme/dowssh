@@ -9,4 +9,4 @@ for (const [file_name, is_enabled] of Object.entries(features)) {
     console.log(file_name);
     // load the file
 }
-d_loading.remove();
+setTimeout(() => d_loading.remove(), 500)
