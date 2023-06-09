@@ -35,6 +35,15 @@ exports.get = uuid => {
 }
 
 
+
+/**
+* Function to get all hosts without passwords
+*/
+exports.all = () => {
+    return store.data;
+}
+
+
 /**
 * Function to edit a host
 * 

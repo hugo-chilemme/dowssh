@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron');
-
 function minimizeWindow() {
   ipcRenderer.send('minimize-window');
 }

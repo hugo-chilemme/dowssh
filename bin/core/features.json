@@ -1,3 +1,9 @@
 {
-    "test": true
+    "dashboardHostsList": {
+        "name": "Showing my hosts",
+        "description": "Displays hosts on homepage",
+
+        "mandatory_default": true,
+        "user_selected": true
+    }
 }

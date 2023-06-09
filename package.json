@@ -9,6 +9,7 @@
   "dependencies": {
     "data-store": "^4.0.3",
     "electron": "^25.0.1",
+    "electron-reloader": "^1.2.3",
     "ssh2-sftp-client": "^9.1.0",
     "uuid": "^9.0.0"
   },
