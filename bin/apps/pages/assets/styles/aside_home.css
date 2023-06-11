@@ -1,11 +1,12 @@
 aside.app-home {
     display:flex;
     min-width: 300px;    
+    width: 100%;
 }
 
 aside.app-home .navbar {
     width: 300px;
-    background-color: #F5F5F5;
+    background-color: #f1f5f9;
     height: 100vh;
     display:flex;
     flex-direction: column;
@@ -111,19 +112,20 @@ aside.app-home h2 {
 }
 
 aside.app-home .all-hosts .item {
-    background:#F5F5F5;
+    background:#f1f5f9;
     border-radius: 10px;
     width: 300px;
     margin: 0 15px 15px 0;
     display:inline-flex;
     justify-content: center;
     flex-direction: column;
-    padding: 30px;
+    padding: 15px 20px;
 }
 
 aside.app-home .all-hosts .item h3 {
     font-weight: 800;
-    color: #4d4e8d
+    font-size: 16px;
+    color: #404040
 }
 
 aside.app-home .all-hosts .item h5 {
@@ -132,3 +134,9 @@ aside.app-home .all-hosts .item h5 {
     font-weight: 500;
 }
 
+aside.app-home .all-hosts.is-empty {
+    color:#aaa;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 50px;
+}

@@ -1,0 +1,35 @@
+.add-server {
+    max-width: 600px;
+    width: 100%;
+}
+
+.add-server .host-required {
+    display:grid;
+    grid-template-columns: calc(80% - 10px) 20%;
+    column-gap: 10px;
+    width: 100%;
+}
+
+.add-server input {
+    background-color: #f1f5f9;
+    border: none;
+    padding: 15px;
+    font-size: 14px;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 500;
+    outline:none;
+    margin-bottom: 35px;
+}
+
+.add-server label {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.add-server .submit {
+    display:flex;
+    width: 100%;
+    justify-content: flex-end;
+}

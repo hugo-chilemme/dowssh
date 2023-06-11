@@ -5,5 +5,19 @@
 
         "mandatory_default": true,
         "user_selected": true
+    },
+    "handleNavbar": {
+        "name": "Page manager",
+        "description": "allows you to display different pages",
+
+        "mandatory_default": true,
+        "user_selected": true
+    },
+    "formHostManager": {
+        "name": "Form host manager",
+        "description": "",
+
+        "mandatory_default": true,
+        "user_selected": true
     }
 }

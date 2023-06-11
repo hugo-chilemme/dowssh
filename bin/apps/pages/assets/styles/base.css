@@ -17,7 +17,7 @@ body {
     background-color: var(--app-background-color);
 }
 
-h1, h2, h3, h4, h5, h6, p, input {
+h1, h2, h3, h4, h5, h6, p, input, label {
     font-family: 'Maven Pro', sans-serif;
 }
 
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6, p, input {
 
 .button {
     padding: 12.5px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     background: #F0F0F0;
     display: inline-flex;
     justify-content: center;
@@ -52,3 +52,4 @@ h1, h2, h3, h4, h5, h6, p, input {
 .button i {
     margin-right: 10px;
 }
+

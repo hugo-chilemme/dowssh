@@ -18,9 +18,8 @@ exports.add = options => {
     if (options.privateKey) {
         options.privateKey = fs.readFileSync(options.privateKey);
     }
-
+    options.uuid = uuid;
     store.set(uuid, options);
-    console.log(uuid, 'saved');
     return uuid;
 }
 
