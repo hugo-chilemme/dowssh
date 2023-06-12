@@ -15,8 +15,7 @@ global.Navigate = (name, data = {}) => {
         data,
     }));
 
-    console.log(routers[name])
-    if (routers[name].showHeader && routers[name].showHeader === false) {
+    if (routers[name].hideHeader) {
         document.querySelector('.navbar').classList.add('hide');
     }
 
