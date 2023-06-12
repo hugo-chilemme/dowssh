@@ -11,8 +11,12 @@ const fs = require('fs');
 exports.add = options => {
     const uuid = uuidv4();
     
-    if (!options.host || !options.username) {
-        throw new Error('Missing required fields: host, username');
+    if (!options.address || !options.username || !options.port ) {
+        throw new Error('Missing required fields: host, username, port');
+    }
+
+    if (options.port < 0 || options.port > 65535) {
+        throw new Error('Invalid port');
     }
 
     if (options.privateKey) {

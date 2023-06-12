@@ -1,11 +1,11 @@
 .add-server {
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
 }
 
 .add-server .host-required {
     display:grid;
-    grid-template-columns: calc(80% - 10px) 20%;
+    grid-template-columns: calc(75% - 10px) 25%;
     column-gap: 10px;
     width: 100%;
 }
@@ -32,4 +32,18 @@
     display:flex;
     width: 100%;
     justify-content: flex-end;
+}
+
+.add-server .error {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    background-color: #faeee9;
+    width: 100%;
+    border: 1px solid #ecd3c8
+}
+
+.add-server .error p {
+    font-size: 13px;
+    font-weight: 500;
 }

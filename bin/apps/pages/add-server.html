@@ -4,13 +4,20 @@
     </div>
     <h1>Adding server</h1>
 
+    <div class="error hide">
+        <p>Not error</p>
+    </div>
     <label>Host Information Required</label>
     <div class="host-required">
-        <input type="text" placeholder="IP Address">
-        <input type="number" value="22" placeholder="Port">
+        <input type="text" data-input="address" placeholder="IP Address">
+        <input type="number" data-input="port" value="22" placeholder="Port">
     </div>
+
+    <label>Username</label>
+    <input type="text" data-input="username" placeholder="Username">
+
     <label>Password</label>
-    <input type="password" placeholder="Password">
+    <input type="password" data-input="password" placeholder="Password">
   
     <div class="submit">
         <div class='button primary'>
