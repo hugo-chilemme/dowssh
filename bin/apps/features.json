@@ -6,6 +6,13 @@
         "mandatory_default": true,
         "user_selected": true
     },
+    "dashboardSessionsManager": {
+        "name": "Session Systems Manager",
+        "description": "Storage of active sessions and error checking",
+
+        "mandatory_default": true,
+        "user_selected": true
+    },
     "handleNavbar": {
         "name": "Page manager",
         "description": "allows you to display different pages",
@@ -15,6 +22,13 @@
     },
     "formHostManager": {
         "name": "Form host manager",
+        "description": "",
+
+        "mandatory_default": true,
+        "user_selected": true
+    },
+    "explorerListPath": {
+        "name": "Rendering engine for files in a directory",
         "description": "",
 
         "mandatory_default": true,

@@ -1,7 +1,24 @@
 <section class="contains explorer" page-name="explorer">
-    <div class="path">
-        <span>var</span>
-        <span>www</span>
-        <span>html</span>
+    <div class="header">
+        <div class="path">
+            <span class="route"><i class='bx bx-home-alt' ></i></span>
+            <div id='explorer-path'><!-- Dynamically --></div>
+        </div>
     </div>
+
+    <table>
+        <thead>
+          <tr>
+            <th> </th>
+            <th>File Name</th>
+            <th>Size</th>
+            <th>Last Modified</th>
+            <th>Permission</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody id="explorer-files">
+          <!-- Add rows for each file -->
+        </tbody>
+    </table>
 </section>

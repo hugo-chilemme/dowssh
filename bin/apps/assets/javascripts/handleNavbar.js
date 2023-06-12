@@ -30,6 +30,4 @@ global.Navigate = (name, data = {}) => {
     document.querySelector(`section[page-name="${name}"]`).setAttribute('data', data);
 
 }
-const nav = JSON.parse(localStorage.getItem('page-selection')) || {};
-console.log(nav.data);
-Navigate(nav.page || 'dashboard', nav.data || null);
+Navigate('dashboard');

@@ -4,6 +4,7 @@
 :root {
     --app-background-color: rgba(255,255,255,1.0);
     --app-header-height: 24px;
+    --app-primary-color: rgba(77,78,141,1.0)
 }
 
 * {
@@ -17,7 +18,7 @@ body {
     background-color: var(--app-background-color);
 }
 
-h1, h2, h3, h4, h5, h6, p, input, label, span {
+h1, h2, h3, h4, h5, h6, p, input, label, span, th, td {
     font-family: 'Maven Pro', sans-serif;
 }
 
@@ -37,10 +38,14 @@ h1, h2, h3, h4, h5, h6, p, input, label, span {
 }
 
 .button.primary {
-    background-color: #4d4e8d;
+    background-color: var(--app-primary-color);
 }
 .button.primary h4 {
     color:#fff
+}
+
+.button.primary i {
+    color:#fff;
 }
 
 .button h4 {
@@ -49,9 +54,10 @@ h1, h2, h3, h4, h5, h6, p, input, label, span {
     align-items: center;
 }
 
-.button i {
+.button:not(.only-icon) i {
     margin-right: 10px;
 }
+
 
 .button.transparent {
     background-color: transparent;
@@ -64,3 +70,16 @@ h1, h2, h3, h4, h5, h6, p, input, label, span {
     color: #c64438
 }
 
+.error {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    background-color: #faeee9;
+    width: 100%;
+    border: 1px solid #ecd3c8
+}
+
+.error p {
+    font-size: 13px;
+    font-weight: 500;
+}

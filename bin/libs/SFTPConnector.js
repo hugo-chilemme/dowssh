@@ -16,8 +16,12 @@ module.exports = class SFTPConnector {
     async connect(config) {
         try {
             await this.#conn.connect(config);
+            this.username = config.username;
             return { ok: true };
-        } catch (e) { return { ok: false, error: e.message }; }
+        } catch (e) { 
+            console.log(e)
+            return { ok: false, error: e.message };
+         }
     }
 
 

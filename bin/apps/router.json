@@ -8,6 +8,6 @@
     },
     "explorer": {
         "active": true,
-        "showHeader": false
+        "hideHeader": true
     }
 }

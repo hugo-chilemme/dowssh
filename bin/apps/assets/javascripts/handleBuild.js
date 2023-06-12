@@ -12,7 +12,7 @@ const progressStep = () => {
     progress += step;
     d_progress.style.width = progress + "%";
     
-    if (progress >= 100) return d_loading.remove();
+    if (progress >= 100) return d_loading.classList.add('hide');
 }
 
 
@@ -23,6 +23,7 @@ const progressStep = () => {
     
         fetch(`./pages/${file_name}.html`).then(v => {
             v.text().then(txt => {
+                console.log('+', file_name);
                 sections.innerHTML += txt;
             })
         })
@@ -38,6 +39,7 @@ const progressStep = () => {
     
         fetch(`./assets/javascripts/${file_name}.js`).then(v => {
             v.text().then(txt => {
+                console.log('+', file_name);
                 eval(txt);
             })
         });

@@ -1,16 +1,65 @@
-.explorer .path {
-    height: 50px;
+.explorer .header {
     display:flex;
+    height: 50px;
     align-items: center;
 }
 
-.explorer .path span {
-    padding: 10px 15px;
-    border-radius: 10px;
+.explorer .path {
+    display:flex;
     background:#F5F5F5;
     border-radius: 10px;
-    margin:0 5px;
+    overflow: hidden;
+}
+
+.explorer .path span {
+    padding: 12.5px 10px 12.5px 20px;
     font-weight: 500;
     color:#505050;
+    display:inline-flex;
+    justify-content: center;
+    align-items: center;
     font-size: 14px;
+}
+
+.explorer .path span.route {
+    padding: 12.5px 20px;
+}
+
+.explorer .path span:not(.route) i {
+    margin-left: 7.5px;
+    color:#aaa;
+}
+
+.explorer .path span i {
+    transform:translateY(2px);
+    color:#505050;
+    font-weight: 500;
+}
+.explorer .path span:hover {
+    background:#E5E5E5;
+}
+
+.explorer th, .explorer td {
+    font-size: 13px;
+    padding:9px;
+    border: 0px solid transparent;
+    margin:0;
+    text-align: left;
+}
+
+.explorer tr td:first-child {
+    border-radius: 5px 0 0 5px;
+    padding-left: 20px;
+    width: 35px;
+}
+
+.explorer tr td:last-child {
+    border-radius: 0 5px 5px 0;
+    padding-right: 20px;
+}
+
+.explorer table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top:50px;
 }

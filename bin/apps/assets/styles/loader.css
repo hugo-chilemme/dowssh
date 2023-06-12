@@ -35,6 +35,7 @@
     background-color: #ebebeb;
     height: 6px;
     border-radius: 100px;
+    overflow: hidden;
     margin-top: 35px;
     display:flex;
     width: 100%;
@@ -42,6 +43,20 @@
     max-width: 250px;
 }
 
+@keyframes connecting {
+    0% {
+        width: 50%;
+        margin-left: -50%;
+    }
+    75% {
+        width: 100%;
+        margin-left: 100%;
+    }
+    100% {
+        width: 0%;
+        margin-left: 100%; 
+    }
+ }
 
 .cfx-loading-progress span {
     display:flex;

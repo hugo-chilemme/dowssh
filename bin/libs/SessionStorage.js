@@ -11,7 +11,7 @@ const fs = require('fs');
 exports.add = options => {
     const uuid = uuidv4();
     
-    if (!options.address || !options.username || !options.port ) {
+    if (!options.host || !options.username || !options.port ) {
         throw new Error('Missing required fields: host, username, port');
     }
 
