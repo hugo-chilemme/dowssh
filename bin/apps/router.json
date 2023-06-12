@@ -1,0 +1,9 @@
+{
+    "dashboard": {
+        "default": true,
+        "active": true
+    },
+    "add-server": {
+        "active": true
+    }
+}

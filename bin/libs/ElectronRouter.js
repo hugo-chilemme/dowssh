@@ -1,6 +1,4 @@
 const { BrowserWindow } = require('electron');
-const RouterPages = require('../apps/routes.json');
-
 let window;
 
 exports.init = () => {
@@ -13,15 +11,5 @@ exports.init = () => {
         },
         frame: false,
     });
-    Navigate('/');
-}
-
-const Navigate = (name) => {
-    const Page = RouterPages[name];
-
-    if (!Page) {
-        return console.error('Page not found');
-    }
-
-    window.loadURL(process.cwd() + '/bin/apps/' + Page);
+    window.loadURL(process.cwd() + '/bin/apps/index.html');
 }
