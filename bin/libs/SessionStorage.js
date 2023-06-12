@@ -38,11 +38,21 @@ exports.get = uuid => {
 }
 
 
+/**
+* Function to remove a host
+* 
+* @param {string} uuid: the uuid of the host
+*/
+exports.del = uuid => {
+    store.del(uuid)
+}
+
 
 /**
 * Function to get all hosts without passwords
 */
 exports.all = () => {
+    console.log(store);
     return store.data;
 }
 

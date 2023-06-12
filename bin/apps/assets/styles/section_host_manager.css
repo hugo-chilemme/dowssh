@@ -16,7 +16,7 @@
     padding: 15px;
     font-size: 14px;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 5px;
     font-weight: 500;
     outline:none;
     margin-bottom: 35px;
@@ -28,10 +28,11 @@
     font-weight: 500;
 }
 
-.add-server .submit {
-    display:flex;
+.add-server .buttons {
+    display: flex;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .add-server .error {

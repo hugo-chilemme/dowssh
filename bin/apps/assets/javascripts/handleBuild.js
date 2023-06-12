@@ -12,10 +12,7 @@ const progressStep = () => {
     progress += step;
     d_progress.style.width = progress + "%";
     
-    console.log(progress);
-    if (progress === 100) {
-        d_loading.remove()
-    }
+    if (progress >= 100) return d_loading.remove();
 }
 
 

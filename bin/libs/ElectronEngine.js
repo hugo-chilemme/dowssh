@@ -6,7 +6,7 @@ const ElectronRouter = require('./ElectronRouter');
 */
 require('./events/handleHeader');
 require('./events/getUserHosts');
-require('./events/addHost');
+require('./events/hostManager');
 
 
 app.whenReady().then(() => ElectronRouter.init());

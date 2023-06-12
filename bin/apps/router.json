@@ -3,7 +3,11 @@
         "default": true,
         "active": true
     },
-    "add-server": {
+    "hostManager": {
         "active": true
+    },
+    "explorer": {
+        "active": true,
+        "showHeader": false
     }
 }

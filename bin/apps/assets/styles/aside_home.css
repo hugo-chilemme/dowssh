@@ -117,8 +117,7 @@ aside.app-home .all-hosts .item {
     width: 300px;
     margin: 0 15px 15px 0;
     display:inline-flex;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-between;
     padding: 15px 20px;
 }
 
@@ -128,6 +127,16 @@ aside.app-home .all-hosts .item h3 {
     color: #404040
 }
 
+aside.app-home .all-hosts .item i {
+    padding: 15px;
+    color:#888;
+}
+
+aside.app-home .all-hosts .item i:hover {
+    background:#E5E5E5;
+    border-radius: 50px;
+    cursor: pointer;
+}
 aside.app-home .all-hosts .item h5 {
     margin-top: 10px;
     color:#808080;

@@ -17,7 +17,7 @@ body {
     background-color: var(--app-background-color);
 }
 
-h1, h2, h3, h4, h5, h6, p, input, label {
+h1, h2, h3, h4, h5, h6, p, input, label, span {
     font-family: 'Maven Pro', sans-serif;
 }
 
@@ -51,5 +51,16 @@ h1, h2, h3, h4, h5, h6, p, input, label {
 
 .button i {
     margin-right: 10px;
+}
+
+.button.transparent {
+    background-color: transparent;
+}
+.button.transparent h4 {
+    font-weight: 500;
+}
+
+.button.transparent.danger {
+    color: #c64438
 }
 

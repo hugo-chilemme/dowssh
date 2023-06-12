@@ -1,4 +1,4 @@
-<section class='contains add-server' page-name='add-server'>
+<section class='contains add-server' page-name='hostManager'>
     <div class='head'>
         
     </div>
@@ -18,9 +18,16 @@
 
     <label>Password</label>
     <input type="password" data-input="password" placeholder="Password">
+
+    <input type="hidden" data-input="uuid">
   
-    <div class="submit">
-        <div class='button primary'>
+    <div class="buttons">
+        <div class="actions hide">
+            <div class="button transparent danger delete">
+                <h4>Delete the server</h4>
+            </div>
+        </div>
+        <div class='button primary save'>
             <h4>Save</h4>
         </div>
     </div>
