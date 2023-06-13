@@ -1,5 +1,3 @@
-global.active_session;
-
 document.querySelector('section[page-name="dashboard"]').addEventListener("onshow", (event) => {
     if (event.detail && event.detail.error) {
         document.querySelector('.dashboard .error').classList.remove('hide');

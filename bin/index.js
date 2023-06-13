@@ -1,6 +1,9 @@
-const SFTPConnector = require('./libs/SFTPConnector');
-const SessionStorage = require('./libs/SessionStorage');
-const ElectronEngine = require('./libs/ElectronEngine');
+require('./libs/SFTPConnector');
+require('./libs/SessionStorage');
+require('./libs/ElectronEngine');
+
+global.active_session;
+
 // try {
 //     require('electron-reloader')(module)
 // } catch (_) {}

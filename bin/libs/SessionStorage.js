@@ -52,7 +52,6 @@ exports.del = uuid => {
 * Function to get all hosts without passwords
 */
 exports.all = () => {
-    console.log(store);
     return store.data;
 }
 

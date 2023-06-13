@@ -13,7 +13,7 @@ const createItem = (host) => {
 
         d_loading.classList.add('hide');
         if (!session.ok) {
-            Navigate('dashboard', session);
+            return Navigate('dashboard', session);
         }
         Navigate('explorer');
     })
@@ -55,6 +55,9 @@ const refreshList = async () => {
     }
 
     for (const host of Object.values(hosts)) {
+        if (lists.querySelector(`.item[host-id="${host.uuid}"]`)) {
+            continue;
+        }
         lists.appendChild(createItem(host));
     }
 }
@@ -63,4 +66,5 @@ const refreshList = async () => {
 document.querySelector('section[page-name="dashboard"]').addEventListener("onshow", (event) => {
     refreshList();
 });
+refreshList();
 

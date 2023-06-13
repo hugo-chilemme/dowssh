@@ -40,8 +40,8 @@
 }
 
 .explorer th, .explorer td {
-    font-size: 13px;
-    padding:9px;
+    font-size: 15px;
+    padding:12px;
     border: 0px solid transparent;
     margin:0;
     text-align: left;
@@ -50,7 +50,11 @@
 .explorer tr td:first-child {
     border-radius: 5px 0 0 5px;
     padding-left: 20px;
-    width: 35px;
+    width: 65px;
+}
+
+.explorer tr td:nth-child(2) {
+    font-weight: 500;
 }
 
 .explorer tr td:last-child {
@@ -59,7 +63,8 @@
 }
 
 .explorer table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
     margin-top:50px;
+    margin-right: 50px;
 }

@@ -1,5 +1,6 @@
 const { ipcRenderer } = require("electron");
-let current_path;
+global.current_path;
+global.active_session;
 
 const setDisplayedPath = (path) => {
     const working_e = document.querySelector('#explorer-path');
@@ -86,7 +87,9 @@ const CreateInterfaceItem = (file) => {
     row.appendChild(permissionCell);
 
     var ownerCell = document.createElement('td');
-    ownerCell.textContent = 'john' || "";
+    if (file.username) {
+        ownerCell.textContent = file.username;
+    }
     row.appendChild(ownerCell);
 
     var tableBody = document.querySelector('#explorer-files'); // Sélectionnez votre élément tbody existant
@@ -97,10 +100,6 @@ const CreateInterfaceItem = (file) => {
 }
 
 const displayFoldersAndFiles = async (files) => {
-    const working_e = document.querySelector('#explorer-files');
-    working_e.innerHTML = "";
-
-    console.log(current_path);
     if (current_path.length > 0) {
         const i = await CreateInterfaceItem({name: '..', type: 'd'});
     }
@@ -108,7 +107,10 @@ const displayFoldersAndFiles = async (files) => {
 }
 
 
-const loadPath = async path => {
+global.loadPath = async path => {
+    const working_e = document.querySelector('#explorer-files');
+    working_e.innerHTML = "";
+
     const repository = await ipcRenderer.invoke('explorerList', path);
 
     setDisplayedPath(repository.path);

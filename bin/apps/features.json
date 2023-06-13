@@ -33,5 +33,12 @@
 
         "mandatory_default": true,
         "user_selected": true
+    },
+    "explorerDragAndDrop": {
+        "name": "Drag en drop the files into the explorer",
+        "description": "",
+
+        "mandatory_default": true,
+        "user_selected": true
     }
 }

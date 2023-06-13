@@ -19,7 +19,6 @@ module.exports = class SFTPConnector {
             this.username = config.username;
             return { ok: true };
         } catch (e) { 
-            console.log(e)
             return { ok: false, error: e.message };
          }
     }

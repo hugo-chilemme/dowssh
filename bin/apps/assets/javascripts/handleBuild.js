@@ -37,6 +37,7 @@ const progressStep = () => {
             continue;
         };
     
+        
         fetch(`./assets/javascripts/${file_name}.js`).then(v => {
             v.text().then(txt => {
                 console.log('+', file_name);
