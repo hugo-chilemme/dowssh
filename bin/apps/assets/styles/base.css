@@ -29,12 +29,13 @@ h1, h2, h3, h4, h5, h6, p, input, label, span, th, td {
 .button {
     padding: 12.5px 20px;
     border-radius: 5px;
-    background: #F0F0F0;
+    background: #F5F5F5;
     display: inline-flex;
     justify-content: center;
 }
+
 .button:hover {
-    opacity: .8;
+    background-color: #E5E5E5;
 }
 
 .button.primary {
@@ -58,6 +59,9 @@ h1, h2, h3, h4, h5, h6, p, input, label, span, th, td {
     margin-right: 10px;
 }
 
+.button.only-icon {
+    margin-right: 5px;
+}
 
 .button.transparent {
     background-color: transparent;
@@ -66,7 +70,7 @@ h1, h2, h3, h4, h5, h6, p, input, label, span, th, td {
     font-weight: 500;
 }
 
-.button.transparent.danger {
+.button.danger {
     color: #c64438
 }
 

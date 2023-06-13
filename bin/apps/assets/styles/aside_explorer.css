@@ -4,6 +4,9 @@
     align-items: center;
 }
 
+.explorer .header .actions {
+    margin-right: 20px;
+}
 .explorer .path {
     display:flex;
     background:#F5F5F5;
