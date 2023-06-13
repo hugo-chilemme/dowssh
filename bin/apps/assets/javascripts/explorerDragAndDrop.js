@@ -4,6 +4,7 @@ dropZone.addEventListener('dragover', (event) => {
     event.preventDefault();
 });
 
+
 dropZone.addEventListener('dragleave', (event) => {
     event.preventDefault();
 });

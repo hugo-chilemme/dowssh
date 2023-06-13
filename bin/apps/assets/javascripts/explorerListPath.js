@@ -47,6 +47,15 @@ function formatBytes(bytes) {
         
         var row = document.createElement('tr');
         
+        row.addEventListener('click', (e) => {
+            if (file.name === "..") return;
+            if (!e.ctrlKey) {
+                document.querySelectorAll('.explorer table tr').forEach((e) => {
+                    e.style.backgroundColor = 'transparent';
+                });
+            }
+            row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
+        })
         row.addEventListener('dblclick', () => {
             row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
             if (file.type === "d") {
@@ -95,8 +104,8 @@ function formatBytes(bytes) {
     row.appendChild(permissionCell);
     
     var ownerCell = document.createElement('td');
-    if (file.username) {
-        ownerCell.textContent = file.username;
+    if (file.type && file.name !== "..") {
+        ownerCell.textContent = file.type;
     }
     row.appendChild(ownerCell);
     

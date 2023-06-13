@@ -17,6 +17,14 @@
     overflow: hidden;
 }
 
+.explorer .path span:last-child {
+    padding-right: 20px;
+}
+
+.explorer .path span:last-child i {
+    display:none;
+}
+
 .explorer .path span {
     padding: 12.5px 10px 12.5px 20px;
     font-weight: 500;
@@ -85,7 +93,7 @@
 
 .explorer tr td:last-child {
     border-radius: 0 5px 5px 0;
-    padding-right: 20px;
+    padding-right: 30px;
 }
 
 .explorer table {

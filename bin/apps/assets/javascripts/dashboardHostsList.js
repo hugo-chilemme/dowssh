@@ -4,6 +4,8 @@ const d_loading = document.querySelector('.cfx-loading');
 const createItem = (host) => {
     const item = document.createElement('div');
     item.classList.add('item');
+
+
     item.addEventListener('dblclick', async () => {
         d_loading.classList.remove('hide');
         d_loading.querySelector('.cfx-loading-progress span').style.animation = "connecting 1.5s infinite linear";
