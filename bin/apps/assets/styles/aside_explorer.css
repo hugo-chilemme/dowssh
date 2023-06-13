@@ -53,6 +53,26 @@
     text-align: left;
 }
 
+.explorer th:hover {
+    background:#F5F5F5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.explorer th:first-child:hover {
+    background-color: transparent;
+}
+
+.explorer table i {
+    margin-left: 10px;
+    color:#aaa;
+    transform:translateY(2px);
+}
+
+.explorer tbody tr:hover {
+    background:#FAFAFA;
+}
+
 .explorer tr td:first-child {
     border-radius: 5px 0 0 5px;
     padding-left: 20px;

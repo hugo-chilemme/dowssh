@@ -7,6 +7,27 @@
     --app-primary-color: rgba(77,78,141,1.0)
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #C5C5C5;
+border-radius: 190px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #555;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
