@@ -100,9 +100,17 @@ module.exports = class SFTPConnector {
     * 
     * @param {string} path: the path of the local file 
     * @param {string} destPath: the destination path 
+    * @param {function} onProgress: live progress upload
     */
-    async upfile(path, destPath) {
+    async upfile(path, destPath, onProgress = () => {}) {
+        const stat = await fs.lstatSync(path)
         const file = fs.createReadStream(path, 'utf8');
+
+        file.on('data', (chunk) => {
+            const percentage = Math.round((file.bytesRead / stat.size) * 100);
+            onProgress({percentage, source: path, destination: destPath});
+        });
+
         return await this.#conn.put(file, destPath);
     }        
 

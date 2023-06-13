@@ -4,9 +4,13 @@ dropZone.addEventListener('dragover', (event) => {
     event.preventDefault();
 });
 
-
 dropZone.addEventListener('dragleave', (event) => {
     event.preventDefault();
+});
+
+ipcRenderer.on('progress-upload', (event, result) => {
+    // Handle the result of the callback
+    console.log(result);
 });
 
 dropZone.addEventListener('drop', async (event) => {
