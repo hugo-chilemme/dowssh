@@ -59,10 +59,6 @@ h1, h2, h3, h4, h5, h6, p, input, label, span, th, td {
     margin-right: 10px;
 }
 
-.button.only-icon {
-    margin-right: 5px;
-}
-
 .button.transparent {
     background-color: transparent;
 }

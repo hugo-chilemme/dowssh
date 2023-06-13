@@ -103,8 +103,8 @@ function formatBytes(bytes) {
     
 }
 
-const displayFoldersAndFiles = async (files) => {
-    if (current_path.length > 0) {
+const displayFoldersAndFiles = async (files, path) => {
+    if (path !== "/") {
         const i = await CreateInterfaceItem({name: '..', type: 'd'});
     }
     files.forEach(CreateInterfaceItem);
@@ -118,9 +118,9 @@ global.loadPath = async path => {
     const repository = await ipcRenderer.invoke('explorerList', path);
     
     localStorage.setItem('latest_path', path);
-    
+
     setDisplayedPath(repository.path);
-    displayFoldersAndFiles(repository.result);
+    displayFoldersAndFiles(repository.result, repository.path);
 }
 
 const handleLoad = () => {
