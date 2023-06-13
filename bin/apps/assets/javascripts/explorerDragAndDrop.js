@@ -20,8 +20,9 @@ dropZone.addEventListener('drop', async (event) => {
 
     await files.forEach(async file => {
         console.log('Dropped file:', file.path);
-        const res = await ipcRenderer.invoke('explorerUpload', file.path, path);
-        console.log(res);
+        const res = await ipcRenderer.invoke('explorerUpload', file.path, path + '/' + file.name);
+        if (res.ok) {
+            loadPath(path);
+        }
     });
-    loadPath(path);
 });
