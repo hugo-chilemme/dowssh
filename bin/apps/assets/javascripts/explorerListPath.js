@@ -56,14 +56,15 @@ function formatBytes(bytes) {
             }
             row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
         })
-        row.addEventListener('dblclick', () => {
+        row.addEventListener('dblclick', async () => {
             row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
             if (file.type === "d") {
                 if (file.name === "..") current_path.pop();
                 else current_path.push(file.name);
                 return loadPath('/' + current_path.join('/'));
             }
-            console.log('fichier');
+            let repository = await ipcRenderer.invoke('explorerOpenFile', current_path.join('/') + '/' + file.name);
+            console.log(repository);
 
         })
     

@@ -133,8 +133,7 @@ module.exports = class SFTPConnector {
     * @param {string} localPath: the destination path  
     */
     async downfile(remotePath, localPath) {
-        const file = fs.createWriteStream(localPath);
-        return await this.#conn.fastGet(remotePath, file);
+        return await this.#conn.fastGet(remotePath, localPath);
     }   
 
 
@@ -146,5 +145,15 @@ module.exports = class SFTPConnector {
     */
     async downdir(remotePath, localPath) {
         return await this.#conn.downloadDir(remotePath, localPath);
+    }
+
+
+    /**
+    * Check data of remote folder
+    * 
+    * @param {string} remotePath: the path of the remote file 
+    */
+    async stat(remotePath) {
+        return await this.#conn.stat(remotePath);
     }   
 }
