@@ -104,3 +104,34 @@ h1, h2, h3, h4, h5, h6, p, input, label, span, th, td {
     font-size: 13px;
     font-weight: 500;
 }
+
+.rightclick {
+    position: fixed;
+    left:50px;
+    top:50px;
+    width: 300px;
+    background-color: #3c3c3c;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.rightclick .item {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color:#fff;
+}
+
+.rightclick .item:hover {
+    background-color: #4c4c4c;
+}
+
+.rightclick .item p {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rightclick .item.danger p {
+    color:#f55648;
+}

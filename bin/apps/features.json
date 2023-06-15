@@ -40,5 +40,12 @@
 
         "mandatory_default": true,
         "user_selected": true
+    },
+    "rightclickManager": {
+        "name": "Rightclick manager",
+        "description": "Can use rightclick with auto manager",
+
+        "mandatory_default": true,
+        "user_selected": true
     }
 }

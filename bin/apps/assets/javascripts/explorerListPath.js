@@ -27,6 +27,24 @@ const setDisplayedPath = (path) => {
     }
 }
 
+function verifCaracteresAutorises(chaine) {
+    // Définir une expression régulière pour les caractères autorisés
+    var regex = /^[a-zA-Z0-9_\-\.]+$/;
+  
+    // Vérifier si la chaîne correspond à l'expression régulière
+    var correspondance = chaine.match(regex);
+  
+    // Si la correspondance est nulle, la chaîne contient des caractères non autorisés
+    // Sinon, la chaîne ne contient que des caractères autorisés
+    return correspondance !== null;
+  }
+  
+  // Exemple d'utilisation
+  var nomFichier = "mon_fichier.txt";
+  var estValide = verifCaracteresAutorises(nomFichier);
+  console.log(estValide); // true
+
+  
 function formatBytes(bytes) {
     if (bytes === 0) {
         return '0 B';
@@ -41,32 +59,12 @@ function formatBytes(bytes) {
 
   
   const CreateInterfaceItem = (file) => {
-      if (file.name !== ".." && file.name[0] == ".") {
+        if (file.name !== ".." && file.name[0] == ".") {
           return;
         }
         
         var row = document.createElement('tr');
-        
-        row.addEventListener('click', (e) => {
-            if (file.name === "..") return;
-            if (!e.ctrlKey) {
-                document.querySelectorAll('.explorer table tr').forEach((e) => {
-                    e.style.backgroundColor = 'transparent';
-                });
-            }
-            row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
-        })
-        row.addEventListener('dblclick', async () => {
-            row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
-            if (file.type === "d") {
-                if (file.name === "..") current_path.pop();
-                else current_path.push(file.name);
-                return loadPath('/' + current_path.join('/'));
-            }
-            let repository = await ipcRenderer.invoke('explorerOpenFile', current_path.join('/') + '/' + file.name);
-            console.log(repository);
 
-        })
     
     
     var iconCell = document.createElement('td');
@@ -113,6 +111,101 @@ function formatBytes(bytes) {
     var tableBody = document.querySelector('#explorer-files'); // Sélectionnez votre élément tbody existant
     tableBody.appendChild(row);
     
+
+
+    const handleSelect = (e) => {
+        if (file.name === "..") return;
+        if (!e.ctrlKey) {
+            document.querySelectorAll('.explorer table tr').forEach((e) => {
+                e.style.backgroundColor = 'transparent';
+            });
+        }
+        row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
+    }
+
+    const handleRightClick = event => {
+        event.preventDefault();
+        if (file.name == "..") return;
+        if (!event.ctrlKey) {
+            document.querySelectorAll('.explorer table tr').forEach((e) => {
+                e.style.backgroundColor = 'transparent';
+            });
+        }
+        row.style.backgroundColor = "rgba(46, 161, 219, 0.25)";
+
+        RightClickManager({
+            'Open': {
+                color: 'primary',
+                execute: handleActionOpen
+            },
+            'Rename': {
+                color: 'primary',
+                execute: handleActionRename,
+            },
+            'Delete': {
+                color: 'danger',
+                execute: handleActionDelete
+            }
+
+        }, event)
+    }
+
+    const handleActionDelete = async () => {
+        if (file.name === "..") return;
+        await ipcRenderer.invoke('explorerDeleteFile', current_path.join('/') + '/' + file.name);
+        handleLoad()
+    }
+
+    const handleActionRename = () => {
+        fileNameCell.setAttribute('contenteditable', true);
+        fileNameCell.focus();
+        
+        document.execCommand('selectAll', false, null);
+
+        var selection = window.getSelection();
+        var range = document.createRange();
+
+        var textNode = fileNameCell.firstChild;
+        range.setStart(textNode, 0);
+
+        fileNameCell.addEventListener('keypress', async (event) => {
+            const v = fileNameCell.innerText;
+            fileNameCell.style.color = 'inherit';
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (!verifCaracteresAutorises(v)) {
+                    return false;
+                }
+                fileNameCell.blur();
+                await ipcRenderer.invoke('explorerRenameFile', current_path.join('/'), v, file.name);
+                handleLoad();
+            }
+  
+        })
+
+        let name = file.name;
+        name = name.split('.');
+        name.pop();
+
+
+        range.setEnd(textNode, name.join('.').length);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+
+    const handleActionOpen = async () => {
+        if (file.type === "d") {
+            if (file.name === "..") current_path.pop();
+            else current_path.push(file.name);
+            return loadPath('/' + current_path.join('/'));
+        }
+        await ipcRenderer.invoke('explorerOpenFile', current_path.join('/') + '/' + file.name);
+    }
+    row.addEventListener('contextmenu', handleRightClick)
+    row.addEventListener('click', handleSelect);
+    row.addEventListener('dblclick', handleActionOpen);
+
+
     return tableBody;
     
 }

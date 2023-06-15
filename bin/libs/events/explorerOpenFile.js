@@ -36,7 +36,7 @@ ipcMain.handle('explorerOpenFile', async (event, path) => {
     await active_session.downfile('/' + path, localTarget);
   }
   console.log('downloaded');
-  exec(`code ${localTarget}`);
+  exec(`code "${localTarget}"`);
 
 
   fs.watch(localTarget, { recursive: true }, async (eventType, filename) => {
