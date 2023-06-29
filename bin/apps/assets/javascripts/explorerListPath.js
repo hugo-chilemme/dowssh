@@ -180,13 +180,11 @@ function formatBytes(bytes) {
                 await ipcRenderer.invoke('explorerRenameFile', current_path.join('/'), v, file.name);
                 handleLoad();
             }
-  
         })
 
         let name = file.name;
         name = name.split('.');
         name.pop();
-
 
         range.setEnd(textNode, name.join('.').length);
         selection.removeAllRanges();
@@ -266,7 +264,19 @@ const handleOrder = (e) => {
     handleLoad();
 }
 
+const handleLogout = async () => {
+    d_loading.classList.remove('hide');
+    d_loading.querySelector('.cfx-loading-progress span').style.animation = "connecting 1.5s infinite linear";
+    d_loading.querySelector('h5').innerText = `Disconnect from the server...`;
+    Navigate('dashboard');
+    await ipcRenderer.invoke('explorerLogout');
+    active_session = null;
+    d_loading.classList.add('hide');
+}
+
+document.querySelector('#logout-button').addEventListener('click', handleLogout);
 document.querySelector('#refresh-button').addEventListener('click', handleLoad);
+
 document.querySelector('[page-name="explorer"]').addEventListener("onshow", handleLoad);
 document.querySelector('.explorer .header .route').addEventListener('click', () => loadPath('/'));
 document.querySelectorAll('.explorer thead th').forEach(e => e.addEventListener('click', handleOrder));
