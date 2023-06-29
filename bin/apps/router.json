@@ -9,5 +9,8 @@
     "explorer": {
         "active": true,
         "hideHeader": true
+    },
+    "settings": {
+        "active": true
     }
 }
